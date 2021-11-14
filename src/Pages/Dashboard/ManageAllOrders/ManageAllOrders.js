@@ -4,12 +4,11 @@ import ManageOrder from "../ManageOrder/ManageOrder";
 
 const ManageAllOrders = () => {
   const [orders, setOrders] = useState([]);
-
   useEffect(() => {
-    fetch("http://localhost:5000/orders")
+    fetch("https://still-castle-43681.herokuapp.com/orders")
       .then((res) => res.json())
       .then((data) => setOrders(data));
-  });
+  }, []);
   return (
     <div>
       <Typography variant="h3" sx={{ mb: 2, fontWeight: 500 }}>

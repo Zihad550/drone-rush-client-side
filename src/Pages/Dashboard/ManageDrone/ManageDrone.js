@@ -8,15 +8,13 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { useHistory } from "react-router";
 
 const ManageDrone = ({ drone }) => {
   const { name, disc, price, img, _id } = drone;
-  const history = useHistory();
 
   const handleDelete = () => {
     if (window.confirm("Are you sure?")) {
-      fetch(`http://localhost:5000/drones?id=${_id}`, {
+      fetch(`https://still-castle-43681.herokuapp.com/drones?id=${_id}`, {
         method: "DELETE",
       })
         .then((res) => res.json())

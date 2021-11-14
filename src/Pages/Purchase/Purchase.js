@@ -47,7 +47,7 @@ const Purchase = () => {
       orderStatus: "pending",
     };
     // send to the server
-    fetch("http://localhost:5000/orders", {
+    fetch("https://still-castle-43681.herokuapp.com/orders", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -63,7 +63,7 @@ const Purchase = () => {
   };
 
   useEffect(() =>
-    fetch(`http://localhost:5000/drones/${name}`)
+    fetch(`https://still-castle-43681.herokuapp.com/drones/${name}`)
       .then((res) => res.json())
       .then((data) => setDrone(data))
   );

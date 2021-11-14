@@ -6,7 +6,7 @@ const ExploreContainer = () => {
   return (
     <div>
       <Navigation />
-      <Drones url="http://localhost:5000/drones" />
+      <Drones url="https://still-castle-43681.herokuapp.com/drones" />
     </div>
   );
 };

@@ -11,7 +11,7 @@ const HomeContainer = () => {
     <div>
       <Navigation />
       <Banner />
-      <Drones url="http://localhost:5000/drones/homeDrones" />
+      <Drones url="https://still-castle-43681.herokuapp.com/drones/homeDrones" />
       <Reviews />
       <ContactUs />
       <Footer />

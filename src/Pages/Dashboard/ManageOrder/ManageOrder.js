@@ -1,4 +1,4 @@
-import { ShoppingCart } from "@mui/icons-material";
+import { Update } from "@mui/icons-material";
 import {
   Button,
   Card,
@@ -9,24 +9,33 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { useHistory } from "react-router";
 
 const ManageOrder = ({ order }) => {
   const { productName, disc, price, img, userName, orderStatus, _id } = order;
-  const history = useHistory();
   const newOrder = {
-    ...order,
+    productName,
+    disc,
+    price,
+    img,
+    userName,
     orderStatus: "Shipped",
   };
 
   const handleStatus = () => {
-    fetch(`http://localhost:5000/orders`, {
+    fetch(`https://still-castle-43681.herokuapp.com/orders/${_id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify(newOrder),
-    });
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.modifiedCount > 0) {
+          alert("Status successfully updated");
+          window.location.reload();
+        }
+      });
   };
 
   return (
@@ -58,7 +67,7 @@ const ManageOrder = ({ order }) => {
         <CardActions>
           <Button
             onClick={handleStatus}
-            endIcon={<ShoppingCart />}
+            endIcon={<Update />}
             sx={{ width: "100%" }}
             variant="contained"
             size="small"

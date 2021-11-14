@@ -12,7 +12,7 @@ import React from "react";
 import { useHistory } from "react-router";
 
 const Drone = ({ drone }) => {
-  const { name, disc, price, img, _id } = drone;
+  const { name, disc, price, img } = drone;
   const history = useHistory();
 
   const handlePurchase = () => {

@@ -9,22 +9,25 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router";
 import useAuth from "../../../hooks/useAuth";
+import ReviewModal from "../ReviewModal/ReviewModal";
 
-const MyOrder = ({ myOrder, handleOpenReview }) => {
+const MyOrder = ({ myOrder }) => {
   const { img, productName, price, disc, _id, orderStatus } = myOrder;
   const { user } = useAuth();
 
   const location = useLocation();
-  console.log(location.pathname);
 
   const handleCancelOrder = () => {
     if (window.confirm("Are you sure!")) {
-      fetch(`http://localhost:5000/orders?email=${user.email}&&id=${_id}`, {
-        method: "DELETE",
-      })
+      fetch(
+        `https://still-castle-43681.herokuapp.com/orders?email=${user.email}&&id=${_id}`,
+        {
+          method: "DELETE",
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data.deletedCount > 0) {
@@ -33,6 +36,10 @@ const MyOrder = ({ myOrder, handleOpenReview }) => {
         });
     }
   };
+  // handle review popup
+  const [openReview, setOpenReview] = useState(false);
+  const handleOpenReview = () => setOpenReview(true);
+  const handleCloseReview = () => setOpenReview(false);
 
   return (
     <Grid item xs={12} md={6}>
@@ -69,16 +76,25 @@ const MyOrder = ({ myOrder, handleOpenReview }) => {
                 Cancel
               </Button>
             ) : (
-              <Button
-                onClick={handleOpenReview}
-                sx={{ width: "100%" }}
-                color="primary"
-                variant="contained"
-                size="small"
-                endIcon={<ArrowForward />}
-              >
-                Give Review
-              </Button>
+              <>
+                <Button
+                  onClick={handleOpenReview}
+                  sx={{ width: "100%" }}
+                  color="primary"
+                  variant="contained"
+                  size="small"
+                  endIcon={<ArrowForward />}
+                >
+                  Give Review
+                </Button>
+              </>
+            )}
+            {openReview && (
+              <ReviewModal
+                product={myOrder}
+                openReview={openReview}
+                handleCloseReview={handleCloseReview}
+              />
             )}
           </CardActions>
         </CardContent>

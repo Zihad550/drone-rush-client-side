@@ -46,14 +46,17 @@ function Dashboard(props) {
   const [myOrders, setMyOrders] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/orders?email=${user.email}`, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    })
+    fetch(
+      `https://still-castle-43681.herokuapp.com/orders?email=${user.email}`,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => setMyOrders(data));
-  }, []);
+  }, [user.email]);
 
   const { admin, logOut } = useAuth();
 

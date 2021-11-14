@@ -6,7 +6,7 @@ const ManageDrones = () => {
   const [drones, setDrones] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/drones")
+    fetch("https://still-castle-43681.herokuapp.com/drones")
       .then((res) => res.json())
       .then((data) => setDrones(data));
   }, []);

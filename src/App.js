@@ -24,6 +24,7 @@ function App() {
             <Route path="/explore">
               <ExploreContainer />
             </Route>
+
             <PrivateRoute path="/purchase/:name">
               <Purchase />
             </PrivateRoute>

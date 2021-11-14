@@ -18,7 +18,7 @@ const Navigation = () => {
   const useStyle = makeStyles({
     navIcon: {
       [theme.breakpoints.up("sm")]: {
-        display: "none",
+        display: "none !important",
       },
     },
     navItemContainer: {
@@ -89,6 +89,7 @@ const Navigation = () => {
               color="inherit"
               aria-label="menu"
               sx={{ mr: 2 }}
+              // style={{ display: "none" }}
               className={navIcon}
               onClick={() => setState(true)}
             >

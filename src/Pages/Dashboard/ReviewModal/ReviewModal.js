@@ -17,13 +17,8 @@ const style = {
   p: 4,
 };
 
-const ReviewModal = ({
-  openReview,
-  handleCloseReview,
-  product,
-  setReviewSuccess,
-}) => {
-  const { name, img } = product;
+const ReviewModal = ({ openReview, handleCloseReview, product }) => {
+  const { productName, img } = product;
   const { user } = useAuth();
 
   const [reviewInfo, setReviewInfo] = useState({
@@ -44,12 +39,12 @@ const ReviewModal = ({
     // collect data
     const review = {
       ...reviewInfo,
-      product: name,
+      productName,
       img,
     };
 
     // send to the server
-    fetch("http://localhost:5000/reviews", {
+    fetch("https://still-castle-43681.herokuapp.com/reviews", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -73,7 +68,7 @@ const ReviewModal = ({
     >
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          {name}
+          {productName}
         </Typography>
         <form onSubmit={handleReview}>
           <TextField

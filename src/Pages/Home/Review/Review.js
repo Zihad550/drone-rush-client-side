@@ -9,10 +9,10 @@ import {
 import React from "react";
 
 const Review = ({ review }) => {
-  const { userName, message, rating, img } = review;
+  const { userName, message, rating, img, productName } = review;
 
   return (
-    <Grid item xs={12} md={6}>
+    <Grid item xs={12} md={3}>
       <Card sx={{ boxShadow: 3 }}>
         <CardMedia
           component="img"
@@ -22,7 +22,7 @@ const Review = ({ review }) => {
         />
         <CardContent sx={{ pb: 0, my: "auto" }}>
           <Typography gutterBottom variant="h5" component="h4">
-            Reviewed by {userName}
+            {productName} Reviewed by {userName}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             About the product: {message}

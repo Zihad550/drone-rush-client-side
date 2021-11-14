@@ -14,7 +14,7 @@ const AddDrone = () => {
   };
   const handleBooking = (e) => {
     e.preventDefault();
-    fetch("http://localhost:5000/drones", {
+    fetch("https://still-castle-43681.herokuapp.com/drones", {
       method: "POST",
       headers: {
         "content-type": "application/json",
