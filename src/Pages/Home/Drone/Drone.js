@@ -6,7 +6,9 @@ import {
   CardMedia,
   Grid,
   Typography,
+  useTheme,
 } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React from "react";
 import { useHistory } from "react-router";
 
@@ -14,12 +16,22 @@ const Drone = ({ drone }) => {
   const { name, disc, price, img } = drone;
   const history = useHistory();
 
+  const theme = useTheme();
+  const useStyle = makeStyles({
+    directionRow: {
+      [theme.breakpoints.down("sm")]: {
+        flexDirection: "row !important",
+      },
+    },
+  });
+  const { directionRow } = useStyle();
+
   const handlePurchase = () => {
     history.push(`/purchase/${name}`);
   };
   return (
     <Grid item xs={12} md={4} lg={6}>
-      <Card sx={{ boxShadow: 3, display: "flex" }}>
+      <Card className={directionRow} sx={{ boxShadow: 3, display: "flex" }}>
         <CardMedia
           component="img"
           width="100%"
