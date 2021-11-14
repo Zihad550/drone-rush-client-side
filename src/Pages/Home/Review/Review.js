@@ -21,7 +21,7 @@ const Review = ({ review }) => {
           alt="green iguana"
         />
         <CardContent sx={{ pb: 0, my: "auto" }}>
-          <Typography gutterBottom variant="h5" component="h4">
+          <Typography gutterBottom variant="h6" component="h4">
             {productName} Reviewed by {userName}
           </Typography>
           <Typography variant="body2" color="text.secondary">

@@ -1,9 +1,11 @@
+import { Email, Person, VpnKey } from "@mui/icons-material";
 import {
   Alert,
   Button,
   CircularProgress,
   Container,
   Grid,
+  InputAdornment,
   TextField,
   Typography,
 } from "@mui/material";
@@ -53,7 +55,7 @@ const Register = () => {
           xs={12}
           md={6}
         >
-          <Typography variant="body1">Register</Typography>
+          <Typography variant="h6">Register</Typography>
           {isLoading ? (
             <CircularProgress />
           ) : (
@@ -65,6 +67,13 @@ const Register = () => {
                   onBlur={handleOnBlur}
                   variant="standard"
                   name="name"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment>
+                        <Person />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 <TextField
                   sx={{ width: "75%" }}
@@ -72,6 +81,14 @@ const Register = () => {
                   onBlur={handleOnBlur}
                   variant="standard"
                   name="email"
+                  margin="dense"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment>
+                        <Email />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 <br />
                 <TextField
@@ -80,7 +97,15 @@ const Register = () => {
                   label="Your Password"
                   variant="standard"
                   type="password"
+                  margin="dense"
                   name="password"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment>
+                        <VpnKey />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 <TextField
                   sx={{ width: "75%" }}
@@ -88,7 +113,15 @@ const Register = () => {
                   label="Retype Your Password"
                   variant="standard"
                   type="password"
+                  margin="dense"
                   name="retype_password"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment>
+                        <VpnKey />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 <br />
                 <NavLink style={{ textDecoration: "none" }} to="/login">

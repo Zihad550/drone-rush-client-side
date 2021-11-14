@@ -1,3 +1,4 @@
+import { Apps, DashboardOutlined, Home, Logout } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Divider, Drawer, ListItem, useTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
@@ -6,11 +7,11 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import { makeStyles } from "@mui/styles";
 import React from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
+import logo from "../../../images/logo2.png";
 
 const Navigation = () => {
   const { user, logOut } = useAuth();
@@ -80,9 +81,13 @@ const Navigation = () => {
   );
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar sx={{ pb: 1 }} position="static">
+      <Box sx={{ flexGrow: 1, fontSize: "2rem" }}>
+        <AppBar
+          sx={{ pb: 1, backgroundColor: "secondary.dark" }}
+          position="static"
+        >
           <Toolbar>
+            {/* mobile menu icon */}
             <IconButton
               size="large"
               edge="start"
@@ -95,27 +100,44 @@ const Navigation = () => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography
+
+            {/* website logo */}
+            <Box
               className={navLogo}
-              variant="h6"
+              variant="h5"
               component="div"
-              sx={{ flexGrow: 1 }}
+              sx={{ flexGrow: 1, textAlign: "left" }}
             >
-              Drone Rush
-            </Typography>
+              <img
+                style={{ width: "7rem", height: "5rem" }}
+                src={logo}
+                alt="logo"
+              />
+            </Box>
             <Box className={navItemContainer}>
               <Link
-                style={{ textDecoration: "none", color: "white" }}
+                style={{
+                  textDecoration: "none",
+                  color: "white",
+                }}
                 to="/home"
               >
-                <Button color="inherit">Home</Button>{" "}
+                <Button
+                  // sx={{ display: "flex", alignItems: "center" }}
+                  endIcon={<Home />}
+                  color="inherit"
+                >
+                  Home
+                </Button>{" "}
               </Link>
 
               <Link
                 style={{ textDecoration: "none", color: "white" }}
                 to="/explore"
               >
-                <Button color="inherit">Explore</Button>{" "}
+                <Button endIcon={<Apps />} color="inherit">
+                  Explore
+                </Button>{" "}
               </Link>
               {user.email ? (
                 <>
@@ -123,9 +145,11 @@ const Navigation = () => {
                     style={{ textDecoration: "none", color: "white" }}
                     to="/dashboard"
                   >
-                    <Button color="inherit">Dashboard</Button>{" "}
+                    <Button endIcon={<DashboardOutlined />} color="inherit">
+                      Dashboard
+                    </Button>{" "}
                   </Link>
-                  <Button onClick={logOut} color="inherit">
+                  <Button endIcon={<Logout />} onClick={logOut} color="inherit">
                     Log Out
                   </Button>
                 </>

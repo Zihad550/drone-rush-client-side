@@ -35,23 +35,31 @@ const AddDrone = () => {
       </Typography>
       <form onSubmit={handleBooking}>
         <TextField
+          required
           size="small"
           name="name"
           onBlur={handleOnBlur}
-          placeholder="Drone Name"
+          label="Drone Name"
           fullWidth
+          margin="dense"
+          variant="outlined"
         />
         <TextField
+          required
+          variant="outlined"
           name="price"
+          margin="dense"
           onBlur={handleOnBlur}
           size="small"
           fullWidth
           type="number"
-          placeholder="Drone Price"
+          label="Drone Price"
         />
 
         <TextField
-          placeholder="Drone Image src"
+          required
+          variant="outlined"
+          label="Drone Image src"
           type="text"
           onBlur={handleOnBlur}
           size="small"
@@ -59,14 +67,17 @@ const AddDrone = () => {
           fullWidth
         />
         <TextField
+          required
+          variant="outlined"
           type="text"
           size="small"
+          margin="dense"
           multiline
           rows={3}
           onBlur={handleOnBlur}
           name="disc"
           fullWidth
-          placeholder="Description"
+          label="Description"
         />
 
         <Button

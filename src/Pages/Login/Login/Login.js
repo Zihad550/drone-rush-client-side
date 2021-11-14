@@ -1,9 +1,11 @@
+import { Email, VpnKey } from "@mui/icons-material";
 import {
   Alert,
   Button,
   CircularProgress,
   Container,
   Grid,
+  InputAdornment,
   TextField,
   Typography,
 } from "@mui/material";
@@ -49,7 +51,7 @@ const Login = () => {
             <CircularProgress />
           ) : (
             <>
-              <Typography variant="body1">Login</Typography>
+              <Typography variant="h6">Login</Typography>
               <form onSubmit={handleLogin}>
                 <TextField
                   sx={{ width: "75%" }}
@@ -57,15 +59,30 @@ const Login = () => {
                   onChange={handleOnChange}
                   variant="standard"
                   name="email"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Email />
+                      </InputAdornment>
+                    ),
+                  }}
                 />{" "}
                 <br />
                 <TextField
                   sx={{ width: "75%" }}
                   onChange={handleOnChange}
                   label="Your Password"
+                  margin="normal"
                   variant="standard"
                   type="password"
                   name="password"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment>
+                        <VpnKey />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 <br />
                 <NavLink style={{ textDecoration: "none" }} to="/register">
