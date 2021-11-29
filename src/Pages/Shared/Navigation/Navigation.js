@@ -12,6 +12,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import logo from "../../../images/logo2.png";
+import "./Navigation.css";
 
 const Navigation = () => {
   const { user, logOut } = useAuth();
@@ -125,8 +126,9 @@ const Navigation = () => {
               >
                 <Button
                   // sx={{ display: "flex", alignItems: "center" }}
-                  endIcon={<Home />}
+                  endIcon={<Home className="nav-icon" />}
                   color="inherit"
+                  className="nav-item"
                 >
                   Home
                 </Button>{" "}
@@ -136,7 +138,11 @@ const Navigation = () => {
                 style={{ textDecoration: "none", color: "white" }}
                 to="/explore"
               >
-                <Button endIcon={<Apps />} color="inherit">
+                <Button
+                  className="nav-item"
+                  endIcon={<Apps className="nav-icon" />}
+                  color="inherit"
+                >
                   Explore
                 </Button>{" "}
               </Link>
@@ -146,11 +152,20 @@ const Navigation = () => {
                     style={{ textDecoration: "none", color: "white" }}
                     to="/dashboard"
                   >
-                    <Button endIcon={<DashboardOutlined />} color="inherit">
+                    <Button
+                      className="nav-item"
+                      endIcon={<DashboardOutlined className="nav-icon" />}
+                      color="inherit"
+                    >
                       Dashboard
                     </Button>{" "}
                   </Link>
-                  <Button endIcon={<Logout />} onClick={logOut} color="inherit">
+                  <Button
+                    className="nav-item"
+                    endIcon={<Logout className="nav-icon" />}
+                    onClick={logOut}
+                    color="inherit"
+                  >
                     Log Out
                   </Button>
                 </>
@@ -159,7 +174,9 @@ const Navigation = () => {
                   style={{ textDecoration: "none", color: "white" }}
                   to="/login"
                 >
-                  <Button color="inherit">Login</Button>
+                  <Button className="nav-item" color="inherit">
+                    Login
+                  </Button>
                 </Link>
               )}
             </Box>
