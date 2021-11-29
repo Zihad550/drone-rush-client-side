@@ -6,11 +6,23 @@ import {
   CardMedia,
   Grid,
   Typography,
+  useTheme,
 } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React from "react";
 
 const ManageDrone = ({ drone }) => {
   const { name, disc, price, img, _id } = drone;
+
+  const theme = useTheme();
+  const useStyle = makeStyles({
+    directionRow: {
+      [theme.breakpoints.up("sm")]: {
+        display: "flex !important",
+      },
+    },
+  });
+  const { directionRow } = useStyle();
 
   const handleDelete = () => {
     if (window.confirm("Are you sure?")) {
@@ -26,7 +38,7 @@ const ManageDrone = ({ drone }) => {
   };
   return (
     <Grid item xs={12} md={6}>
-      <Card sx={{ boxShadow: 3, display: "flex" }}>
+      <Card className={directionRow} sx={{ boxShadow: 3 }}>
         <CardMedia
           component="img"
           width="100%"

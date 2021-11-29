@@ -7,6 +7,7 @@ import {
   CardMedia,
   Grid,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
@@ -14,9 +15,22 @@ import { useLocation } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import ReviewModal from "../ReviewModal/ReviewModal";
 
+import { makeStyles } from "@mui/styles";
+
 const MyOrder = ({ myOrder }) => {
   const { img, productName, price, disc, _id, orderStatus } = myOrder;
   const { user } = useAuth();
+
+  const theme = useTheme();
+  const useStyle = makeStyles({
+    directionRow: {
+      [theme.breakpoints.up("sm")]: {
+        display: "flex !important",
+      },
+    },
+  });
+
+  const { directionRow } = useStyle();
 
   const location = useLocation();
 
@@ -43,7 +57,7 @@ const MyOrder = ({ myOrder }) => {
 
   return (
     <Grid item xs={12} md={6}>
-      <Card sx={{ boxShadow: 3, display: "flex" }}>
+      <Card className={directionRow} sx={{ boxShadow: 3 }}>
         <CardMedia
           style={{ width: "100%", height: "auto" }}
           component="img"

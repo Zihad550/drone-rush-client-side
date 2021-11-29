@@ -13,7 +13,7 @@ const Review = ({ review }) => {
 
   return (
     <Grid item xs={12} md={3}>
-      <Card sx={{ boxShadow: 3 }}>
+      <Card sx={{ boxShadow: 3, height: "100%" }}>
         <CardMedia
           component="img"
           width="100%"

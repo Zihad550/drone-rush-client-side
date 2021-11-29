@@ -19,8 +19,8 @@ const Drone = ({ drone }) => {
   const theme = useTheme();
   const useStyle = makeStyles({
     directionRow: {
-      [theme.breakpoints.down("sm")]: {
-        flexDirection: "row !important",
+      [theme.breakpoints.up("sm")]: {
+        display: "flex !important",
       },
     },
   });
@@ -31,7 +31,15 @@ const Drone = ({ drone }) => {
   };
   return (
     <Grid item xs={12} md={4} lg={6}>
-      <Card className={directionRow} sx={{ boxShadow: 3, display: "flex" }}>
+      <Card
+        className={directionRow}
+        sx={{
+          boxShadow: 3,
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         <CardMedia
           component="img"
           width="100%"

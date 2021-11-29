@@ -7,6 +7,7 @@ import HomeContainer from "./Pages/Home/HomeContainer/HomeContainer";
 import Login from "./Pages/Login/Login/Login";
 import PrivateRoute from "./Pages/Login/PrivateRoute/PrivateRoute";
 import Register from "./Pages/Login/Register/Register";
+import NotFound from "./Pages/NotFound/NotFound";
 import Purchase from "./Pages/Purchase/Purchase";
 
 function App() {
@@ -37,6 +38,9 @@ function App() {
 
             <Route path="/register">
               <Register />
+            </Route>
+            <Route path="*">
+              <NotFound />
             </Route>
           </Switch>
         </Router>

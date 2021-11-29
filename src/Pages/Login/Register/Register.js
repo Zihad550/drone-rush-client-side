@@ -62,6 +62,7 @@ const Register = () => {
             <>
               <form onSubmit={handleRegister}>
                 <TextField
+                  required
                   sx={{ width: "75%" }}
                   label="Your Name"
                   onBlur={handleOnBlur}
@@ -76,6 +77,7 @@ const Register = () => {
                   }}
                 />
                 <TextField
+                  required
                   sx={{ width: "75%" }}
                   label="Your Email"
                   onBlur={handleOnBlur}
@@ -92,6 +94,7 @@ const Register = () => {
                 />
                 <br />
                 <TextField
+                  required
                   sx={{ width: "75%" }}
                   onBlur={handleOnBlur}
                   label="Your Password"
@@ -108,6 +111,7 @@ const Register = () => {
                   }}
                 />
                 <TextField
+                  required
                   sx={{ width: "75%" }}
                   onBlur={handleOnBlur}
                   label="Retype Your Password"

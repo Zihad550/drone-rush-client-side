@@ -29,7 +29,8 @@ const Navigation = () => {
     },
     navLogo: {
       [theme.breakpoints.down("sm")]: {
-        textAlign: "right",
+        display: "flex",
+        justifyContent: "flex-end",
       },
     },
   });

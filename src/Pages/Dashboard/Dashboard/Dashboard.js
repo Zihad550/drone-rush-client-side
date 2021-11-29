@@ -47,7 +47,7 @@ function Dashboard(props) {
 
   useEffect(() => {
     fetch(
-      `https://still-castle-43681.herokuapp.com/orders?email=${user.email}`,
+      `https://still-castle-43681.herokuapp.com/orders/myOrders?email=${user.email}`,
       {
         headers: {
           authorization: `Bearer ${token}`,

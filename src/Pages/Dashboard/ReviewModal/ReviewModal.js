@@ -79,37 +79,40 @@ const ReviewModal = ({ openReview, handleCloseReview, product }) => {
             size="small"
             fullWidth
             label="Review"
-            sx={{ m: 1 }}
             name="message"
           />
           <TextField
-            placeholder="Rating"
+          required
             type="number"
             onBlur={handleOnBlur}
             InputProps={{ inputProps: { min: 0, max: 5 } }}
             size="small"
             fullWidth
             label="Rating"
-            sx={{ m: 1 }}
             name="rating"
+            margin="dense"
           />
           <TextField
+          required
             onBlur={handleOnBlur}
             defaultValue={user.displayName}
             size="small"
             name="userName"
-            sx={{ width: "100%", m: 1 }}
             label="Name"
+            fullWidth
+            margin="dense"
           />
 
           <TextField
+          required
             defaultValue={user.email}
             type="email"
             size="small"
             onBlur={handleOnBlur}
             label="Email"
             name="email"
-            sx={{ width: "100%", m: 1 }}
+            fullWidth
+            margin="dense"
           />
 
           <ButtonGroup

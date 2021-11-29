@@ -108,32 +108,41 @@ const Purchase = () => {
           <Grid sx={{ my: "auto" }} item xs={12} md={6}>
             <form onSubmit={handlePurchase}>
               <TextField
+                required
                 name="customer_name"
                 onBlur={handleOnBlur}
+                label="Your name"
                 defaultValue={user.displayName}
                 size="small"
-                sx={{ width: "100%", m: 1 }}
+                fullWidth
               />
               <TextField
-                placeholder="Phone Number"
+                required
+                label="Phone Number"
                 type="number"
                 onBlur={handleOnBlur}
                 size="small"
                 name="phone"
-                sx={{ width: "100%", m: 1 }}
+                fullWidth
+                margin="dense"
               />
               <TextField
+                required
+                label="Your email"
                 defaultValue={user.email}
                 type="email"
                 size="small"
                 onBlur={handleOnBlur}
                 name="email"
-                sx={{ width: "100%", m: 1 }}
+                fullWidth
+                margin="dense"
               />
               <TextField
-                placeholder="Enter your city name"
+                required
+                label="Enter your city name"
                 size="small"
-                sx={{ width: "100%", m: 1 }}
+                fullWidth
+                margin="dense"
               />
 
               <Button

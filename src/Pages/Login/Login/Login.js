@@ -54,6 +54,7 @@ const Login = () => {
               <Typography variant="h6">Login</Typography>
               <form onSubmit={handleLogin}>
                 <TextField
+                  required
                   sx={{ width: "75%" }}
                   label="Your Email"
                   onChange={handleOnChange}
@@ -69,6 +70,7 @@ const Login = () => {
                 />{" "}
                 <br />
                 <TextField
+                  required
                   sx={{ width: "75%" }}
                   onChange={handleOnChange}
                   label="Your Password"
