@@ -15,7 +15,7 @@ const Drones = ({ url }) => {
       <Typography variant="h3" sx={{ mb: 2, fontWeight: 500 }}>
         Available Drones
       </Typography>
-      <Grid container spacing={{ xs: 2, md: 3 }}>
+      <Grid container spacing={{ xs: 2, lg: 3 }}>
         {drones.map((drone) => (
           <Drone key={drone.name} drone={drone} />
         ))}
