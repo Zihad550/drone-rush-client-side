@@ -1,9 +1,11 @@
 import { SendOutlined } from "@mui/icons-material";
+import EmailIcon from "@mui/icons-material/Email";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PersonIcon from "@mui/icons-material/Person";
+import PhoneIcon from "@mui/icons-material/Phone";
 import {
   Alert,
   Button,
@@ -15,6 +17,7 @@ import {
 import { Box } from "@mui/system";
 import emailjs from "emailjs-com";
 import React, { useRef, useState } from "react";
+import Footer from "../../Shared/Footer/Footer";
 import Navigation from "../../Shared/Navigation/Navigation";
 
 const ContactUs = () => {
@@ -44,16 +47,66 @@ const ContactUs = () => {
     e.target.reset();
     setSuccess(true);
   };
+
+  const socials = [
+    {
+      id: 1,
+      icon: PersonIcon,
+      link: "https://jehad-hossain.netlify.app/",
+      iconColor: "orange",
+    },
+    {
+      id: 2,
+      icon: GitHubIcon,
+      link: "https://github.com/Zihad550",
+      iconColor: "#171515",
+    },
+    {
+      id: 3,
+      icon: LinkedInIcon,
+      link: "https://www.linkedin.com/in/jehad-hossain/",
+      iconColor: "#0072b1",
+    },
+    {
+      id: 4,
+      icon: FacebookIcon,
+      link: "https://www.facebook.com/zihad31hussain/",
+      iconColor: "#4267B2",
+    },
+  ];
+
+  const contactInfos = [
+    {
+      id: 1,
+      title: "Address",
+      text: "Dhaka, Bangladesh",
+      icon: LocationOnIcon,
+    },
+    {
+      id: 2,
+      title: "Email",
+      text: "jehadhossain008@gmail.com",
+      icon: EmailIcon,
+    },
+    { id: 3, title: "Address", text: "+88 01855629170", icon: PhoneIcon },
+  ];
   return (
     <>
       {/* navigation */}
       <Navigation />
       {/* contactus container */}
-      <Container style={{ margin: "4rem auto", mx: "auto" }}>
-        <Typography variant="h1" sx={{ mb: 4, mx: "auto" }}>
+      <Container>
+        <Typography variant="h1" sx={{ my: 4, mx: "auto" }}>
           Contact Us
         </Typography>
-        <Grid container spacing={{ xs: 2, md: 3 }}>
+        <Grid
+          sx={{
+            minHeight: "500px",
+            my: "auto",
+          }}
+          container
+          spacing={{ xs: 2, md: 3 }}
+        >
           <Grid item xs={12} md={6}>
             <Typography
               textAlign="center"
@@ -116,6 +169,7 @@ const ContactUs = () => {
               </Alert>
             )}
           </Grid>
+
           <Grid item xs={12} md={6}>
             <Typography
               textAlign="center"
@@ -125,142 +179,73 @@ const ContactUs = () => {
               Contact Information
             </Typography>
             {/* contact information */}
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
               {/* location phone and email */}
               <Box>
-                {/* location */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 2,
-                  }}
-                >
-                  {/*  icon */}
+                {contactInfos.map((info) => (
                   <Box
+                    key={info.id}
                     sx={{
-                      border: "1px solid black",
-                      borderRadius: "50%",
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "center",
-                      width: "2rem",
-                      height: "2rem",
+                      gap: 2,
                     }}
                   >
-                    <LocationOnIcon />
+                    {/*  icon */}
+                    <Box
+                      sx={{
+                        border: "1px solid black",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "2rem",
+                        height: "2rem",
+                      }}
+                    >
+                      <info.icon />
+                    </Box>
+                    {/* text */}
+                    <Box>
+                      <Typography sx={{ fontWeight: 600 }} variant="h5">
+                        {info.title}
+                      </Typography>
+                      <Typography variant="body1">{info.text}</Typography>
+                    </Box>
                   </Box>
-                  {/* text */}
-                  <Box>
-                    <Typography sx={{ fontWeight: 600 }} variant="h5">
-                      Address
-                    </Typography>
-                    <Typography variant="body1">Dhaka, Bangladesh</Typography>
-                  </Box>
-                </Box>
-                {/* email */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 2,
-                    my: 1,
-                  }}
-                >
-                  {/*  icon */}
-                  <Box
-                    sx={{
-                      border: "1px solid black",
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: "2rem",
-                      height: "2rem",
-                    }}
-                  >
-                    <LocationOnIcon />
-                  </Box>
-                  {/* text */}
-                  <Box>
-                    <Typography sx={{ fontWeight: 600 }} variant="h5">
-                      Email
-                    </Typography>
-                    <Typography variant="body1">
-                      jehadhossain008@gmail.com
-                    </Typography>
-                  </Box>
-                </Box>
-                {/* phone */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 2,
-                  }}
-                >
-                  {/*  icon */}
-                  <Box
-                    sx={{
-                      border: "1px solid black",
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: "2rem",
-                      height: "2rem",
-                    }}
-                  >
-                    <LocationOnIcon />
-                  </Box>
-                  {/* text */}
-                  <Box>
-                    <Typography sx={{ fontWeight: 600 }} variant="h5">
-                      Phone
-                    </Typography>
-                    <Typography variant="body1">+88 01855629170</Typography>
-                  </Box>
-                </Box>
+                ))}
               </Box>
 
               {/* social */}
-
-              <Box>
-                <a
-                  target="_blank"
-                  href="https://jehad-hossain.netlify.app/"
-                  rel="noreferrer"
-                >
-                  <PersonIcon />
-                </a>
-
-                <a
-                  href="https://github.com/Zihad550"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <GitHubIcon />
-                </a>
-
-                <a
-                  href="https://www.linkedin.com/in/jehad-hossain/"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <LinkedInIcon />
-                </a>
-                <a
-                  href="https://www.facebook.com/zihad31hussain/"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <FacebookIcon />
-                </a>
+              <Box sx={{ mt: 2 }}>
+                <Typography variant="h6">Social</Typography>
+                <Box>
+                  {socials.map((social) => (
+                    <a
+                      style={{ color: social.iconColor }}
+                      key={social.id}
+                      target="_blank"
+                      href={social.link}
+                      rel="noreferrer"
+                    >
+                      <social.icon sx={{ fontSize: 40 }} />
+                    </a>
+                  ))}
+                </Box>
               </Box>
             </Box>
           </Grid>
         </Grid>
       </Container>
+
+      <Footer />
     </>
   );
 };
