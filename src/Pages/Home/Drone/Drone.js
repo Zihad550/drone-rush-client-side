@@ -30,7 +30,7 @@ const Drone = ({ drone }) => {
     history.push(`/purchase/${name}`);
   };
   return (
-    <Grid item xs={12} md={6} lg={6}>
+    <Grid item xs={12} md={12} lg={6}>
       <Card
         className={directionRow}
         sx={{

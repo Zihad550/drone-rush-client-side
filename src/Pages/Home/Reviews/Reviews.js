@@ -13,7 +13,7 @@ const Reviews = () => {
 
   return (
     <Container style={{ marginTop: "5rem" }}>
-      <Typography variant="h3" sx={{ mb: 2, fontWeight: 500 }}>
+      <Typography variant="h1" sx={{ mb: 4, mx: "auto" }}>
         Product Reviews
       </Typography>
       <Grid container spacing={{ xs: 2, md: 3 }}>

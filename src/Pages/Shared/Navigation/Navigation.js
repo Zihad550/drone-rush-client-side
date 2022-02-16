@@ -1,6 +1,6 @@
-import { Apps, DashboardOutlined, Home, Logout } from "@mui/icons-material";
+import { Logout } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Divider, Drawer, ListItem, useTheme } from "@mui/material";
+import { Divider, Drawer, ListItem, Typography, useTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -37,12 +37,19 @@ const Navigation = () => {
   });
   const { navIcon, navItemContainer, navLogo } = useStyle();
   const [state, setState] = React.useState(false);
-
+  ///////////////////////////////
+  // mobile menu
+  ///////////////////////////
   const list = (
     <Box sx={{ width: 250 }} role="presentation">
       <Link style={{ textDecoration: "none", color: "black" }} to="/home">
         <List>
           <ListItem button>Home</ListItem>
+        </List>
+      </Link>
+      <Link style={{ textDecoration: "none", color: "black" }} to="/contactUs">
+        <List>
+          <ListItem button>Contact Us</ListItem>
         </List>
       </Link>
 
@@ -85,7 +92,7 @@ const Navigation = () => {
     <>
       <Box sx={{ flexGrow: 1, fontSize: "2rem" }}>
         <AppBar
-          sx={{ pb: 1, backgroundColor: "secondary.dark" }}
+          sx={{ backgroundColor: "transparent", color: "black" }}
           position="static"
         >
           <Toolbar>
@@ -103,82 +110,104 @@ const Navigation = () => {
               <MenuIcon />
             </IconButton>
 
-            {/* website logo */}
+            {/* =================
+            large screen menu
+            =================== */}
             <Box
-              className={navLogo}
-              variant="h5"
-              component="div"
-              sx={{ flexGrow: 1, textAlign: "left" }}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+              }}
+              className={navItemContainer}
             >
-              <img
-                style={{ width: "7rem", height: "5rem" }}
-                src={logo}
-                alt="logo"
-              />
-            </Box>
-            <Box className={navItemContainer}>
-              <Link
-                style={{
-                  textDecoration: "none",
-                  color: "white",
-                }}
-                to="/home"
-              >
-                <Button
-                  // sx={{ display: "flex", alignItems: "center" }}
-                  endIcon={<Home className="nav-icon" />}
-                  color="inherit"
-                  className="nav-item"
+              {/* left nav container */}
+              <Box>
+                <Link
+                  style={{
+                    textDecoration: "none",
+                    color: "white",
+                  }}
+                  to="/home"
                 >
-                  Home
-                </Button>{" "}
-              </Link>
-
-              <Link
-                style={{ textDecoration: "none", color: "white" }}
-                to="/explore"
-              >
-                <Button
-                  className="nav-item"
-                  endIcon={<Apps className="nav-icon" />}
-                  color="inherit"
-                >
-                  Explore
-                </Button>{" "}
-              </Link>
-              {user.email ? (
-                <>
-                  <Link
-                    style={{ textDecoration: "none", color: "white" }}
-                    to="/dashboard"
-                  >
-                    <Button
-                      className="nav-item"
-                      endIcon={<DashboardOutlined className="nav-icon" />}
-                      color="inherit"
-                    >
-                      Dashboard
-                    </Button>{" "}
-                  </Link>
                   <Button
+                    // sx={{ display: "flex", alignItems: "center" }}
                     className="nav-item"
-                    endIcon={<Logout className="nav-icon" />}
-                    onClick={logOut}
-                    color="inherit"
                   >
-                    Log Out
-                  </Button>
-                </>
-              ) : (
+                    Home
+                  </Button>{" "}
+                </Link>
+                <Link
+                  style={{
+                    textDecoration: "none",
+                    color: "white",
+                  }}
+                  to="/contactUs"
+                >
+                  <Button
+                    // sx={{ display: "flex", alignItems: "center" }}
+                    className="nav-item"
+                  >
+                    Contact Us
+                  </Button>{" "}
+                </Link>
+              </Box>
+              {/* website logo */}
+              <Box
+                className={navLogo}
+                variant="h5"
+                component="div"
+                sx={{ display: "flex", alignItems: "center" }}
+              >
+                <img
+                  style={{ width: "3rem", height: "3rem" }}
+                  src={logo}
+                  alt="logo"
+                />
+                <Typography
+                  sx={{ display: "inline-block", fontSize: "1rem", border: 0 }}
+                  variant="h1"
+                >
+                  Drone Rush
+                </Typography>
+              </Box>
+
+              {/* right nav container */}
+              <Box>
                 <Link
                   style={{ textDecoration: "none", color: "white" }}
-                  to="/login"
+                  to="/explore"
                 >
-                  <Button className="nav-item" color="inherit">
-                    Login
-                  </Button>
+                  <Button className="nav-item">Explore</Button>{" "}
                 </Link>
-              )}
+                {user.email ? (
+                  <>
+                    <Link
+                      style={{ textDecoration: "none", color: "white" }}
+                      to="/dashboard"
+                    >
+                      <Button className="nav-item">Dashboard</Button>{" "}
+                    </Link>
+                    <Button
+                      className="nav-item"
+                      endIcon={<Logout className="nav-icon" />}
+                      onClick={logOut}
+                    >
+                      Log Out
+                    </Button>
+                  </>
+                ) : (
+                  <Link
+                    style={{ textDecoration: "none", color: "white" }}
+                    to="/login"
+                  >
+                    <Button className="nav-item" color="inherit">
+                      Login
+                    </Button>
+                  </Link>
+                )}
+              </Box>
             </Box>
           </Toolbar>
         </AppBar>
