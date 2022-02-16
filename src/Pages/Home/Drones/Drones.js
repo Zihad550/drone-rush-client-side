@@ -11,7 +11,7 @@ const Drones = ({ url }) => {
       .then((data) => setDrones(data));
   }, []);
   return (
-    <Container style={{ marginTop: "5rem" }}>
+    <Container sx={{ my: 5 }}>
       <Typography sx={{ mb: 4, mx: "auto" }} variant="h1">
         Available Drones
       </Typography>

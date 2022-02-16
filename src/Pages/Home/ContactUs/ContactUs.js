@@ -88,7 +88,7 @@ const ContactUs = () => {
       text: "jehadhossain008@gmail.com",
       icon: EmailIcon,
     },
-    { id: 3, title: "Address", text: "+88 01855629170", icon: PhoneIcon },
+    { id: 3, title: "Phone", text: "+88 01855629170", icon: PhoneIcon },
   ];
   return (
     <>
@@ -196,6 +196,7 @@ const ContactUs = () => {
                       display: "flex",
                       alignItems: "center",
                       gap: 2,
+                      mt: 1,
                     }}
                   >
                     {/*  icon */}
