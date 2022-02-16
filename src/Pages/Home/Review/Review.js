@@ -28,11 +28,11 @@ const Review = ({ review }) => {
             About the product: {message}
           </Typography>
           <Typography
-            variant="h5"
+            variant="h6"
             color="text.secondary"
             sx={{ mb: 0, mt: 2, display: "flex", alignItems: "center" }}
           >
-            Rating:{" "}
+            Rating:
             <Rating name="read-only" value={parseInt(rating)} readOnly />
           </Typography>
         </CardContent>

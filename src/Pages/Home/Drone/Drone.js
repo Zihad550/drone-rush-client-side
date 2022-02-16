@@ -42,10 +42,9 @@ const Drone = ({ drone }) => {
       >
         <CardMedia
           component="img"
-          width="100%"
+          sx={{ width: "400px" }}
           height="100%"
           image={img}
-          alt="green iguana"
         />
 
         <CardContent sx={{ py: "auto" }}>
@@ -61,7 +60,6 @@ const Drone = ({ drone }) => {
           <Button
             onClick={handlePurchase}
             endIcon={<ShoppingCart />}
-            sx={{ width: "100%" }}
             variant="contained"
             size="small"
           >

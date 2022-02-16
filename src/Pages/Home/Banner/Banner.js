@@ -1,5 +1,4 @@
-import { Container, Grid, Typography, useTheme } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { Container, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import bannerBg from "../../../images/banner-bg.jpg";
@@ -13,21 +12,8 @@ const bgStyle = {
 };
 
 const Banner = () => {
-  const theme = useTheme();
-  const useStyle = makeStyles({
-    bannerMargin: {
-      [theme.breakpoints.up("sm")]: {
-        marginTop: "1.2rem",
-      },
-    },
-  });
-  const { bannerMargin } = useStyle();
   return (
-    <Box
-      className={bannerMargin}
-      style={bgStyle}
-      sx={{ height: "auto", flexGrow: 1 }}
-    >
+    <Box style={bgStyle} sx={{ height: "auto", mt: 3 }}>
       <Container>
         <Grid container spacing={{ sx: 2, md: 3 }}>
           <Grid sx={{ my: "auto", color: "white" }} item xs={12} md={6}>

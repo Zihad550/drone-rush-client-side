@@ -19,17 +19,17 @@ const Navigation = () => {
   const theme = useTheme();
   const useStyle = makeStyles({
     navIcon: {
-      [theme.breakpoints.up("sm")]: {
+      [theme.breakpoints.up("md")]: {
         display: "none !important",
       },
     },
     navItemContainer: {
-      [theme.breakpoints.down("sm")]: {
-        display: "none",
+      [theme.breakpoints.down("md")]: {
+        display: "none !important",
       },
     },
     navLogo: {
-      [theme.breakpoints.down("sm")]: {
+      [theme.breakpoints.down("md")]: {
         display: "flex",
         justifyContent: "flex-end",
       },
@@ -92,7 +92,12 @@ const Navigation = () => {
     <>
       <Box sx={{ flexGrow: 1, fontSize: "2rem" }}>
         <AppBar
-          sx={{ backgroundColor: "transparent", color: "black" }}
+          sx={{
+            backgroundColor: "secondary.main",
+            color: "black",
+            py: 0.5,
+            boxShadow: 0,
+          }}
           position="static"
         >
           <Toolbar>
@@ -115,10 +120,11 @@ const Navigation = () => {
             =================== */}
             <Box
               sx={{
-                display: "flex",
+                display: { sm: "flex", xs: "none" },
                 justifyContent: "space-between",
                 alignItems: "center",
                 width: "100%",
+                px: { xs: 0, sm: 5, lg: 25, xl: 35 },
               }}
               className={navItemContainer}
             >
@@ -201,6 +207,35 @@ const Navigation = () => {
                   </Link>
                 )}
               </Box>
+            </Box>
+
+            {/* website mobile menu logo */}
+            <Box
+              className={navLogo}
+              variant="h5"
+              component="div"
+              sx={{
+                display: { xs: "flex", md: "none" },
+                alignItems: "center",
+                ms: "auto",
+                width: "100%",
+              }}
+            >
+              <img
+                style={{ width: "3rem", height: "3rem" }}
+                src={logo}
+                alt="logo"
+              />
+              <Typography
+                sx={{
+                  display: "inline-block",
+                  fontSize: "1.5rem",
+                  border: 0,
+                }}
+                variant="h1"
+              >
+                Drone Rush
+              </Typography>
             </Box>
           </Toolbar>
         </AppBar>

@@ -1,11 +1,44 @@
 import { SendOutlined } from "@mui/icons-material";
-import { Button, Container, Grid, TextField, Typography } from "@mui/material";
-import React from "react";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import {
+  Alert,
+  Button,
+  Container,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { Box } from "@mui/system";
+import emailjs from "emailjs-com";
+import React, { useRef, useState } from "react";
 import Navigation from "../../Shared/Navigation/Navigation";
 
 const ContactUs = () => {
-  const handleSubmit = (e) => {
+  const form = useRef();
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+  console.log(success);
+  const sendEmail = (e) => {
     e.preventDefault();
+    setSuccess(false);
+
+    emailjs
+      .sendForm(
+        "service_f285mw9",
+        "template_dp3s2l4",
+        form.current,
+        "user_zhFfInA9MfeHXHO7YmUav"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          setError(error.text);
+        }
+      );
+    e.target.reset();
+    setSuccess(true);
   };
   return (
     <>
@@ -17,23 +50,23 @@ const ContactUs = () => {
           Contact Us
         </Typography>
         <Grid container spacing={{ xs: 2, md: 3 }}>
-          <Grid item xs={12} md={6} sx={{ my: "auto" }}>
-            <Typography variant="h4" sx={{ mb: 2 }}>
-              Have Questions?
-            </Typography>
-            <Typography variant="body2">
-              Great, we love talking to our customers and helping you select the
-              solution that fits your needs.
-            </Typography>
-          </Grid>
           <Grid item xs={12} md={6}>
-            <form onSubmit={handleSubmit}>
+            <Typography
+              textAlign="center"
+              sx={{ fontSize: 30, mb: 1 }}
+              variant="h2"
+            >
+              Get In Touch
+            </Typography>
+            <form onSubmit={sendEmail} ref={form}>
               <TextField
                 sx={{ width: "49%" }}
                 label="Your Name"
                 type="text"
                 size="small"
                 variant="outlined"
+                name="user_name"
+                required
               />{" "}
               <TextField
                 sx={{ width: "50%" }}
@@ -41,6 +74,17 @@ const ContactUs = () => {
                 size="small"
                 variant="outlined"
                 type="email"
+                name="user_email"
+                required
+              />
+              <TextField
+                margin="dense"
+                fullWidth
+                size="small"
+                variant="outlined"
+                required
+                label="Subject"
+                name="subject"
               />
               <TextField
                 sx={{ width: "100%", mt: 1 }}
@@ -49,6 +93,8 @@ const ContactUs = () => {
                 label="Message"
                 size="small"
                 variant="outlined"
+                name="message"
+                required
               />
               <br />
               <Button
@@ -60,6 +106,60 @@ const ContactUs = () => {
                 send
               </Button>
             </form>
+            {success && (
+              <Alert sx={{ mt: 1 }} severity="success">
+                Message Sended Successfully
+              </Alert>
+            )}
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Typography
+              textAlign="center"
+              sx={{ fontSize: 30, mb: 1 }}
+              variant="h2"
+            >
+              Contact Information
+            </Typography>
+            {/* contact information */}
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              {/* location phone and email */}
+              <Box>
+                {/* location */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2,
+                  }}
+                >
+                  {/*  icon */}
+                  <Box
+                    sx={{
+                      border: "1px solid black",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "2rem",
+                      height: "2rem",
+                    }}
+                  >
+                    <LocationOnIcon />
+                  </Box>
+                  {/* text */}
+                  <Box>
+                    <Typography sx={{ fontWeight: 600 }} variant="h5">
+                      Address
+                    </Typography>
+                    <Typography variant="body1">Dhaka, Bangladesh</Typography>
+                  </Box>
+                </Box>
+                {/* phone */}
+                {/* email */}
+              </Box>
+
+              {/* social */}
+            </Box>
           </Grid>
         </Grid>
       </Container>

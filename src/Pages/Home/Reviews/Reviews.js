@@ -12,7 +12,7 @@ const Reviews = () => {
   }, []);
 
   return (
-    <Container style={{ marginTop: "5rem" }}>
+    <Container sx={{ my: 10 }}>
       <Typography variant="h1" sx={{ mb: 4, mx: "auto" }}>
         Product Reviews
       </Typography>
