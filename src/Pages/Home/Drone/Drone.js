@@ -42,7 +42,7 @@ const Drone = ({ drone }) => {
       >
         <CardMedia
           component="img"
-          sx={{ width: "400px" }}
+          sx={{ width: "230px" }}
           height="100%"
           image={img}
         />

@@ -1,5 +1,9 @@
 import { SendOutlined } from "@mui/icons-material";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import PersonIcon from "@mui/icons-material/Person";
 import {
   Alert,
   Button,
@@ -154,11 +158,105 @@ const ContactUs = () => {
                     <Typography variant="body1">Dhaka, Bangladesh</Typography>
                   </Box>
                 </Box>
-                {/* phone */}
                 {/* email */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2,
+                    my: 1,
+                  }}
+                >
+                  {/*  icon */}
+                  <Box
+                    sx={{
+                      border: "1px solid black",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "2rem",
+                      height: "2rem",
+                    }}
+                  >
+                    <LocationOnIcon />
+                  </Box>
+                  {/* text */}
+                  <Box>
+                    <Typography sx={{ fontWeight: 600 }} variant="h5">
+                      Email
+                    </Typography>
+                    <Typography variant="body1">
+                      jehadhossain008@gmail.com
+                    </Typography>
+                  </Box>
+                </Box>
+                {/* phone */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2,
+                  }}
+                >
+                  {/*  icon */}
+                  <Box
+                    sx={{
+                      border: "1px solid black",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "2rem",
+                      height: "2rem",
+                    }}
+                  >
+                    <LocationOnIcon />
+                  </Box>
+                  {/* text */}
+                  <Box>
+                    <Typography sx={{ fontWeight: 600 }} variant="h5">
+                      Phone
+                    </Typography>
+                    <Typography variant="body1">+88 01855629170</Typography>
+                  </Box>
+                </Box>
               </Box>
 
               {/* social */}
+
+              <Box>
+                <a
+                  target="_blank"
+                  href="https://jehad-hossain.netlify.app/"
+                  rel="noreferrer"
+                >
+                  <PersonIcon />
+                </a>
+
+                <a
+                  href="https://github.com/Zihad550"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <GitHubIcon />
+                </a>
+
+                <a
+                  href="https://www.linkedin.com/in/jehad-hossain/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <LinkedInIcon />
+                </a>
+                <a
+                  href="https://www.facebook.com/zihad31hussain/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <FacebookIcon />
+                </a>
+              </Box>
             </Box>
           </Grid>
         </Grid>
