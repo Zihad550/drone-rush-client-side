@@ -1,6 +1,6 @@
 # Drone Rush
 
-Live site [Drone Rush](https://drone-rush.netlify.app/).
+Live site [Drone Rush](https://drone-rush.web.app/).
 
 ## About the website.
 
