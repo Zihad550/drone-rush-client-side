@@ -1,7 +1,4 @@
 .nav-item {
-  font-size: 1.2rem !important;
-}
-
-.nav-icon {
-  font-size: 2rem !important;
+  font-size: 1rem !important;
+  color: violet !important;
 }

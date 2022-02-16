@@ -127,7 +127,6 @@ const Navigation = () => {
                 <Link
                   style={{
                     textDecoration: "none",
-                    color: "white",
                   }}
                   to="/home"
                 >
@@ -141,7 +140,6 @@ const Navigation = () => {
                 <Link
                   style={{
                     textDecoration: "none",
-                    color: "white",
                   }}
                   to="/contactUs"
                 >
@@ -166,7 +164,11 @@ const Navigation = () => {
                   alt="logo"
                 />
                 <Typography
-                  sx={{ display: "inline-block", fontSize: "1rem", border: 0 }}
+                  sx={{
+                    display: "inline-block",
+                    fontSize: "1.5rem",
+                    border: 0,
+                  }}
                   variant="h1"
                 >
                   Drone Rush
@@ -175,18 +177,12 @@ const Navigation = () => {
 
               {/* right nav container */}
               <Box>
-                <Link
-                  style={{ textDecoration: "none", color: "white" }}
-                  to="/explore"
-                >
+                <Link style={{ textDecoration: "none" }} to="/explore">
                   <Button className="nav-item">Explore</Button>{" "}
                 </Link>
                 {user.email ? (
                   <>
-                    <Link
-                      style={{ textDecoration: "none", color: "white" }}
-                      to="/dashboard"
-                    >
+                    <Link style={{ textDecoration: "none" }} to="/dashboard">
                       <Button className="nav-item">Dashboard</Button>{" "}
                     </Link>
                     <Button
@@ -198,10 +194,7 @@ const Navigation = () => {
                     </Button>
                   </>
                 ) : (
-                  <Link
-                    style={{ textDecoration: "none", color: "white" }}
-                    to="/login"
-                  >
+                  <Link style={{ textDecoration: "none" }} to="/login">
                     <Button className="nav-item" color="inherit">
                       Login
                     </Button>
