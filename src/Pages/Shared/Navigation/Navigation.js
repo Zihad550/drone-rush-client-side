@@ -1,6 +1,13 @@
 import { Logout } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Divider, Drawer, ListItem, Typography, useTheme } from "@mui/material";
+import {
+  Divider,
+  Drawer,
+  Grid,
+  ListItem,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -118,18 +125,21 @@ const Navigation = () => {
             {/* =================
             large screen menu
             =================== */}
-            <Box
+            <Grid
+              container
               sx={{
-                display: { sm: "flex", xs: "none" },
+                /* display: { sm: "flex", xs: "none" },
                 justifyContent: "space-between",
                 alignItems: "center",
+                width: "40%",
+                mx: "auto", */
+                // px: { xs: 0, sm: 5, lg: 25, xl: 35 },
                 width: "100%",
-                px: { xs: 0, sm: 5, lg: 25, xl: 35 },
               }}
               className={navItemContainer}
             >
               {/* left nav container */}
-              <Box>
+              <Grid md={4} item sx={{ textAlign: "right" }}>
                 <Link
                   style={{
                     textDecoration: "none",
@@ -156,16 +166,28 @@ const Navigation = () => {
                     Contact Us
                   </Button>{" "}
                 </Link>
-              </Box>
+              </Grid>
               {/* website logo */}
-              <Box
+              <Grid
+                md={4}
+                item
                 className={navLogo}
                 variant="h5"
                 component="div"
-                sx={{ display: "flex", alignItems: "center" }}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  /*  width: "20%",
+                  mx: "auto", */
+                }}
               >
                 <img
-                  style={{ width: "3rem", height: "3rem" }}
+                  style={{
+                    width: "3rem",
+                    height: "3rem",
+                    display: "inline-block",
+                  }}
                   src={logo}
                   alt="logo"
                 />
@@ -179,10 +201,10 @@ const Navigation = () => {
                 >
                   Drone Rush
                 </Typography>
-              </Box>
+              </Grid>
 
               {/* right nav container */}
-              <Box>
+              <Grid md={4} item>
                 <Link style={{ textDecoration: "none" }} to="/explore">
                   <Button className="nav-item">Explore</Button>{" "}
                 </Link>
@@ -206,8 +228,8 @@ const Navigation = () => {
                     </Button>
                   </Link>
                 )}
-              </Box>
-            </Box>
+              </Grid>
+            </Grid>
 
             {/* website mobile menu logo */}
             <Box

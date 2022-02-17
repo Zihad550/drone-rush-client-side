@@ -13,7 +13,7 @@ const bgStyle = {
 
 const Banner = () => {
   return (
-    <Box style={bgStyle} sx={{ height: "auto", mt: 3 }}>
+    <Box style={bgStyle} sx={{ height: "auto", mt: { md: 3, xs: 0 } }}>
       <Container>
         <Grid container spacing={{ sx: 2, md: 3 }}>
           <Grid sx={{ my: "auto", color: "white" }} item xs={12} md={6}>
