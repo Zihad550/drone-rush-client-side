@@ -11,6 +11,8 @@ import PrivateRoute from "./Pages/Login/PrivateRoute/PrivateRoute";
 import Register from "./Pages/Login/Register/Register";
 import NotFound from "./Pages/NotFound/NotFound";
 import Purchase from "./Pages/Purchase/Purchase";
+import Footer from "./Pages/Shared/Footer/Footer";
+import Navigation from "./Pages/Shared/Navigation/Navigation";
 
 const theme = createTheme({
   typography: {
@@ -27,6 +29,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <Router>
+          <Navigation />
           <Switch>
             <Route exact path="/">
               <HomeContainer />
@@ -58,6 +61,7 @@ function App() {
               <NotFound />
             </Route>
           </Switch>
+          <Footer />
         </Router>
       </AuthProvider>
     </ThemeProvider>

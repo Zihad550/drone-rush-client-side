@@ -17,8 +17,6 @@ import {
 import { Box } from "@mui/system";
 import emailjs from "emailjs-com";
 import React, { useRef, useState } from "react";
-import Footer from "../../Shared/Footer/Footer";
-import Navigation from "../../Shared/Navigation/Navigation";
 
 const ContactUs = () => {
   const form = useRef();
@@ -93,9 +91,8 @@ const ContactUs = () => {
   return (
     <>
       {/* navigation */}
-      <Navigation />
       {/* contactus container */}
-      <Container>
+      <Container sx={{ mb: { xs: 5, md: 0 } }}>
         <Typography variant="h1" sx={{ my: 4, mx: "auto" }}>
           Contact Us
         </Typography>
@@ -245,8 +242,6 @@ const ContactUs = () => {
           </Grid>
         </Grid>
       </Container>
-
-      <Footer />
     </>
   );
 };

@@ -13,8 +13,6 @@ import React, { useState } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import loginImage from "../../../images/login.jpg";
-import Footer from "../../Shared/Footer/Footer";
-import Navigation from "../../Shared/Navigation/Navigation";
 
 const Register = () => {
   const [loginData, setLoginData] = useState({});
@@ -46,7 +44,6 @@ const Register = () => {
   };
   return (
     <>
-      <Navigation />
       <Container sx={{ my: 5 }}>
         <Grid
           sx={{
@@ -165,7 +162,6 @@ const Register = () => {
           </Grid>
         </Grid>
       </Container>
-      <Footer />
     </>
   );
 };
