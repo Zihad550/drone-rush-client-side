@@ -29,19 +29,26 @@ function App() {
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <Router>
-          <Navigation />
           <Switch>
             <Route exact path="/">
+              <Navigation />
               <HomeContainer />
+              <Footer />
             </Route>
             <Route path="/home">
+              <Navigation />
               <HomeContainer />
+              <Footer />
             </Route>
             <Route path="/contactUs">
+              <Navigation />
               <ContactUs />
+              <Footer />
             </Route>
             <Route path="/explore">
+              <Navigation />
               <ExploreContainer />
+              <Footer />
             </Route>
 
             <PrivateRoute path="/purchase/:name">
@@ -51,17 +58,20 @@ function App() {
               <Dashboard />
             </PrivateRoute>
             <Route path="/login">
+              <Navigation />
               <Login />
+              <Footer />
             </Route>
 
             <Route path="/register">
+              <Navigation />
               <Register />
+              <Footer />
             </Route>
             <Route path="*">
               <NotFound />
             </Route>
           </Switch>
-          <Footer />
         </Router>
       </AuthProvider>
     </ThemeProvider>
