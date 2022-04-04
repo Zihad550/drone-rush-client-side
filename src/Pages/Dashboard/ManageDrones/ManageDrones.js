@@ -59,11 +59,7 @@ const ManageDrones = () => {
       <Typography variant="h3" sx={{ mb: 2, fontWeight: 500 }}>
         Manage Drones
       </Typography>
-      {/* <Grid container spacing={{ xs: 2, md: 3 }}>
-        {drones.map((drone) => (
-          <ManageDrone key={drone._id} drone={drone} />
-        ))}
-      </Grid> */}
+     
 
       <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -72,7 +68,7 @@ const ManageDrones = () => {
             <StyledTableCell>Image</StyledTableCell>
             <StyledTableCell>Drone Name</StyledTableCell>
             <StyledTableCell align="center">Description</StyledTableCell>
-            <StyledTableCell align="left">Price</StyledTableCell>
+            <StyledTableCell align="left" >Price</StyledTableCell>
             <StyledTableCell align="left">Actions</StyledTableCell>
             
           </TableRow>
@@ -85,7 +81,7 @@ const ManageDrones = () => {
                 {drone.name}
               </StyledTableCell>
               <StyledTableCell align="left">{drone.disc}</StyledTableCell>
-              <StyledTableCell align="left">Price: {drone.price}</StyledTableCell>
+              <StyledTableCell sx={{width: '100px'}} align="left">{`$ ${drone.price}`}</StyledTableCell>
               <StyledTableCell   align="center" ><IconButton title="Delete Drone" onClick={() => handleDelete(drone._id)}><CancelIcon/></IconButton></StyledTableCell>
             </StyledTableRow>
           ))}
