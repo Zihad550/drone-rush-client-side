@@ -1,13 +1,11 @@
 import {
   Add,
-  Flight,
-  Home,
-  ListAlt,
+  Flight, ListAlt,
   Logout,
   PaymentOutlined,
   PersonAdd,
   RateReview,
-  ViewList,
+  ViewList
 } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { ListItemIcon } from "@mui/material";
@@ -68,16 +66,6 @@ function Dashboard(props) {
     <div>
       <Toolbar />
       <Divider />
-      <Link style={{ textDecoration: "none", color: "black" }} to="/">
-        <List>
-          <ListItem button>
-            <ListItemIcon>
-              <Home />
-            </ListItemIcon>
-            Home
-          </ListItem>
-        </List>
-      </Link>
       {admin ? (
         <Box sx={{ flexGrow: 1 }}>
           <Link
@@ -176,14 +164,16 @@ function Dashboard(props) {
           </Link>
         </Box>
       )}
+      <Link style={{textDecoration: "none", color: "black"}} to={`/`}>
       <List>
-        <ListItem onClick={logOut} button>
+        <ListItem  button>
           <ListItemIcon>
             <Logout />
           </ListItemIcon>
           Log Out
         </ListItem>
       </List>
+      </Link>
     </div>
   );
 
