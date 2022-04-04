@@ -6,11 +6,11 @@ import {
   CardContent,
   CardMedia,
   Grid,
-  Typography,
+  Typography
 } from "@mui/material";
 import React from "react";
 
-const ManageOrder = ({ order }) => {
+const ManageOrder = ({ order , setIsUpdated}) => {
   const { productName, disc, price, img, userName, orderStatus, _id } = order;
   const newOrder = {
     productName,
@@ -33,17 +33,18 @@ const ManageOrder = ({ order }) => {
       .then((data) => {
         if (data.modifiedCount > 0) {
           alert("Status successfully updated");
-          window.location.reload();
+          setIsUpdated(true)
         }
       });
   };
 
   return (
     <Grid item xs={12} md={4} lg={3}>
-      <Card sx={{ maxWidth: 345, boxShadow: 3 }}>
+      <Card sx={{  boxShadow: 3 }}>
         <CardMedia
           component="img"
           width="100%"
+          height="200px"
           image={img}
           alt="green iguana"
         />
@@ -57,7 +58,7 @@ const ManageOrder = ({ order }) => {
           <Typography variant="body2" color="text.secondary">
             {disc}
           </Typography>
-          <Typography variant="h5" color="success.main" sx={{ mb: 0, mt: 3 }}>
+          <Typography variant="h5" color="success.main" sx={{ mb: 0, mt: 1 }}>
             Price: ${price}
           </Typography>
           <Typography variant="caption" display="block" gutterBottom>
