@@ -231,7 +231,7 @@ function Dashboard(props) {
         <Drawer
           variant="permanent"
           sx={{
-            display: { md: "none", lg: "block" },
+            display: { xs: "none", lg: "block" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
