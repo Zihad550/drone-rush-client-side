@@ -1,12 +1,15 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { IconButton, Paper, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
+import { Alert, IconButton, Paper, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { styled } from '@mui/material/styles';
+import { Box } from '@mui/system';
 import React, { useEffect, useState } from "react";
 
 const ManageAllOrders = () => {
   // hooks
   const [orders, setOrders] = useState([]);
   const [isUpdated, setIsUpdated] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
   
   useEffect(() => {
     setIsUpdated(false)
@@ -17,18 +20,21 @@ const ManageAllOrders = () => {
 
   // handle status
   const handleStatus = (order) => {
-    fetch(`https://still-castle-43681.herokuapp.com/orders/${order._id}`, {
+    console.log('inside')
+    console.log(order)
+    fetch(`http://localhost:5000/orders`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({...order, orderStatus: "Shipped"}),
+      body: JSON.stringify({_id: order._id, orderStatus: "Shipped"}),
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         if (data.modifiedCount > 0) {
-          alert("Status successfully updated");
-          setIsUpdated(true)
+          setIsUpdated(true);
+          setShowMessage(true)
         }
       });
   };
@@ -55,6 +61,14 @@ const ManageAllOrders = () => {
   }));  
   return (
     <>
+      {/* modal */}
+      {
+        showMessage && <Box sx={{position: 'fixed', top: '50%', left: '50%'}}>
+        <Alert action={<IconButton onClick={() => setShowMessage(false)}><CloseIcon/> </IconButton>} severity="success">Order Status Updated Successfully</Alert>
+      </Box>
+      }
+
+
       <Typography variant="h3" sx={{ mb: 2, fontWeight: 500 }}>
         Manage Orders
       </Typography>

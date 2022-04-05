@@ -30,47 +30,63 @@ function App() {
       <AuthProvider>
         <Router>
           <Switch>
+            {/* home page */}
             <Route exact path="/">
               <Navigation />
               <HomeContainer />
               <Footer />
             </Route>
+
+            {/* home page */}
             <Route path="/home">
               <Navigation />
               <HomeContainer />
               <Footer />
             </Route>
+
+            {/* contact us page */}
             <Route path="/contactUs">
               <Navigation />
               <ContactUs />
               <Footer />
             </Route>
+
+            {/* explore page */}
             <Route path="/explore">
               <Navigation />
               <ExploreContainer />
               <Footer />
             </Route>
 
+            {/* purchase */}
             <PrivateRoute path="/purchase/:name">
               <Purchase />
             </PrivateRoute>
+
+            {/* dashboard */}
             <PrivateRoute path="/dashboard">
               <Dashboard />
             </PrivateRoute>
+
+            {/* login */}
             <Route path="/login">
               <Navigation />
               <Login />
               <Footer />
             </Route>
 
+          {/* register */}
             <Route path="/register">
               <Navigation />
               <Register />
               <Footer />
             </Route>
+
+            {/* not fount */}
             <Route path="*">
               <NotFound />
             </Route>
+
           </Switch>
         </Router>
       </AuthProvider>

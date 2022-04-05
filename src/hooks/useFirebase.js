@@ -7,7 +7,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
-  updateProfile,
+  updateProfile
 } from "firebase/auth";
 import { useEffect, useState } from "react";
 import initializeAuthentication from "../Pages/Login/Firebase/firebase.init";
@@ -27,6 +27,7 @@ const useFirebase = () => {
   const [authError, setAuthError] = useState("");
   const [admin, setAdmin] = useState(false);
   const [token, setToken] = useState("");
+  const [adminLoading, setAdminLoading] = useState(false)
 
   const loginWithGoogle = (location, history) => {
     setIsLoading(true);
@@ -82,9 +83,11 @@ const useFirebase = () => {
 
   // checks if the user is admin
   useEffect(() => {
+    setAdminLoading(true)
     fetch(`https://still-castle-43681.herokuapp.com/users/${user.email}`)
       .then((res) => res.json())
-      .then((data) => setAdmin(data.admin));
+      .then((data) => setAdmin(data.admin))
+      .finally(() => setAdminLoading(false))
   }, [user.email]);
 
   const logOut = () => {
@@ -135,6 +138,7 @@ const useFirebase = () => {
     loginWithGoogle,
     admin,
     token,
+    adminLoading
   };
 };
 
