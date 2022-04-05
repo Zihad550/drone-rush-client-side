@@ -22,7 +22,7 @@ const ManageAllOrders = () => {
   const handleStatus = (order) => {
     console.log('inside')
     console.log(order)
-    fetch(`http://localhost:5000/orders`, {
+    fetch(`https://still-castle-43681.herokuapp.com/orders`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

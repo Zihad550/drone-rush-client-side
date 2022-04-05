@@ -1,5 +1,6 @@
 import CancelIcon from '@mui/icons-material/Cancel';
-import { IconButton, Typography } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
+import { Alert, IconButton, Typography } from "@mui/material";
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -8,16 +9,22 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { Box } from '@mui/system';
 import React, { useEffect, useState } from "react";
+
 
 const ManageDrones = () => {
   const [drones, setDrones] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
+  const [noPermission, setNoPermission] = useState(false);
 
   useEffect(() => {
+    setRefresh(false)
     fetch("https://still-castle-43681.herokuapp.com/drones")
       .then((res) => res.json())
       .then((data) => setDrones(data));
-  }, []);
+  }, [refresh]);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -49,13 +56,26 @@ const ManageDrones = () => {
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
-          window.location.reload();
+          data.deletedCount > 0 && setRefresh(true)
+          data.deletedCount > 0 && setIsDeleted(true)
+          data.deletedCount === 0 && setNoPermission(true);
         });
     }
   };
   
   return (
     <>
+    {/* modal */}
+    {
+        isDeleted && <Box sx={{position: 'fixed', top: '50%', left: '50%'}}>
+        <Alert action={<IconButton onClick={() => setIsDeleted(false)}><CloseIcon/> </IconButton>} severity="success">Drone Deleted Successfully</Alert>
+      </Box>
+      }
+    {
+        noPermission && <Box sx={{position: 'fixed', top: '50%', left: '40%', width:'300px'}}>
+        <Alert action={<IconButton onClick={() => setNoPermission(false)}><CloseIcon/> </IconButton>} severity="error">You Don't have permission to delete the existing one. Please create a new one to perform this action.</Alert>
+      </Box>
+      }
       <Typography variant="h3" sx={{ mb: 2, fontWeight: 500 }}>
         Manage Drones
       </Typography>

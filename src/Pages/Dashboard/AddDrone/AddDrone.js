@@ -1,9 +1,13 @@
 import { Add } from "@mui/icons-material";
-import { Button, TextField, Typography } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
+import { Alert, Button, IconButton, TextField, Typography } from "@mui/material";
+import { Box } from '@mui/system';
 import React, { useState } from "react";
+
 
 const AddDrone = () => {
   const [droneInfo, setDroneInfo] = useState({});
+  const [isAdded, setIsAdded] = useState(false);
 
   const handleOnBlur = (e) => {
     const field = e.target.name;
@@ -19,17 +23,23 @@ const AddDrone = () => {
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(droneInfo),
+      body: JSON.stringify({...droneInfo, deletable: true}),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.insertedId) {
-          alert("Drone Successfully added");
+          setIsAdded(true)
         }
-      });
+      }).finally(() => e.target.reset())
   };
   return (
-    <div>
+    <>
+    {/* modal */}
+    {
+        isAdded && <Box sx={{position: 'fixed', top: '65%', left: '40%'}}>
+        <Alert action={<IconButton onClick={() => setIsAdded(false)}><CloseIcon/> </IconButton>} severity="success">Drone Added Successfully</Alert>
+      </Box>
+      }
       <Typography variant="h3" sx={{ mb: 2, fontWeight: 500 }}>
         Add New Drone
       </Typography>
@@ -89,7 +99,7 @@ const AddDrone = () => {
           Add Drone
         </Button>
       </form>
-    </div>
+    </>
   );
 };
 
