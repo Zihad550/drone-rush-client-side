@@ -1,6 +1,9 @@
-import { Alert, Button, TextField } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
+import { Alert, Button, IconButton, TextField } from "@mui/material";
+import { Box } from "@mui/system";
 import React, { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
+
 
 const MakeAdmin = () => {
   const [email, setEmail] = useState("");
@@ -24,10 +27,14 @@ const MakeAdmin = () => {
         if (data.modifiedCount) {
           setSuccess(true);
         }
-      });
+      }).finally(() => e.target.reset());
   };
   return (
-    <div>
+    <>
+      {success && <Box sx={{position: 'fixed', top: '30%', left: '20%'}}>
+        <Alert action={<IconButton onClick={() => setSuccess(false)}><CloseIcon/> </IconButton>} severity="success">Successfully maked admin</Alert>
+      </Box>}
+
       <h2>Make a new admin</h2>
       <form onSubmit={handleSubmit}>
         <TextField
@@ -43,8 +50,9 @@ const MakeAdmin = () => {
           Make Admin
         </Button>
       </form>
-      {success && <Alert severity="success">Made Admin successfully</Alert>}
-    </div>
+      
+      
+    </>
   );
 };
 
