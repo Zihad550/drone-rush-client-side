@@ -8,12 +8,12 @@ import {
   signInWithPopup,
   signOut,
   updateProfile,
-  User
+  User,
 } from "firebase/auth";
 import { Location } from "history";
 import { useEffect, useState } from "react";
 import { NavigateFunction } from "react-router";
-import initializeAuthentication from "../Components/App/Authentication/Firebase/firebase.init";
+import initializeAuthentication from "../components/App/Authentication/Firebase/firebase.init";
 import IUser from "../types/UserType";
 
 // initialize firebase app
@@ -22,29 +22,30 @@ initializeAuthentication();
 // providers
 const googleProvider = new GoogleAuthProvider();
 
-
 const useFirebase = () => {
   const auth = getAuth();
 
   // states
-  const [user, setUser] = useState<User | IUser>({email: '', displayName: ''});
+  const [user, setUser] = useState<User | IUser>({
+    email: "",
+    displayName: "",
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [authError, setAuthError] = useState("");
   const [admin, setAdmin] = useState(false);
   const [token, setToken] = useState("");
   const [adminLoading, setAdminLoading] = useState(false);
 
-  const loginWithGoogle = (
-    location: Location,
-    navigate: NavigateFunction
-  ) => {
+  const loginWithGoogle = (location: Location, navigate: NavigateFunction) => {
     setIsLoading(true);
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         const user = result.user;
-        const state = location.state as {from: 'string'}
-        const destination = state.from || '/';
-       (user.email && user.displayName) && saveUser(user.email, user.displayName, "PUT");
+        const state = location.state as { from: "string" };
+        const destination = state.from || "/";
+        user.email &&
+          user.displayName &&
+          saveUser(user.email, user.displayName, "PUT");
         navigate(destination);
         setAuthError("");
       })
@@ -72,11 +73,12 @@ const useFirebase = () => {
         setUser(newUser);
         saveUser(email, name, "POST");
         // send name to firebase
-        auth.currentUser && updateProfile(auth.currentUser, {
-          displayName: name,
-        }).catch((error) => {
-          setAuthError(error.message);
-        });
+        auth.currentUser &&
+          updateProfile(auth.currentUser, {
+            displayName: name,
+          }).catch((error) => {
+            setAuthError(error.message);
+          });
       })
       .catch((error) => {
         setAuthError(error.message);
@@ -93,7 +95,7 @@ const useFirebase = () => {
     setIsLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const state = location.state as {from: string};
+        const state = location.state as { from: string };
         const destination = state?.from || "/";
         navigate(destination);
         setAuthError("");
@@ -148,9 +150,9 @@ const useFirebase = () => {
       }
       setIsLoading(false);
     });
-    return () => { 
-      unsubscribe()
-    }
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return {

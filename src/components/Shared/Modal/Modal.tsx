@@ -1,0 +1,26 @@
+import CloseIcon from "@mui/icons-material/Close";
+import { Alert, AlertColor, IconButton } from "@mui/material";
+import { Box } from "@mui/system";
+import React from "react";
+
+interface ModalProps {
+  message: string;
+  severity: AlertColor | undefined;
+  setClose: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const Modal = ({ message, severity, setClose }: ModalProps) => (
+  <Box sx={{ position: "fixed", top: "50%", left: "50%" }}>
+    <Alert
+      action={
+        <IconButton onClick={() => setClose(false)}>
+          <CloseIcon />
+        </IconButton>
+      }
+      severity={severity}
+    >
+      {message}
+    </Alert>
+  </Box>
+);
+
+export default Modal;
