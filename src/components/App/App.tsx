@@ -7,6 +7,7 @@ import "./App.css";
 import Login from "./Authentication/Login/Login";
 import PrivateRoute from "./Authentication/PrivateRoute/PrivateRoute";
 import Register from "./Authentication/Register/Register";
+import Cart from "./Cart";
 import ContactUs from "./ContactUs";
 import AddDrone from "./Dashboard/AddDrone/AddDrone";
 import Dashboard from "./Dashboard/Dashboard";
@@ -96,6 +97,15 @@ const App = () => (
             element={
               <PrivateRoute>
                 <Purchase />
+              </PrivateRoute>
+            }
+          />
+          {/* cart */}
+          <Route
+            path="/cart"
+            element={
+              <PrivateRoute>
+                <Cart />
               </PrivateRoute>
             }
           />
