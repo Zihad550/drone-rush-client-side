@@ -35,30 +35,29 @@ const ManageAllOrders = () => {
 
   useEffect(() => {
     setIsUpdated(false);
-    fetch("https://still-castle-43681.herokuapp.com/orders")
-      .then((res) => res.json())
-      .then((data) => setOrders(data));
+    const controller = new AbortController();
+    /* (async () => {
+      setOrders(await axiosInstance.get("/orders").then((res) => res.data));
+    })(); */
+
+    return () => {
+      controller.abort();
+    };
   }, [isUpdated]);
 
   // handle status
   const handleStatus = (order: Order) => {
     console.log("inside");
     console.log(order);
-    fetch(`https://still-castle-43681.herokuapp.com/orders`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({ _id: order._id, orderStatus: "Shipped" }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    /* axiosInstance
+      .put("/orders", { _id: order._id, orderStatus: "Shipped" })
+      .then(({ data }) => {
         console.log(data);
         if (data.modifiedCount > 0) {
           setIsUpdated(true);
           setShowMessage(true);
         }
-      });
+      }); */
   };
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({

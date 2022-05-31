@@ -9,10 +9,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/system";
+import axios from "axios";
 import { useEffect, useState } from "react";
-import Modal from "src/components/Shared/Modal";
 import useAuth from "../../../../hooks/useAuth";
 import IOrder from "../../../../types/OrderType";
+import Modal from "../../../Shared/Modal";
 import Spinner from "../../../Shared/Spinner";
 
 const MyOrders = () => {
@@ -48,32 +49,35 @@ const MyOrders = () => {
     productId: string;
   }) => {
     if (window.confirm("Are you sure!")) {
-      fetch(
-        `https://still-castle-43681.herokuapp.com/orders?email=${email}&&id=${productId}`,
-        {
-          method: "DELETE",
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => {
+      /* axiosInstance
+        .delete(`/orders?email=${email}&&id=${productId}`)
+        .then(({ data }) => {
           if (data.deletedCount > 0) {
             window.location.reload();
           }
-        });
+        }); */
     }
   };
 
   useEffect(() => {
-    fetch(
-      `https://still-castle-43681.herokuapp.com/orders/myOrders?email=${user.email}`,
-      {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => setOrders(data));
+    const controller = new AbortController();
+
+    (async () => {
+      setOrders(
+        await axios
+          .get(`/orders/myOrders?email=${user.email}`, {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+            signal: controller.signal,
+          })
+          .then((res) => res.data)
+      );
+    })();
+
+    return () => {
+      controller.abort();
+    };
   }, [user.email]);
 
   return (

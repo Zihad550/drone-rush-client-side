@@ -58,20 +58,12 @@ const ReviewModal = ({
     };
 
     // send to the server
-    fetch("https://still-castle-43681.herokuapp.com/reviews", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(review),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.insertedId) {
-          alert("Review added successfully");
-          handleCloseReview();
-        }
-      });
+    /* axiosInstance.post("/reviews", { review }).then(({ data }) => {
+      if (data.insertedId) {
+        alert("Review added successfully");
+        handleCloseReview();
+      }
+    }); */
   };
   return (
     <Modal

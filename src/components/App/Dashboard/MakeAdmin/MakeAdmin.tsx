@@ -1,6 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { Alert, Button, IconButton, TextField } from "@mui/material";
 import { Box } from "@mui/system";
+import axios from "axios";
 import React, { useState } from "react";
 import useAuth from "../../../../hooks/useAuth";
 
@@ -12,17 +13,15 @@ const MakeAdmin = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const user = { email };
-    fetch("https://still-castle-43681.herokuapp.com/users/admin", {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(user),
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    axios
+      .put("/users/admin", {
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+        data: { email },
+      })
+      .then(({ data }) => {
         if (data.modifiedCount) {
           setSuccess(true);
         }

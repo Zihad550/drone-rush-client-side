@@ -11,8 +11,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
-import Modal from "src/components/Shared/Modal";
 import IDrone from "../../../../types/DroneType";
+import Modal from "../../../Shared/Modal";
 import Spinner from "../../../Shared/Spinner";
 
 const ManageDrones = () => {
@@ -23,9 +23,14 @@ const ManageDrones = () => {
 
   useEffect(() => {
     setRefresh(false);
-    fetch("https://still-castle-43681.herokuapp.com/drones")
-      .then((res) => res.json())
-      .then((data) => setDrones(data));
+    const controller = new AbortController();
+    /* (async () => {
+      setDrones(await axiosInstance.get("/drones").then((res) => res.data));
+    })(); */
+
+    return () => {
+      controller.abort();
+    };
   }, [refresh]);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -50,18 +55,13 @@ const ManageDrones = () => {
 
   // handle delete drone
   const handleDelete = (id: string) => {
-    if (window.confirm("Are you sure?")) {
-      fetch(`https://still-castle-43681.herokuapp.com/drones?id=${id}`, {
-        method: "DELETE",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          data.deletedCount > 0 && setRefresh(true);
-          data.deletedCount > 0 && setIsDeleted(true);
-          data.deletedCount === 0 && setNoPermission(true);
-        });
-    }
+    /* if (window.confirm("Are you sure?")) {
+      axiosInstance.delete(`/drones?id=${id}`).then(({ data }) => {
+        data.deletedCount > 0 && setRefresh(true);
+        data.deletedCount > 0 && setIsDeleted(true);
+        data.deletedCount === 0 && setNoPermission(true);
+      });
+    } */
   };
 
   return (

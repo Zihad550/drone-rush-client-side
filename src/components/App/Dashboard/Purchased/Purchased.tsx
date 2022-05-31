@@ -8,10 +8,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/system";
+import axios from "axios";
 import { useEffect, useState } from "react";
-import Modal from "src/components/Shared/Modal";
 import useAuth from "../../../../hooks/useAuth";
 import IOrder from "../../../../types/OrderType";
+import Modal from "../../../Shared/Modal";
 import Spinner from "../../../Shared/Spinner";
 
 const Purchased = () => {
@@ -42,16 +43,23 @@ const Purchased = () => {
   }));
 
   useEffect(() => {
-    fetch(
-      `https://still-castle-43681.herokuapp.com/orders/purchased?email=${user.email}`,
-      {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => setPurchasedProducts(data));
+    const controller = new AbortController();
+    (async () => {
+      setPurchasedProducts(
+        await axios
+          .get(`/orders/purchased?email=${user.email}`, {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+            signal: controller.signal,
+          })
+          .then((res) => res.data)
+      );
+    })();
+
+    return () => {
+      controller.abort();
+    };
   }, [user.email]);
 
   return (

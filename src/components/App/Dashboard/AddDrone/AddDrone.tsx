@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
-import axiosInstance from "src/services/httpservice";
 
 // types
 type DroneInfo = {
@@ -35,15 +34,18 @@ const AddDrone = () => {
     newInfo[field] = value;
     setDroneInfo(newInfo);
   };
+  /* const { data, error, isLoading, isSuccess } = useAPI<IDrone>(
+    ProductService.addProduct({ ...droneInfo, deletable: true })
+  ); */
   const handleBooking = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axiosInstance
+    /*  axiosInstance
       .post("/drones", { ...droneInfo, deletable: true })
       .then(({ data }) => {
         if (data.insertedId) {
           setIsAdded(true);
         }
-      });
+      }); */
   };
   return (
     <>
