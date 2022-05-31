@@ -8,9 +8,21 @@ const NotFound = () => {
     background: `url(${notFoundImage})`,
     width: "100%",
     height: "100vh",
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
   };
   return (
-    <Box style={notFoundBg} sx={{ flexGrow: 1 }}>
+    <Box
+      style={notFoundBg}
+      sx={{
+        width: "100%",
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <Typography
         variant="h1"
         sx={{ mb: 2, fontWeight: 500, color: "error.main", letterSpacing: 5 }}
