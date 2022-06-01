@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthProvider from "../../contexts/AuthProvider/AuthProvider";
 import Footer from "../Shared/Footer";
 import Header from "../Shared/Header";
+import AboutUs from "./AboutUs/AboutUs";
 import "./App.css";
 import Login from "./Authentication/Login/Login";
 import PrivateRoute from "./Authentication/PrivateRoute/PrivateRoute";
@@ -30,6 +31,10 @@ const theme = createTheme({
       fontSize: "3.8rem",
       borderBottom: "1px solid black",
       width: "max-content",
+    },
+    h2: {
+      fontSize: "2.2rem",
+      fontWeight: "500",
     },
   },
   palette: {
@@ -84,6 +89,8 @@ const App = () => (
               </>
             }
           />
+          {/* about us page */}
+          <Route path="/aboutUs" element={<AboutUs />} />
 
           {/* explore page */}
           <Route

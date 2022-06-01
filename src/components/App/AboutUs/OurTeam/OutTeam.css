@@ -1,0 +1,15 @@
+.team {
+  position: relative;
+  transition: all 0.5s;
+}
+
+.socials {
+  position: absolute;
+  top: 45%;
+  left: 25%;
+  visibility: hidden;
+}
+
+.team:hover .socials {
+  visibility: visible;
+}

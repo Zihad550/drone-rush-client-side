@@ -147,7 +147,7 @@ function NavBar() {
                   }}
                   onClick={() => navigate("/aboutUs")}
                 >
-                  About
+                  About Us
                 </Button>
                 <Button
                   sx={{
