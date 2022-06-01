@@ -1,8 +1,8 @@
 import useAPI from "../../../hooks/useAPI";
 import ProductService from "../../../services/Product.service";
-import IDrone from "../../../types/DroneType";
+import IProduct from "../../../types/ProductType";
 import Spinner from "../../Shared/Spinner";
-import Drones from "../Home/Drones/Drones";
+import Products from "../Home/Products";
 
 const Explore = () => {
   const {
@@ -10,12 +10,12 @@ const Explore = () => {
     error,
     isLoading,
     isSuccess,
-  } = useAPI<IDrone[]>(ProductService.getAllProducts);
+  } = useAPI<IProduct[]>(ProductService.getAllProducts);
 
   if (isLoading || !products) return <Spinner />;
   return (
     <>
-      <Drones products={products} />
+      <Products products={products} />
     </>
   );
 };

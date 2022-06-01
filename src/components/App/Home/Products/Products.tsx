@@ -1,10 +1,10 @@
 import { Container, Grid, Typography } from "@mui/material";
 import React from "react";
-import IDrone from "../../../../types/DroneType";
+import IProduct from "../../../../types/ProductType";
 import Spinner from "../../../Shared/Spinner";
-import Drone from "./Drone";
+import Product from "./Product";
 
-const Drones = ({ products }: { products: IDrone[] }) => {
+const Products = ({ products }: { products: IProduct[] }) => {
   return (
     <Container sx={{ my: 5 }}>
       <Typography sx={{ mb: 4, mx: "auto" }} variant="h1">
@@ -13,7 +13,7 @@ const Drones = ({ products }: { products: IDrone[] }) => {
       <Grid container spacing={{ xs: 2, lg: 3 }}>
         {products ? (
           products.map((product) => (
-            <Drone key={product.name} drone={product} />
+            <Product key={product.name} drone={product} />
           ))
         ) : (
           <Spinner />
@@ -23,4 +23,4 @@ const Drones = ({ products }: { products: IDrone[] }) => {
   );
 };
 
-export default Drones;
+export default Products;

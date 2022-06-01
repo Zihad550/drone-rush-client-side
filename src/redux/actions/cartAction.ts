@@ -1,7 +1,7 @@
-import IDrone from "../../types/DroneType";
+import IProduct from "../../types/ProductType";
 import { cartActionTypes } from "../types";
 
-export const addToCart = (payload: IDrone) => {
+export const addToCart = (payload: IProduct) => {
   return {
     type: cartActionTypes.ADD_TO_CART,
     payload,

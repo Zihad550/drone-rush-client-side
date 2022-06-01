@@ -13,12 +13,12 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import useAuth from "../../../hooks/useAuth";
-import IDrone from "../../../types/DroneType";
+import IProduct from "../../../types/ProductType";
 import Header from "../../Shared/Header";
 
 const Purchase = () => {
   const { name } = useParams();
-  const [drone, setDrone] = useState({} as IDrone);
+  const [drone, setDrone] = useState({} as IProduct);
   const { disc, img, price } = drone;
   const { user } = useAuth();
 

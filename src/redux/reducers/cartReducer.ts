@@ -1,8 +1,8 @@
-import IDrone from "../../types/DroneType";
+import IProduct from "../../types/ProductType";
 import { cartActionTypes } from "../types";
 
 const cartReducer = (
-  state: IDrone[] = [],
+  state: IProduct[] = [],
   // !! action type should be fixed
   action: any
 ) => {

@@ -11,12 +11,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
-import IDrone from "../../../../types/DroneType";
+import IProduct from "../../../../types/ProductType";
 import Modal from "../../../Shared/Modal";
 import Spinner from "../../../Shared/Spinner";
 
 const ManageDrones = () => {
-  const [drones, setDrones] = useState<IDrone[] | null>(null);
+  const [drones, setDrones] = useState<IProduct[] | null>(null);
   const [refresh, setRefresh] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
   const [noPermission, setNoPermission] = useState(false);

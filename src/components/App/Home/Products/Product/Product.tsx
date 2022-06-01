@@ -1,4 +1,3 @@
-import { ShoppingCart } from "@mui/icons-material";
 import {
   Button,
   Card,
@@ -10,9 +9,13 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router";
-import IDrone from "../../../../../types/DroneType";
+import IProduct from "../../../../../types/ProductType";
 
-const Drone = ({ drone: { name, disc, price, img } }: { drone: IDrone }) => {
+const Product = ({
+  drone: { name, disc, price, img, _id },
+}: {
+  drone: IProduct;
+}) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const useStyle = makeStyles({
@@ -24,9 +27,6 @@ const Drone = ({ drone: { name, disc, price, img } }: { drone: IDrone }) => {
   });
   const { directionRow } = useStyle();
 
-  const handlePurchase = () => {
-    navigate(`/purchase/${name}`);
-  };
   return (
     <Grid item xs={12} md={12} lg={6}>
       <Card
@@ -56,12 +56,11 @@ const Drone = ({ drone: { name, disc, price, img } }: { drone: IDrone }) => {
             Price: ${price}
           </Typography>
           <Button
-            onClick={handlePurchase}
-            endIcon={<ShoppingCart />}
+            onClick={() => navigate(`/details/${_id}`)}
             variant="contained"
             size="small"
           >
-            Purchase now
+            Details
           </Button>
         </CardContent>
       </Card>
@@ -69,4 +68,4 @@ const Drone = ({ drone: { name, disc, price, img } }: { drone: IDrone }) => {
   );
 };
 
-export default Drone;
+export default Product;

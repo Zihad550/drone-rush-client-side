@@ -17,7 +17,8 @@ import ManageDrones from "./Dashboard/ManageDrones/ManageDrones";
 import MyOrders from "./Dashboard/MyOrders/MyOrders";
 import Pay from "./Dashboard/Pay/Pay";
 import Purchased from "./Dashboard/Purchased/Purchased";
-import Explore from "./Explore/Explore";
+import Details from "./Details";
+import Explore from "./Explore";
 import Home from "./Home/Home";
 import NotFound from "./NotFound/NotFound";
 import Purchase from "./Purchase/Purchase";
@@ -29,6 +30,11 @@ const theme = createTheme({
       fontSize: "3.8rem",
       borderBottom: "1px solid black",
       width: "max-content",
+    },
+  },
+  palette: {
+    primary: {
+      main: "#4fc4cf",
     },
   },
 });
@@ -100,6 +106,9 @@ const App = () => (
               </PrivateRoute>
             }
           />
+          {/* purchase */}
+          <Route path="/details/:id" element={<Details />} />
+
           {/* cart */}
           <Route
             path="/cart"

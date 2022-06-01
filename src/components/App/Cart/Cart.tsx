@@ -1,7 +1,9 @@
 import { Container, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
-import IDrone from "../../../types/DroneType";
+import IProduct from "../../../types/ProductType";
+import Footer from "../../Shared/Footer";
+import Header from "../../Shared/Header";
 import Spinner from "../../Shared/Spinner";
 import CartMenu from "./CartMenu/CartMenu";
 import CartProduct from "./CartProduct/CartProduct";
@@ -10,20 +12,8 @@ const Cart = () => {
   // context api
   const { user } = useAuth();
   // states
-  const [products, setProducts] = useState<IDrone[] | null>(null);
-  const [quantity, setQuantity] = useState(0);
+  const [products, setProducts] = useState<IProduct[] | null>(null);
   const [isDeleted, setIsDeleted] = useState(false);
-
-  const handleAddQuantity = () => {
-    setQuantity(quantity + 1);
-  };
-  const handleRemoveQuantity = () => {
-    if (quantity === 0) {
-      return;
-    } else {
-      setQuantity(quantity - 1);
-    }
-  };
 
   const handleDelete = (id: string) => {
     fetch(`https://limitless-crag-38673.herokuapp.com/cart?id=${id}`, {
@@ -46,8 +36,9 @@ const Cart = () => {
 
   return (
     <>
+      <Header />
       {/* main cart */}
-      <Container sx={{ my: 3 }} maxWidth="xl">
+      <Container sx={{ minHeight: "50vh" }}>
         <Grid container spacing={{ xs: 1, md: 2 }}>
           {/* products */}
           <Grid item md={8} xs={12}>
@@ -97,6 +88,9 @@ const Cart = () => {
           <CartMenu />
         </Grid>
       </Container>
+
+      {/* footer */}
+      <Footer />
     </>
   );
 };
