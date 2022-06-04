@@ -3,8 +3,34 @@ import IUser from "../types/UserType";
 
 export enum cartActionTypes {
   ADD_TO_CART = "addToCart",
+  INCREASE_QTY = "increaseQty",
+  DECREASE_QTY = "decreaseQty",
   REMOVE_FROM_CART = "removeFromCart",
   CLEAR_CART = "clearCart",
+}
+
+export interface AddToCart {
+  type: cartActionTypes.ADD_TO_CART;
+  payload: IProduct;
+}
+
+export interface IncreaseQty {
+  type: cartActionTypes.INCREASE_QTY;
+  payload: string;
+}
+
+export interface DecreaseQty {
+  type: cartActionTypes.DECREASE_QTY;
+  payload: string;
+}
+
+export interface RemoveFromCart {
+  type: cartActionTypes.REMOVE_FROM_CART;
+  payload: string;
+}
+
+export interface ClearCart {
+  type: cartActionTypes.CLEAR_CART;
 }
 
 export enum authActionTypes {
@@ -33,18 +59,9 @@ interface logout {
 
 export type authActionType = loginSuccess | loginPending | loginFail | logout;
 
-export interface AddToCart {
-  type: cartActionTypes.ADD_TO_CART;
-  payload: IProduct;
-}
-
-export interface RemoveFromCart {
-  type: cartActionTypes.REMOVE_FROM_CART;
-  payload: string;
-}
-
-export interface ClearCart {
-  type: cartActionTypes.CLEAR_CART;
-}
-
-export type cartActionType = AddToCart | RemoveFromCart | ClearCart;
+export type cartActionType =
+  | AddToCart
+  | IncreaseQty
+  | DecreaseQty
+  | RemoveFromCart
+  | ClearCart;

@@ -6,8 +6,6 @@ const useAPI = <T>(asyncService: () => Promise<T>) => {
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<StatusType>("idle");
 
-  console.log(asyncService);
-
   useEffect(() => {
     setStatus("pending");
     setError(null);

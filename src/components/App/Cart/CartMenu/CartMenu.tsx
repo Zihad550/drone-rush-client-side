@@ -13,9 +13,11 @@ import { useNavigate } from "react-router-dom";
 const CartMenu = ({
   subTotal,
   shippingCost,
+  totalPrice,
 }: {
   subTotal: number;
   shippingCost: number;
+  totalPrice: number;
 }) => {
   const navigate = useNavigate();
   return (
@@ -99,7 +101,7 @@ const CartMenu = ({
               variant="h6"
               gutterBottom
             >
-              $ 0
+              $ {totalPrice}
             </Typography>
           </Box>
         </CardContent>

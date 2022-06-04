@@ -47,8 +47,6 @@ const ManageAllOrders = () => {
 
   // handle status
   const handleStatus = (order: Order) => {
-    console.log("inside");
-    console.log(order);
     /* axiosInstance
       .put("/orders", { _id: order._id, orderStatus: "Shipped" })
       .then(({ data }) => {

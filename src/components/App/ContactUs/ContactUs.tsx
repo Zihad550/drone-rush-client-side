@@ -22,7 +22,6 @@ const ContactUs = () => {
   const form = useRef<HTMLFormElement | null>(null);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
-  console.log(success);
   const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSuccess(false);

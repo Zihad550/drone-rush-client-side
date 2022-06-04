@@ -7,6 +7,8 @@ export default interface IProduct {
   reviews: IReview[];
   brand: string;
   shipping: string;
+  qty?: number;
+  totalPrice?: number;
   _id: string;
 }
 

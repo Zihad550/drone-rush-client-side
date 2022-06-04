@@ -3,12 +3,28 @@ import {
   AddToCart,
   cartActionTypes,
   ClearCart,
+  DecreaseQty,
+  IncreaseQty,
   RemoveFromCart,
 } from "../types";
 
 export const addToCart = (payload: IProduct): AddToCart => {
   return {
     type: cartActionTypes.ADD_TO_CART,
+    payload,
+  };
+};
+
+export const increaseQty = (payload: string): IncreaseQty => {
+  return {
+    type: cartActionTypes.INCREASE_QTY,
+    payload,
+  };
+};
+
+export const decreaseQty = (payload: string): DecreaseQty => {
+  return {
+    type: cartActionTypes.DECREASE_QTY,
     payload,
   };
 };

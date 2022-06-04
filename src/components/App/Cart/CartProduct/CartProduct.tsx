@@ -1,5 +1,7 @@
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import { Grid, IconButton, Typography } from "@mui/material";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import { Grid, IconButton, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import IProduct from "types/ProductType";
@@ -9,7 +11,7 @@ interface ICartProductProps {
   handleRemoveFromCart: (id: string) => void;
 }
 const CartProduct = ({ product, handleRemoveFromCart }: ICartProductProps) => {
-  const { name, price, img, _id } = product;
+  const { name, price, img, _id, qty } = product;
   return (
     <Grid
       container
@@ -51,41 +53,37 @@ const CartProduct = ({ product, handleRemoveFromCart }: ICartProductProps) => {
       >
         <Typography variant="h5">$ {price}</Typography>
       </Grid>
-      {/* 
-                //  quantity
-                <Grid
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                  }}
-                  item
-                  md={2}
-                  xs={12}
-                >
-                  <IconButton onClick={handleRemoveQuantity}>
-                    <RemoveCircleOutlineOutlinedIcon />
-                  </IconButton>
-                  <TextField value={quantity} />
-                  <IconButton onClick={handleAddQuantity}>
-                    <AddCircleOutlineOutlinedIcon />
-                  </IconButton>
-                </Grid>
-                // Subtotal
-                <Grid
-                  item
-                  md={2}
-                  xs={12}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Typography variant="h5">$ {product.price}</Typography>
-                </Grid> */}
+      <Grid
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-start",
+        }}
+        item
+        md={2}
+        xs={12}
+      >
+        <IconButton>
+          <RemoveCircleOutlineIcon />
+        </IconButton>
+        <TextField type="number" value={qty} />
+        <IconButton>
+          <AddCircleOutlineIcon />
+        </IconButton>
+      </Grid>
+      <Grid
+        item
+        md={2}
+        xs={12}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="h5">$ {product.price}</Typography>
+      </Grid>
       {/* Cancel */}
-
       <Grid
         item
         md={2}

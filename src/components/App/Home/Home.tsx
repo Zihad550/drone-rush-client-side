@@ -14,8 +14,6 @@ const Home = () => {
     isSuccess,
   } = useAPI<IProduct[]>(ProductService.getAllProducts);
 
-  console.log(products);
-
   if (isLoading || !products) return <Spinner />;
   return (
     <div>

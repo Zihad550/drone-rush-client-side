@@ -34,7 +34,6 @@ const TopBar = () => {
   ];
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorElUser(event.currentTarget);
-    console.log(event.currentTarget);
   };
 
   const handleCloseUserMenu = () => {

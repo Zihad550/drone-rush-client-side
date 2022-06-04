@@ -24,7 +24,6 @@ const Details = () => {
   const { data, error, status, isLoading } = useAPI<IProduct>(() =>
     ProductService.getProduct(id as string)
   );
-  console.log(data, error, status);
   if (isLoading || !data) return <Spinner />;
 
   const { img, name, price, reviews, brand } = data;
