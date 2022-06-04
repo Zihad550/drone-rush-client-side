@@ -6,6 +6,7 @@ export default interface IProduct {
   category: string;
   reviews: IReview[];
   brand: string;
+  shipping: string;
   _id: string;
 }
 

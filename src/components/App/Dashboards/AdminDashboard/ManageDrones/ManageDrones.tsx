@@ -10,10 +10,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/system";
+import Modal from "components/Shared/Modal";
+import Spinner from "components/Shared/Spinner";
 import { useEffect, useState } from "react";
-import IProduct from "../../../../types/ProductType";
-import Modal from "../../../Shared/Modal";
-import Spinner from "../../../Shared/Spinner";
+import IProduct from "types/ProductType";
 
 const ManageDrones = () => {
   const [drones, setDrones] = useState<IProduct[] | null>(null);

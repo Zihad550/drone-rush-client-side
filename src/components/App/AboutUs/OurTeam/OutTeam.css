@@ -5,11 +5,12 @@
 
 .socials {
   position: absolute;
-  top: 45%;
-  left: 25%;
-  visibility: hidden;
+  top: 50%;
+  left: -999999999999999999999px;
+  transform: translate(-50%, -50%);
+  transition: all 0.1s;
 }
 
 .team:hover .socials {
-  visibility: visible;
+  left: 50%;
 }

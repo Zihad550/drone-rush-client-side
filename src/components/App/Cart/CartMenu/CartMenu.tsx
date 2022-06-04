@@ -10,7 +10,13 @@ import { Box } from "@mui/system";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const CartMenu = () => {
+const CartMenu = ({
+  subTotal,
+  shippingCost,
+}: {
+  subTotal: number;
+  shippingCost: number;
+}) => {
   const navigate = useNavigate();
   return (
     <Grid item md={4} xs={12}>
@@ -45,7 +51,7 @@ const CartMenu = () => {
               variant="h6"
               gutterBottom
             >
-              $ 0
+              $ {subTotal}
             </Typography>
           </Box>
           <Box
@@ -69,7 +75,7 @@ const CartMenu = () => {
               variant="h6"
               gutterBottom
             >
-              $ 0
+              $ {shippingCost}
             </Typography>
           </Box>
           <Box

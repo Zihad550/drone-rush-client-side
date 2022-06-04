@@ -3,8 +3,7 @@ import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import SavingsOutlinedIcon from "@mui/icons-material/SavingsOutlined";
 import SupportAgentOutlinedIcon from "@mui/icons-material/SupportAgentOutlined";
-import { Container, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Container, Grid, Typography } from "@mui/material";
 
 const WhyUs = () => {
   const services = [
@@ -25,7 +24,7 @@ const WhyUs = () => {
     },
     {
       id: 4,
-      service: "Professional advice and great support",
+      service: "Professional advice and support",
       icon: SupportAgentOutlinedIcon,
     },
     {
@@ -40,25 +39,30 @@ const WhyUs = () => {
       <Typography variant="h2" sx={{ textAlign: "center", mb: 4 }}>
         Why Shop With Us?
       </Typography>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Grid container spacing={2}>
         {services.map((service) => (
-          <Box
+          <Grid
+            item
+            xs={6}
+            sm={4}
+            md={2.4}
+            lg={2.4}
             sx={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
             }}
           >
-            <service.icon sx={{ fontSize: 100, color: "gray" }} />
+            <service.icon sx={{ fontSize: 80, color: "gray" }} />
             <Typography
               variant="body1"
-              sx={{ textAlign: "center", width: "70%" }}
+              sx={{ textAlign: "center", width: "50%" }}
             >
               {service.service}
             </Typography>
-          </Box>
+          </Grid>
         ))}
-      </Box>
+      </Grid>
     </Container>
   );
 };

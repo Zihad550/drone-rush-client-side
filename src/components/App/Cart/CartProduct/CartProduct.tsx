@@ -2,15 +2,14 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { Grid, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import IProduct from "../../../../types/ProductType";
+import IProduct from "types/ProductType";
 
 interface ICartProductProps {
   product: IProduct;
-  handleDelete: (_id: string) => void;
+  handleRemoveFromCart: (id: string) => void;
 }
-const CartProduct = ({ product, handleDelete }: ICartProductProps) => {
-  const { name, price, img } = product;
-
+const CartProduct = ({ product, handleRemoveFromCart }: ICartProductProps) => {
+  const { name, price, img, _id } = product;
   return (
     <Grid
       container
@@ -96,7 +95,7 @@ const CartProduct = ({ product, handleDelete }: ICartProductProps) => {
           justifyContent: "center",
         }}
       >
-        <IconButton onClick={() => handleDelete(product._id)}>
+        <IconButton onClick={() => handleRemoveFromCart(_id)}>
           <CancelOutlinedIcon fontSize="large" />
         </IconButton>
       </Grid>

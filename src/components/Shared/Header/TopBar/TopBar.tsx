@@ -13,12 +13,13 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
-import useAuth from "../../../../hooks/useAuth";
+import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "redux/store";
 
 const TopBar = () => {
-  const { user, logOut } = useAuth();
+  const { data: user } = useSelector((state: AppState) => state.auth);
   const [anchorElUser, setAnchorElUser] = useState<any>(null);
-
+  const dispatch = useDispatch();
   const settings = [
     {
       id: 1,
@@ -121,7 +122,7 @@ const TopBar = () => {
                 onClick={handleOpenUserMenu}
                 sx={{ p: { sm: 1 }, py: { sm: 1.5 } }}
               >
-                {user.photoURL && <Avatar alt="User" src={user.photoURL} />}
+                <Avatar alt="User" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -147,7 +148,7 @@ const TopBar = () => {
                   </Typography>
                 </MenuItem>
               ))}
-              {user.email ? (
+              {user?.email ? (
                 <MenuItem>
                   <Typography variant="body2">Log Out</Typography>
                 </MenuItem>

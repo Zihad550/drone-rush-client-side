@@ -9,16 +9,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/system";
-import axios from "axios";
+import Modal from "components/Shared/Modal";
+import Spinner from "components/Shared/Spinner";
 import { useEffect, useState } from "react";
-import useAuth from "../../../../hooks/useAuth";
-import IOrder from "../../../../types/OrderType";
-import Modal from "../../../Shared/Modal";
-import Spinner from "../../../Shared/Spinner";
+import IOrder from "types/OrderType";
 
 const MyOrders = () => {
   const [orders, setOrders] = useState<IOrder[] | null>(null);
-  const { user, token } = useAuth();
   const [isDeleted, setIsDeleted] = useState(false);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -63,22 +60,20 @@ const MyOrders = () => {
     const controller = new AbortController();
 
     (async () => {
-      setOrders(
-        await axios
+      /* await axios
           .get(`/orders/myOrders?email=${user.email}`, {
             headers: {
               authorization: `Bearer ${token}`,
             },
             signal: controller.signal,
           })
-          .then((res) => res.data)
-      );
+          .then((res) => res.data) */
     })();
 
     return () => {
       controller.abort();
     };
-  }, [user.email]);
+  }, []);
 
   return (
     <>
@@ -144,15 +139,7 @@ const MyOrders = () => {
                     </Box>
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <IconButton
-                      title="Cancel Order"
-                      onClick={() =>
-                        handleCancelOrder({
-                          email: user.email,
-                          productId: order._id,
-                        })
-                      }
-                    >
+                    <IconButton title="Cancel Order">
                       <CancelIcon />
                     </IconButton>
                   </StyledTableCell>

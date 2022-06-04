@@ -35,6 +35,34 @@ function NavBar() {
 
   const navigate = useNavigate();
 
+  const pages = [
+    {
+      id: 1,
+      name: "Home",
+      link: "/",
+    },
+    {
+      id: 2,
+      name: "Categories",
+      link: "/categories",
+    },
+    {
+      id: 3,
+      name: "Products",
+      link: "/products",
+    },
+    {
+      id: 4,
+      name: "About Us",
+      link: "/aboutUs",
+    },
+    {
+      id: 5,
+      name: "Contact Us",
+      link: "contactUs",
+    },
+  ];
+
   const drawer = (
     <div>
       <Box sx={{ p: 1, display: "flex" }}>
@@ -44,26 +72,11 @@ function NavBar() {
 
       <Divider />
       <List>
-        <ListItem button onClick={() => navigate("/")}>
-          Home
-        </ListItem>
-        <ListItem button>Shops</ListItem>
-
-        <ListItem onClick={() => navigate("/catagories")} button>
-          Catagories
-        </ListItem>
-
-        <ListItem onClick={() => navigate("/products")} button>
-          Products
-        </ListItem>
-        <ListItem button>Catagories</ListItem>
-
-        <ListItem onClick={() => navigate("/aboutUs")} button>
-          About
-        </ListItem>
-        <ListItem onClick={() => navigate("/contactUs")} button>
-          Contact Us
-        </ListItem>
+        {pages.map((page) => (
+          <ListItem key={page.id} button onClick={() => navigate(page.link)}>
+            {page.name}
+          </ListItem>
+        ))}
       </List>
 
       <Divider />
@@ -112,54 +125,25 @@ function NavBar() {
                 sx={{
                   display: { sm: "flex", xs: "none" },
                   width: "100%",
-                  justifyContent: "space-between",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                <Button
-                  sx={{
-                    color: "white",
-                    fontSize: 17,
-                    fontWeight: "600",
-                    display: "block",
-                  }}
-                  onClick={() => navigate("/")}
-                >
-                  Home
-                </Button>
-
-                <Button
-                  sx={{
-                    color: "white",
-                    fontSize: 17,
-                    fontWeight: "600",
-                    display: "block",
-                  }}
-                  onClick={() => navigate("/catagories")}
-                >
-                  Catagories
-                </Button>
-                <Button
-                  sx={{
-                    color: "white",
-                    fontSize: 17,
-                    fontWeight: "600",
-                    display: "block",
-                  }}
-                  onClick={() => navigate("/aboutUs")}
-                >
-                  About Us
-                </Button>
-                <Button
-                  sx={{
-                    color: "white",
-                    fontSize: 17,
-                    fontWeight: "600",
-                    display: "block",
-                  }}
-                  onClick={() => navigate("/contactUs")}
-                >
-                  Contact Us
-                </Button>
+                {pages.map((page) => (
+                  <Button
+                    key={page.id}
+                    sx={{
+                      color: "white",
+                      fontSize: 17,
+                      fontWeight: "600",
+                      display: "block",
+                      mx: 3,
+                    }}
+                    onClick={() => navigate(page.link)}
+                  >
+                    {page.name}
+                  </Button>
+                ))}
               </Box>
               {/*====================
                features

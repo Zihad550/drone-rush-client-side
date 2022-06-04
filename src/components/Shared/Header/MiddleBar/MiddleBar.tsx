@@ -3,6 +3,7 @@ import ScaleOutlinedIcon from "@mui/icons-material/ScaleOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import {
+  Badge,
   Box,
   Button,
   Container,
@@ -10,10 +11,21 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { AppState } from "redux/store";
 
 const MiddleBar = () => {
   const navigate = useNavigate();
+  const cartProducts = useSelector((state: AppState) => state.cart);
+
+  const handleGoToCart = () => {
+    if (!cartProducts.length) {
+      alert("You don't have any products in cart");
+      return;
+    }
+    navigate("/cart");
+  };
   return (
     <Container
       maxWidth="xl"
@@ -25,7 +37,7 @@ const MiddleBar = () => {
       }}
     >
       {/* website logo */}
-      <Typography variant="h5">Bazarly</Typography>
+      <Typography variant="h5">Drone Rush</Typography>
       {/* search area */}
       <Box>
         <TextField
@@ -62,13 +74,15 @@ const MiddleBar = () => {
             alignItems: "center",
           }}
           className="primary-hover-effect"
-          onClick={() => navigate("/cart")}
+          onClick={handleGoToCart}
         >
           <IconButton className="primary-hover-effect">
-            <ShoppingCartOutlinedIcon
-              sx={{ color: "black" }}
-              fontSize="large"
-            />
+            <Badge badgeContent={cartProducts.length} color="secondary">
+              <ShoppingCartOutlinedIcon
+                sx={{ color: "black" }}
+                fontSize="large"
+              />
+            </Badge>
           </IconButton>
           <Typography variant="body2">Cart</Typography>
         </Box>

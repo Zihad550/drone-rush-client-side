@@ -1,7 +1,8 @@
+import Spinner from "components/Shared/Spinner";
 import React from "react";
+import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router";
-import useAuth from "../../../../hooks/useAuth";
-import Spinner from "../../../Shared/Spinner";
+import { AppState } from "redux/store";
 
 const PrivateRoute = ({
   children,
@@ -9,10 +10,10 @@ const PrivateRoute = ({
 }: {
   children: React.ReactElement;
 }) => {
-  const { user, isLoading } = useAuth();
+  const user = useSelector((state: AppState) => state.auth);
   const location = useLocation();
 
-  if (isLoading) return <Spinner />;
+  if (!user) return <Spinner />;
 
   if (Object.keys(user).length) return children;
 

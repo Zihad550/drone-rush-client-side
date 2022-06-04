@@ -1,7 +1,8 @@
-
-export default interface IUser  {
-    displayName: string;
-    email: string;
-    photoURL?: string;
-  };
-  
+export default interface IUser {
+  name: string;
+  email: string;
+  role: string;
+  accessToken: string;
+  _id: string;
+  token: string;
+}

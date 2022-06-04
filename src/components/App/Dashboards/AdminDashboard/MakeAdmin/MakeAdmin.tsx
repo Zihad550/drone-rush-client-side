@@ -9,11 +9,7 @@ import { AppState } from "redux/store";
 const MakeAdmin = () => {
   const [email, setEmail] = useState<string>("");
   const [success, setSuccess] = useState(false);
-  const {
-    data: user,
-    error,
-    state,
-  } = useSelector((state: AppState) => state.auth);
+  const { data } = useSelector((state: AppState) => state.auth);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,7 +17,7 @@ const MakeAdmin = () => {
       .put("/users/admin", {
         headers: {
           "content-type": "application/json",
-          authorization: `Bearer ${user?.token}`,
+          authorization: `Bearer ${data?.token}`,
         },
         data: { email },
       })

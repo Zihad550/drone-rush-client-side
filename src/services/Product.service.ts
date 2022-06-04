@@ -1,4 +1,4 @@
-import IProduct from "../types/ProductType";
+import IProduct from "types/ProductType";
 import httpReq from "./http.service";
 
 class ProductService {

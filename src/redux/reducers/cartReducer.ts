@@ -1,11 +1,11 @@
-import IProduct from "../../types/ProductType";
-import { cartActionTypes } from "../types";
+import IProduct from "types/ProductType";
+import { cartActionType, cartActionTypes } from "../types";
 
 const cartReducer = (
   state: IProduct[] = [],
   // !! action type should be fixed
-  action: any
-) => {
+  action: cartActionType
+): IProduct[] => {
   switch (action.type) {
     case cartActionTypes.ADD_TO_CART:
       return [...state, action.payload];

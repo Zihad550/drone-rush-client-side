@@ -3,7 +3,8 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
-import useAuth from "../../../../hooks/useAuth";
+import { useSelector } from "react-redux";
+import { AppState } from "redux/store";
 
 const style = {
   position: "absolute",
@@ -33,11 +34,11 @@ const ReviewModal = ({
   product,
 }: ReviewModalProps) => {
   const { productName, img } = product;
-  const { user }: any = useAuth();
+  const { data: user } = useSelector((state: AppState) => state.auth);
 
   const [reviewInfo, setReviewInfo] = useState({
-    userName: user.displayName,
-    email: user.email,
+    userName: user?.name,
+    email: user?.email,
   });
 
   const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -101,7 +102,7 @@ const ReviewModal = ({
           <TextField
             required
             onChange={handleOnChange}
-            defaultValue={user.displayName}
+            defaultValue={user?.name}
             size="small"
             name="userName"
             label="Name"
@@ -111,7 +112,7 @@ const ReviewModal = ({
 
           <TextField
             required
-            defaultValue={user.email}
+            defaultValue={user?.email}
             type="email"
             size="small"
             onChange={handleOnChange}

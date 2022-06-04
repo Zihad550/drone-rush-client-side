@@ -10,22 +10,22 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import Header from "components/Shared/Header";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-import useAuth from "../../../hooks/useAuth";
-import IProduct from "../../../types/ProductType";
-import Header from "../../Shared/Header";
+import { AppState } from "redux/store";
+import IProduct from "types/ProductType";
 
 const Purchase = () => {
   const { name } = useParams();
+  const user = useSelector((state: AppState) => state.auth.data);
   const [drone, setDrone] = useState({} as IProduct);
   const { disc, img, price } = drone;
-  const { user } = useAuth();
 
   const [orderInfo, setOrderInfo] = useState({
-    userName: user.displayName || "",
-    email: user.email || "",
-    phone: "",
+    name: user?.name,
+    email: user?.email,
   });
 
   const handleOnBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -115,7 +115,7 @@ const Purchase = () => {
                 onChange={handleOnBlur}
                 name="userName"
                 label="Your name"
-                defaultValue={user.displayName}
+                defaultValue={user?.name}
                 size="small"
                 fullWidth
               />
@@ -132,7 +132,7 @@ const Purchase = () => {
               <TextField
                 required
                 label="Your email"
-                defaultValue={user.email}
+                defaultValue={user?.email}
                 type="email"
                 size="small"
                 onChange={handleOnBlur}

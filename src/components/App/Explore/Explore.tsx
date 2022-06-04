@@ -1,7 +1,7 @@
+import Spinner from "components/Shared/Spinner";
+import IProduct from "types/ProductType";
 import useAPI from "../../../hooks/useAPI";
 import ProductService from "../../../services/Product.service";
-import IProduct from "../../../types/ProductType";
-import Spinner from "../../Shared/Spinner";
 import Products from "../Home/Products";
 
 const Explore = () => {

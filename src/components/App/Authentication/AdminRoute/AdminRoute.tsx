@@ -1,18 +1,20 @@
-import React, { ReactChild, ReactChildren } from "react";
+import Spinner from "components/Shared/Spinner";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router";
-import useAuth from "../../../../hooks/useAuth";
-import Spinner from "../../../Shared/Spinner";
+import { AppState } from "redux/store";
 
-interface AdminRouteProps {
-  children: ReactChild | ReactChildren;
-}
-
-const AdminRoute = ({ children, ...rest }: AdminRouteProps) => {
-  const { user, adminLoading } = useAuth();
+const AdminRoute = ({
+  children,
+  ...rest
+}: {
+  children: React.ReactElement;
+}) => {
   const location = useLocation();
+  const user = useSelector((state: AppState) => state.auth.data);
 
-  if (adminLoading) return <Spinner />;
-  if (Object.keys(user).length) return children;
+  if (!user) return <Spinner />;
+  if (user.role === "admin") return children;
   return <Navigate to="/login" state={{ from: location }} />;
 };
 

@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router";
-import IProduct from "../../../../../types/ProductType";
+import IProduct from "types/ProductType";
 
 const Product = ({
   drone: { name, disc, price, img, _id },

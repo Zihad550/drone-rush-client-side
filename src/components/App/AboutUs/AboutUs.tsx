@@ -1,6 +1,4 @@
 import React from "react";
-import Footer from "../../Shared/Footer";
-import Header from "../../Shared/Header";
 import AboutUsBanner from "./AboutUsBanner";
 import OurTeam from "./OurTeam";
 import WhyUs from "./WhyUs";
@@ -8,9 +6,6 @@ import WhyUs from "./WhyUs";
 const AboutUs = () => {
   return (
     <>
-      {/* header */}
-      <Header />
-      {/* main  */}
       {/* banner */}
       <AboutUsBanner />
 
@@ -19,9 +14,6 @@ const AboutUs = () => {
 
       {/* our team */}
       <OurTeam />
-      {/* main */}
-      {/* footer */}
-      <Footer />
     </>
   );
 };

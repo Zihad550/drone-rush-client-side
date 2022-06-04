@@ -1,98 +1,98 @@
 import { Container, Grid, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import useAuth from "../../../hooks/useAuth";
-import IProduct from "../../../types/ProductType";
-import Footer from "../../Shared/Footer";
-import Header from "../../Shared/Header";
-import Spinner from "../../Shared/Spinner";
+import Spinner from "components/Shared/Spinner";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { removeFromCart } from "redux/actions/cartAction";
+import { AppState } from "redux/store";
 import CartMenu from "./CartMenu/CartMenu";
 import CartProduct from "./CartProduct/CartProduct";
 
 const Cart = () => {
-  // context api
-  const { user } = useAuth();
-  // states
-  const [products, setProducts] = useState<IProduct[] | null>(null);
-  const [isDeleted, setIsDeleted] = useState(false);
+  // cart data
+  const products = useSelector((state: AppState) => state.cart);
+  console.log(products.length);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleDelete = (id: string) => {
-    fetch(`https://limitless-crag-38673.herokuapp.com/cart?id=${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        data.deletedCount > 0 && setIsDeleted(true);
-        alert("successfully deleted");
-      });
+  if (!products.length) {
+    navigate("/");
+    return <Spinner />;
+  }
+
+  const productPrices: number[] = products.map((product) =>
+    Number(product.price)
+  );
+
+  const shippingCosts: number[] = products.map((product) =>
+    Number(product.shipping)
+  );
+
+  const subTotal: number = productPrices.reduce(
+    (previous, current) => previous + current
+  );
+
+  const shippingCost: number = shippingCosts.reduce(
+    (previous, current) => previous + current
+  );
+
+  const handleRemoveFromCart = (id: string) => {
+    dispatch(removeFromCart(id));
+    if (products.length === 0) navigate("/");
   };
-  useEffect(() => {
-    setIsDeleted(false);
-    fetch(
-      `https://limitless-crag-38673.herokuapp.com/cart/product?email=${user.email}`
-    )
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
-  }, [isDeleted]);
 
   return (
-    <>
-      <Header />
-      {/* main cart */}
-      <Container sx={{ minHeight: "50vh" }}>
-        <Grid container spacing={{ xs: 1, md: 2 }}>
-          {/* products */}
-          <Grid item md={8} xs={12}>
-            {/* cart title */}
-            <Grid
-              container
-              sx={{
-                borderBottom: "1px solid gray",
-                display: { xs: "none", sm: "flex" },
-              }}
-            >
-              <Grid item md={6}>
-                <Typography variant="h5">Product</Typography>
-              </Grid>
-              <Grid item md={4}>
-                <Typography variant="h5" sx={{ textAlign: "center" }}>
-                  Price
-                </Typography>
-              </Grid>
-
-              <Grid item md={2}>
-                <Typography variant="h5" sx={{ textAlign: "center" }}>
-                  Cancel
-                </Typography>
-              </Grid>
+    <Container sx={{ minHeight: "70vh", py: 5 }}>
+      <Grid container spacing={{ xs: 1, md: 2 }}>
+        {/* products */}
+        <Grid item md={8} xs={12}>
+          {/* cart title */}
+          <Grid
+            container
+            sx={{
+              borderBottom: "1px solid gray",
+              display: { xs: "none", sm: "flex" },
+            }}
+          >
+            <Grid item md={6}>
+              <Typography variant="h5">Product</Typography>
             </Grid>
-            {/*============
+            <Grid item md={4}>
+              <Typography variant="h5" sx={{ textAlign: "center" }}>
+                Price
+              </Typography>
+            </Grid>
+
+            <Grid item md={2}>
+              <Typography variant="h5" sx={{ textAlign: "center" }}>
+                Remove
+              </Typography>
+            </Grid>
+          </Grid>
+          {/*============
            product
            ============= */}
 
-            {products ? (
-              products.map((product) => (
-                <CartProduct
-                  key={product._id}
-                  product={product}
-                  handleDelete={handleDelete}
-                />
-              ))
-            ) : (
-              <Spinner />
-            )}
-          </Grid>
+          {products ? (
+            products.map((product) => (
+              <CartProduct
+                handleRemoveFromCart={handleRemoveFromCart}
+                key={product._id}
+                product={product}
+              />
+            ))
+          ) : (
+            <Spinner />
+          )}
+        </Grid>
 
-          {/*=========== 
+        {/*=========== 
           cart
           ================ */}
-          <CartMenu />
-        </Grid>
-      </Container>
-
-      {/* footer */}
-      <Footer />
-    </>
+        <CartMenu subTotal={subTotal} shippingCost={shippingCost} />
+      </Grid>
+    </Container>
   );
 };
 
-export default React.memo(Cart);
+export default Cart;

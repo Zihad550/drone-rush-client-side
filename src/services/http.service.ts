@@ -7,6 +7,20 @@ const axiosConfig: AxiosRequestConfig = {
 
 const instance: AxiosInstance = axios.create(axiosConfig);
 
+instance.interceptors.request.use(
+  (config) => {
+    return {
+      ...config,
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("persist:root") || "").auth.token
+        }`,
+      },
+    };
+  },
+  (error) => Promise.reject(error)
+);
+
 class Request {
   async get(url: string): Promise<AxiosResponse> {
     return instance.get(url);

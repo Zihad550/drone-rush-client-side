@@ -2,33 +2,36 @@ import { Email, VpnKey } from "@mui/icons-material";
 import {
   Alert,
   Button,
-  CircularProgress,
   Container,
   Grid,
   InputAdornment,
   TextField,
   Typography,
 } from "@mui/material";
+import Spinner from "components/Shared/Spinner";
 import React, { ChangeEvent, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../../../../hooks/useAuth";
+import { AppState } from "redux/store";
 import loginImage from "../../../../images/login.jpg";
+import { login } from "../../../../redux/actions/authAction";
+import { ILoginData } from "../../../../types/LoginType";
 
-// types
-type LoginData = {
-  email: string;
-  password: string;
-};
 const Login = () => {
-  const [loginData, setLoginData] = useState<LoginData>({
+  const [loginData, setLoginData] = useState<ILoginData>({
     email: "",
     password: "",
   });
 
-  const { logIn, user, authError, isLoading, loginWithGoogle }: any = useAuth();
+  const {
+    data: user,
+    state,
+    error,
+  } = useSelector((state: AppState) => state.auth);
 
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const field: string = e.target.name;
@@ -40,8 +43,12 @@ const Login = () => {
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    logIn(loginData?.email, loginData?.password, location, navigate);
+
+    // !! change to proper type
+    dispatch<any>(login(loginData));
   };
+
+  if (state === "pending") return <Spinner />;
   return (
     <Container sx={{ my: 5 }}>
       <Grid
@@ -59,70 +66,67 @@ const Login = () => {
           xs={12}
           md={6}
         >
-          {isLoading ? (
-            <CircularProgress />
-          ) : (
-            <>
-              <Typography variant="h6">Login</Typography>
-              <form onSubmit={handleLogin}>
-                <TextField
-                  required
-                  sx={{ width: "75%" }}
-                  label="Your Email"
-                  onChange={handleOnChange}
-                  variant="standard"
-                  name="email"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Email />
-                      </InputAdornment>
-                    ),
-                  }}
-                />{" "}
-                <br />
-                <TextField
-                  required
-                  sx={{ width: "75%" }}
-                  onChange={handleOnChange}
-                  label="Your Password"
-                  margin="normal"
-                  variant="standard"
-                  type="password"
-                  name="password"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <VpnKey />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <br />
-                <NavLink style={{ textDecoration: "none" }} to="/register">
-                  <Button variant="text">New User? Please Register</Button>
-                </NavLink>
-                <br />
-                <Button
-                  variant="contained"
-                  type="submit"
-                  sx={{ background: "info.main", mt: 3, width: "75%" }}
-                >
-                  Login
-                </Button>
-                {user?.email && (
-                  <Alert sx={{ mt: 3 }} severity="success">
-                    User log in successfully
-                  </Alert>
-                )}
-                {authError && (
-                  <Alert sx={{ mt: 3 }} severity="error">
-                    {authError}
-                  </Alert>
-                )}
-              </form>
-              <p>------------------------------------------</p>
+          <>
+            <Typography variant="h6">Login</Typography>
+            <form onSubmit={handleLogin}>
+              <TextField
+                required
+                sx={{ width: "75%" }}
+                label="Your Email"
+                onChange={handleOnChange}
+                variant="standard"
+                name="email"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Email />
+                    </InputAdornment>
+                  ),
+                }}
+              />{" "}
+              <br />
+              <TextField
+                required
+                sx={{ width: "75%" }}
+                onChange={handleOnChange}
+                label="Your Password"
+                margin="normal"
+                variant="standard"
+                type="password"
+                name="password"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <VpnKey />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <br />
+              <NavLink style={{ textDecoration: "none" }} to="/register">
+                <Button variant="text">New User? Please Register</Button>
+              </NavLink>
+              <br />
               <Button
+                variant="contained"
+                type="submit"
+                sx={{ background: "info.main", mt: 3, width: "75%" }}
+              >
+                Login
+              </Button>
+              {user?.email && (
+                <Alert sx={{ mt: 3 }} severity="success">
+                  User log in successfully
+                </Alert>
+              )}
+              {error && (
+                <Alert sx={{ mt: 3 }} severity="error">
+                  {error}
+                </Alert>
+              )}
+            </form>
+            <p>------------------------------------------</p>
+            {/* <Button
                 sx={{
                   background: "info.main",
                   mt: 3,
@@ -132,9 +136,8 @@ const Login = () => {
                 variant="contained"
               >
                 Sign In With Google
-              </Button>
-            </>
-          )}
+              </Button> */}
+          </>
         </Grid>
         <Grid item xs={12} md={6}>
           <img style={{ width: "100%" }} src={loginImage} alt="login" />

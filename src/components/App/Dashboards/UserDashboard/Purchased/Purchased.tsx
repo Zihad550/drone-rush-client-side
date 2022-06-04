@@ -8,18 +8,18 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/system";
-import axios from "axios";
+import Modal from "components/Shared/Modal";
+import Spinner from "components/Shared/Spinner";
 import { useEffect, useState } from "react";
-import useAuth from "../../../../hooks/useAuth";
-import IOrder from "../../../../types/OrderType";
-import Modal from "../../../Shared/Modal";
-import Spinner from "../../../Shared/Spinner";
+import { useSelector } from "react-redux";
+import { AppState } from "redux/store";
+import IOrder from "types/OrderType";
 
 const Purchased = () => {
   const [purchasedProducts, setPurchasedProducts] = useState<IOrder[] | null>(
     null
   );
-  const { user, token } = useAuth();
+  const { data: user } = useSelector((state: AppState) => state.auth);
   const [isDeleted, setIsDeleted] = useState(false);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -44,7 +44,7 @@ const Purchased = () => {
 
   useEffect(() => {
     const controller = new AbortController();
-    (async () => {
+    /* (async () => {
       setPurchasedProducts(
         await axios
           .get(`/orders/purchased?email=${user.email}`, {
@@ -55,12 +55,12 @@ const Purchased = () => {
           })
           .then((res) => res.data)
       );
-    })();
+    })(); */
 
     return () => {
       controller.abort();
     };
-  }, [user.email]);
+  }, [user?.email]);
 
   return (
     <>
