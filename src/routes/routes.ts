@@ -23,6 +23,7 @@ const Details = React.lazy(() => import("components/App/Details"));
 const ContactUs = React.lazy(() => import("components/App/ContactUs"));
 const AboutUs = React.lazy(() => import("components/App/AboutUs"));
 const Drones = React.lazy(() => import("components/App/Drones"));
+const Reviews = React.lazy(() => import("components/App/Reviews"));
 
 // protected routes
 const Cart = React.lazy(() => import("components/App/Cart"));
@@ -68,6 +69,11 @@ export const generalRoutes = [
     path: "/drones",
     name: "All Drones",
     element: Drones,
+  },
+  {
+    path: "/reviews",
+    name: "Reviews",
+    element: Reviews,
   },
 
   {

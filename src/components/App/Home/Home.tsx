@@ -3,8 +3,9 @@ import IProduct from "types/ProductType";
 import useAPI from "../../../hooks/useAPI";
 import ProductService from "../../../services/Product.service";
 import Banner from "./Banner";
+import FAQ from "./FAQ";
+import Features from "./Features";
 import Products from "./Products";
-import Reviews from "./Reviews";
 
 const Home = () => {
   const { data: products } = useAPI<IProduct[]>(() =>
@@ -17,7 +18,8 @@ const Home = () => {
     <div>
       <Banner />
       <Products products={products} title={title} />
-      <Reviews />
+      <Features />
+      <FAQ />
     </div>
   );
 };

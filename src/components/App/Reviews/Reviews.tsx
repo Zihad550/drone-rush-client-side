@@ -1,7 +1,7 @@
 import { Container, Grid, Typography } from "@mui/material";
 import Spinner from "components/Shared/Spinner/Spinner";
 import { useEffect, useState } from "react";
-import IReview from "../../../../types/ReviewType";
+import IReview from "types/ReviewType";
 import Review from "./Review";
 
 const Reviews = () => {

@@ -6,7 +6,7 @@ import {
   Rating,
   Typography,
 } from "@mui/material";
-import IReview from "../../../../../types/ReviewType";
+import IReview from "types/ReviewType";
 
 const Review = ({
   review: { userName, message, rating, img, productName },

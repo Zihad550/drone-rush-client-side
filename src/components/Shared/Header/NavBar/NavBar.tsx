@@ -48,11 +48,16 @@ function NavBar() {
     },
     {
       id: 3,
+      name: "Reviews",
+      link: "/reviews",
+    },
+    {
+      id: 4,
       name: "About Us",
       link: "/aboutUs",
     },
     {
-      id: 4,
+      id: 5,
       name: "Contact Us",
       link: "/contactUs",
     },
