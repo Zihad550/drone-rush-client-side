@@ -20,7 +20,6 @@ const useAPI = <T>(asyncService: () => Promise<T>) => {
     data,
     error,
     status,
-    isLoading: status === "pending",
     isSuccess: status === "success",
   };
 };

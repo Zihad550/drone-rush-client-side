@@ -41,7 +41,7 @@ const NotFound = () => {
       >
         PAGE NOT FOUND
       </Typography>
-      <Link style={{ textDecoration: "none" }} to="/home">
+      <Link style={{ textDecoration: "none" }} to="/">
         <Button variant="contained" color="secondary">
           Back to Homepage
         </Button>

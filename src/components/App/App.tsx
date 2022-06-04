@@ -46,7 +46,9 @@ const App = () => (
               path={route.path}
               element={
                 <>
-                  <Header /> <route.element /> <Footer />
+                  <Header />
+                  <route.element />
+                  <Footer />
                 </>
               }
             />

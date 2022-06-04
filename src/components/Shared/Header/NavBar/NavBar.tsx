@@ -43,23 +43,18 @@ function NavBar() {
     },
     {
       id: 2,
-      name: "Categories",
-      link: "/categories",
+      name: "All Drones",
+      link: "/drones",
     },
     {
       id: 3,
-      name: "Products",
-      link: "/products",
-    },
-    {
-      id: 4,
       name: "About Us",
       link: "/aboutUs",
     },
     {
-      id: 5,
+      id: 4,
       name: "Contact Us",
-      link: "contactUs",
+      link: "/contactUs",
     },
   ];
 

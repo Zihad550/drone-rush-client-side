@@ -20,9 +20,9 @@ const AdminDashboard = React.lazy(
   () => import("components/App/Dashboards/AdminDashboard")
 );
 const Details = React.lazy(() => import("components/App/Details"));
-const Explore = React.lazy(() => import("components/App/Explore"));
 const ContactUs = React.lazy(() => import("components/App/ContactUs"));
 const AboutUs = React.lazy(() => import("components/App/AboutUs"));
+const Drones = React.lazy(() => import("components/App/Drones"));
 
 // protected routes
 const Cart = React.lazy(() => import("components/App/Cart"));
@@ -65,6 +65,12 @@ export const generalRoutes = [
     element: Home,
   },
   {
+    path: "/drones",
+    name: "All Drones",
+    element: Drones,
+  },
+
+  {
     path: "/login",
     name: "Login",
     element: Login,
@@ -79,11 +85,7 @@ export const generalRoutes = [
     name: "Details",
     element: Details,
   },
-  {
-    path: "/explore",
-    name: "Explore",
-    element: Explore,
-  },
+
   {
     path: "/contactUs",
     name: "Contact Us",

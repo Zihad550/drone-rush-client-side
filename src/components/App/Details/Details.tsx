@@ -21,10 +21,10 @@ import RatingChart from "./RatingChart";
 const Details = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { data, error, status, isLoading } = useAPI<IProduct>(() =>
+  const { data, error, status } = useAPI<IProduct>(() =>
     ProductService.getProduct(id as string)
   );
-  if (isLoading || !data) return <Spinner />;
+  if (!data) return <Spinner />;
 
   const { img, name, price, reviews, brand } = data;
   const ratings: number[] = reviews.map((review) => Number(review.rating));

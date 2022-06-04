@@ -7,18 +7,16 @@ import Products from "./Products";
 import Reviews from "./Reviews";
 
 const Home = () => {
-  const {
-    data: products,
-    error,
-    isLoading,
-    isSuccess,
-  } = useAPI<IProduct[]>(ProductService.getAllProducts);
-
-  if (isLoading || !products) return <Spinner />;
+  const { data: products } = useAPI<IProduct[]>(() =>
+    ProductService.getAllProducts(6)
+  );
+  const date = new Date();
+  const title = ` The Best Drones for ${date.getFullYear()}`;
+  if (!products) return <Spinner />;
   return (
     <div>
       <Banner />
-      <Products products={products} />
+      <Products products={products} title={title} />
       <Reviews />
     </div>
   );
