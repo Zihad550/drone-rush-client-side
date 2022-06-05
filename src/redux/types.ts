@@ -57,19 +57,33 @@ export enum authActionTypes {
   LOGIN_SUCCESS = "login/success",
   LOGIN_PENDING = "login/pending",
   LOGIN_FAIL = "login/fail",
+  REGISTER_SUCCESS = "register/success",
+  REGISTER_PENDING = "register/pending",
+  REGISTER_FAIL = "register/fail",
   LOGOUT = "logout",
-  REGISTER = "register",
 }
 
-interface loginSuccess {
+interface LoginSuccess {
   type: authActionTypes.LOGIN_SUCCESS;
   payload: IUser;
 }
-interface loginPending {
+interface LoginPending {
   type: authActionTypes.LOGIN_PENDING;
 }
-interface loginFail {
+interface LoginFail {
   type: authActionTypes.LOGIN_FAIL;
+  payload: string;
+}
+
+export interface RegisterSuccess {
+  type: authActionTypes.REGISTER_SUCCESS;
+  payload: IUser;
+}
+export interface RegisterPending {
+  type: authActionTypes.REGISTER_PENDING;
+}
+export interface RegisterFail {
+  type: authActionTypes.REGISTER_FAIL;
   payload: string;
 }
 
@@ -77,7 +91,14 @@ interface logout {
   type: authActionTypes.LOGOUT;
 }
 
-export type authActionType = loginSuccess | loginPending | loginFail | logout;
+export type authActionType =
+  | LoginSuccess
+  | LoginPending
+  | LoginFail
+  | RegisterSuccess
+  | RegisterFail
+  | RegisterPending
+  | logout;
 
 export type cartActionType =
   | AddToCart

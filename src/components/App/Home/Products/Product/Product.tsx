@@ -59,6 +59,7 @@ const Product = ({
             onClick={() => navigate(`/details/${_id}`)}
             variant="contained"
             size="small"
+            sx={{ color: "white" }}
           >
             Details
           </Button>

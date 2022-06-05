@@ -11,7 +11,7 @@ import {
 import React, { ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { login } from "redux/actions/authAction";
+import { register } from "redux/actions/authAction";
 import { AppState } from "redux/store";
 import loginImage from "../../../../images/login.jpg";
 
@@ -34,6 +34,7 @@ const Register = () => {
     state,
     error,
   } = useSelector((state: AppState) => state.auth);
+  console.log(user, state, error);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -50,7 +51,13 @@ const Register = () => {
     if (registerData.password !== registerData.retype_password) {
       alert("password did not match");
     } else {
-      dispatch(login(registerData));
+      dispatch(
+        register({
+          name: registerData.name,
+          email: registerData.email,
+          password: registerData.password,
+        })
+      );
     }
   };
   return (
@@ -148,7 +155,12 @@ const Register = () => {
               <Button
                 variant="contained"
                 type="submit"
-                sx={{ background: "info.main", mt: 3, width: "75%" }}
+                sx={{
+                  background: "info.main",
+                  mt: 3,
+                  width: "75%",
+                  color: "white",
+                }}
               >
                 Register
               </Button>

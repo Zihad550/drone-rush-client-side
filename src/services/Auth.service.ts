@@ -1,10 +1,16 @@
+import IRegisterData from "types/RegisterType";
 import { ILoginData } from "../types/LoginType";
 import IUser from "../types/UserType";
 import httpReq from "./http.service";
 
 class AuthService {
   async login(payload: ILoginData): Promise<IUser> {
-    const { data } = await httpReq.post("/login", payload);
+    const data: any = await httpReq.post("/login", payload);
+    return data;
+  }
+
+  async register(payload: IRegisterData): Promise<IUser> {
+    const data: any = await httpReq.post<IRegisterData>("/register", payload);
     return data;
   }
 }

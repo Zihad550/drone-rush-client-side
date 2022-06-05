@@ -28,7 +28,7 @@ const Login = () => {
     state,
     error,
   } = useSelector((state: AppState) => state.auth);
-
+  console.log(user);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -43,7 +43,6 @@ const Login = () => {
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     // !! change to proper type
     dispatch<any>(login(loginData));
   };
@@ -110,7 +109,12 @@ const Login = () => {
               <Button
                 variant="contained"
                 type="submit"
-                sx={{ background: "info.main", mt: 3, width: "75%" }}
+                sx={{
+                  background: "info.main",
+                  mt: 3,
+                  width: "75%",
+                  color: "white",
+                }}
               >
                 Login
               </Button>
@@ -125,7 +129,7 @@ const Login = () => {
                 </Alert>
               )}
             </form>
-            <p>------------------------------------------</p>
+            {/* <p>------------------------------------------</p> */}
             {/* <Button
                 sx={{
                   background: "info.main",
