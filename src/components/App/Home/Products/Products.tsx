@@ -11,7 +11,7 @@ const Products = ({
   products: IProduct[];
   title: string;
 }) => (
-  <Container sx={{ my: 5 }}>
+  <Container sx={{ mt: 10, mb: 20 }}>
     <Typography sx={{ mb: 4, mx: "auto" }} variant="h1">
       {title}
     </Typography>

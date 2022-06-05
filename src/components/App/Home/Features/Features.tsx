@@ -29,7 +29,7 @@ const Features = () => {
     },
   ];
   return (
-    <Container sx={{ my: 10 }}>
+    <Container sx={{ mb: 20 }}>
       <Grid container spacing={6}>
         <Grid item md={6} xs={12}>
           <img style={{ width: "100%", height: "auto" }} src={src} alt="" />
