@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 type StatusType = "idle" | "pending" | "success" | "error";
-const useAPI = <T>(asyncService: () => Promise<T>) => {
+const useAPI = <T>(asyncService: () => Promise<T>, reload?: number) => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<StatusType>("idle");
@@ -15,7 +15,7 @@ const useAPI = <T>(asyncService: () => Promise<T>) => {
         setStatus("success");
       })
       .catch((error) => setError(error));
-  }, []);
+  }, [reload]);
   return {
     data,
     error,

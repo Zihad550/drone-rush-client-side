@@ -2,8 +2,16 @@ import IProduct from "types/ProductType";
 import httpReq from "./http.service";
 
 class ProductService {
-  async getAllProducts(limit: number): Promise<IProduct[]> {
-    const { data } = await httpReq.get(`/products?limit=${limit}`);
+  async getAllProducts({
+    productsPerPage,
+    currentPage,
+  }: {
+    productsPerPage: number;
+    currentPage?: number;
+  }): Promise<{ products: IProduct[]; totalProducts: number }> {
+    const { data } = await httpReq.get(
+      `/products?productsPerPage=${productsPerPage}&currentPage=${currentPage}`
+    );
     return data;
   }
 
