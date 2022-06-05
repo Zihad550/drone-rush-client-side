@@ -14,18 +14,27 @@ import {
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppState } from "redux/store";
+import IProduct from "types/ProductType";
 
 const MiddleBar = () => {
   const navigate = useNavigate();
   const cartProducts = useSelector((state: AppState) => state.cart);
+  const wishlistProducts = useSelector((state: AppState) => state.wishlist);
 
-  const handleGoToCart = () => {
-    if (!cartProducts.length) {
+  const handleNavigate = ({
+    link,
+    products,
+  }: {
+    link: string;
+    products: IProduct[];
+  }) => {
+    if (!products.length) {
       alert("You don't have any products in cart");
       return;
     }
-    navigate("/cart");
+    navigate(link);
   };
+
   return (
     <Container
       maxWidth="xl"
@@ -61,11 +70,23 @@ const MiddleBar = () => {
           </IconButton>
           <Typography variant="body2">Compare</Typography>
         </Box>
-        <Box sx={{ mx: 3 }} className="primary-hover-effect">
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+          className="primary-hover-effect"
+          onClick={() =>
+            handleNavigate({ link: "/wishlist", products: wishlistProducts })
+          }
+        >
           <IconButton className="primary-hover-effect">
-            <FavoriteBorderIcon sx={{ color: "black" }} fontSize="large" />
+            <Badge badgeContent={wishlistProducts.length} color="primary">
+              <FavoriteBorderIcon sx={{ color: "black" }} fontSize="large" />
+            </Badge>
           </IconButton>
-          <Typography variant="body2">Wishlist</Typography>
+          <Typography variant="body2">Cart</Typography>
         </Box>
         <Box
           sx={{
@@ -74,7 +95,9 @@ const MiddleBar = () => {
             alignItems: "center",
           }}
           className="primary-hover-effect"
-          onClick={handleGoToCart}
+          onClick={() =>
+            handleNavigate({ link: "/cart", products: cartProducts })
+          }
         >
           <IconButton className="primary-hover-effect">
             <Badge badgeContent={cartProducts.length} color="secondary">

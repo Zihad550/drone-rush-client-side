@@ -12,6 +12,7 @@ import { Box, Container } from "@mui/system";
 import Spinner from "components/Shared/Spinner";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
+import { addToWishlist } from "redux/actions/wishlistAction";
 import IProduct from "types/ProductType";
 import useAPI from "../../../hooks/useAPI";
 import { addToCart } from "../../../redux/actions/cartAction";
@@ -21,7 +22,7 @@ import RatingChart from "./RatingChart";
 const Details = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { data, error, status } = useAPI<IProduct>(() =>
+  const { data } = useAPI<IProduct>(() =>
     ProductService.getProduct(id as string)
   );
   if (!data) return <Spinner />;
@@ -100,7 +101,7 @@ const Details = () => {
                 <IconButton>
                   <ShareIcon />
                 </IconButton>
-                <IconButton>
+                <IconButton onClick={() => dispatch(addToWishlist(data))}>
                   <FavoriteBorderIcon />
                 </IconButton>
               </Box>

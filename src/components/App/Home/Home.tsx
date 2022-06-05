@@ -16,7 +16,7 @@ const Home = () => {
   return (
     <div>
       <Banner />
-      <Products products={[]} title={title} />
+      <Products products={data.products} title={title} />
       <Features />
       <FAQ />
     </div>

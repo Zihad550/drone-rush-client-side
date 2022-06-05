@@ -5,6 +5,7 @@ import storage from "redux-persist/lib/storage";
 import ReduxThunk from "redux-thunk";
 import authReducer from "./reducers/authReducer";
 import cartReducer from "./reducers/cartReducer";
+import wishlistReducer from "./reducers/wishlistReducer";
 
 const persistConfig = {
   key: "root",
@@ -14,6 +15,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   cart: cartReducer,
   auth: authReducer,
+  wishlist: wishlistReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -27,6 +27,7 @@ const Reviews = React.lazy(() => import("components/App/Reviews"));
 
 // protected routes
 const Cart = React.lazy(() => import("components/App/Cart"));
+const Wishlist = React.lazy(() => import("components/App/Wishlist"));
 const Purchase = React.lazy(() => import("components/App/Purchase"));
 const Pay = React.lazy(
   () => import("components/App/Dashboards/UserDashboard/Pay")
@@ -119,6 +120,11 @@ export const protectedRoutes = [
     path: "/cart",
     name: "Cart",
     element: Cart,
+  },
+  {
+    path: "/wishlist",
+    name: "Wishlist",
+    element: Wishlist,
   },
   {
     path: "/purchase",
