@@ -24,6 +24,11 @@ class ProductService {
     const { data } = await httpReq.post("/drones", body);
     return data;
   }
+
+  async deleteProduct(id: string) {
+    const { data } = await httpReq.delete(`/product/${id}`);
+    return data;
+  }
 }
 
 export default new ProductService();

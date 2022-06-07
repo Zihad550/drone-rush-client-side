@@ -15,7 +15,10 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { AppState } from "redux/store";
 
 // types
 type Order = {
@@ -32,13 +35,22 @@ const ManageAllOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isUpdated, setIsUpdated] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
+  const { data: user } = useSelector((state: AppState) => state.auth);
 
   useEffect(() => {
     setIsUpdated(false);
     const controller = new AbortController();
-    /* (async () => {
-      setOrders(await axiosInstance.get("/orders").then((res) => res.data));
-    })(); */
+    (async () => {
+      setOrders(
+        await axios
+          .get("http://localhost:8000/orders", {
+            headers: {
+              Authorization: `Bearer ${user?.accessToken}`,
+            },
+          })
+          .then((res) => res.data)
+      );
+    })();
 
     return () => {
       controller.abort();
@@ -47,15 +59,20 @@ const ManageAllOrders = () => {
 
   // handle status
   const handleStatus = (order: Order) => {
-    /* axiosInstance
-      .put("/orders", { _id: order._id, orderStatus: "Shipped" })
+    axios
+      .put("http://localhost:8000/orders", {
+        body: { _id: order._id, orderStatus: "Shipped" },
+        headers: {
+          Authorization: `Bearer ${user?.accessToken}`,
+        },
+      })
       .then(({ data }) => {
         console.log(data);
         if (data.modifiedCount > 0) {
           setIsUpdated(true);
           setShowMessage(true);
         }
-      }); */
+      });
   };
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -72,7 +89,6 @@ const ManageAllOrders = () => {
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
-    // hide last border
     "&:last-child td, &:last-child th": {
       border: 0,
     },

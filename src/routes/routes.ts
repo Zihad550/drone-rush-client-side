@@ -155,7 +155,7 @@ export const adminRoutes = [
     element: ManageDrones,
   },
   {
-    path: "/dashboard/manageAllOrders",
+    path: "/dashboard/manageOrders",
     name: "Manage All Orders",
     element: ManageAllOrders,
   },

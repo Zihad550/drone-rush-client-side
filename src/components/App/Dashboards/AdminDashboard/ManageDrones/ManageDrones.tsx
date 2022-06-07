@@ -10,16 +10,24 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/system";
+import axios from "axios";
 import Modal from "components/Shared/Modal";
 import Spinner from "components/Shared/Spinner";
+import useAPI from "hooks/useAPI";
 import { useEffect, useState } from "react";
-import IProduct from "types/ProductType";
+import { useSelector } from "react-redux";
+import { AppState } from "redux/store";
+import ProductService from "services/Product.service";
 
 const ManageDrones = () => {
-  const [drones, setDrones] = useState<IProduct[] | null>(null);
+  // const [drones, setDrones] = useState<IProduct[] | null>(null);
   const [refresh, setRefresh] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
   const [noPermission, setNoPermission] = useState(false);
+  const { data } = useAPI(() =>
+    ProductService.getAllProducts({ productsPerPage: 0 })
+  );
+  const { data: user } = useSelector((state: AppState) => state.auth);
 
   useEffect(() => {
     setRefresh(false);
@@ -55,14 +63,23 @@ const ManageDrones = () => {
 
   // handle delete drone
   const handleDelete = (id: string) => {
-    /* if (window.confirm("Are you sure?")) {
-      axiosInstance.delete(`/drones?id=${id}`).then(({ data }) => {
-        data.deletedCount > 0 && setRefresh(true);
-        data.deletedCount > 0 && setIsDeleted(true);
-        data.deletedCount === 0 && setNoPermission(true);
-      });
-    } */
+    if (window.confirm("Are you sure?")) {
+      // ProductService.deleteProduct(id).then(res => console.log(res))
+      axios
+        .delete(`http://localhost:8000/product/${id}`, {
+          headers: {
+            Authorization: `Bearer ${user?.accessToken}`,
+          },
+        })
+        .then(({ data }) => {
+          data.deletedCount > 0 && setRefresh(true);
+          data.deletedCount > 0 && setIsDeleted(true);
+          data.deletedCount === 0 && setNoPermission(true);
+        });
+    }
   };
+
+  if (!data) return <Spinner />;
 
   return (
     <>
@@ -107,33 +124,29 @@ const ManageDrones = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {drones ? (
-              drones.map((drone) => (
-                <StyledTableRow key={drone._id}>
-                  <StyledTableCell sx={{ width: "100px" }} scope="row">
-                    <img src={drone.img} style={{ width: "100px" }} />
-                  </StyledTableCell>
-                  <StyledTableCell component="th" scope="row">
-                    {drone.name}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">{drone.disc}</StyledTableCell>
-                  <StyledTableCell
-                    sx={{ width: "100px" }}
-                    align="left"
-                  >{`$ ${drone.price}`}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    <IconButton
-                      title="Delete Drone"
-                      onClick={() => handleDelete(drone._id)}
-                    >
-                      <CancelIcon />
-                    </IconButton>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))
-            ) : (
-              <Spinner />
-            )}
+            {data.products.map((drone) => (
+              <StyledTableRow key={drone._id}>
+                <StyledTableCell sx={{ width: "100px" }} scope="row">
+                  <img src={drone.img} style={{ width: "100px" }} />
+                </StyledTableCell>
+                <StyledTableCell component="th" scope="row">
+                  {drone.name}
+                </StyledTableCell>
+                <StyledTableCell align="left">{drone.disc}</StyledTableCell>
+                <StyledTableCell
+                  sx={{ width: "100px" }}
+                  align="left"
+                >{`$ ${drone.price}`}</StyledTableCell>
+                <StyledTableCell align="center">
+                  <IconButton
+                    title="Delete Drone"
+                    onClick={() => handleDelete(drone._id)}
+                  >
+                    <CancelIcon />
+                  </IconButton>
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
