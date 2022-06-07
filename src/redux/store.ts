@@ -10,6 +10,7 @@ import wishlistReducer from "./reducers/wishlistReducer";
 const persistConfig = {
   key: "root",
   storage,
+  // blacklist: ["auth"],
 };
 
 const rootReducer = combineReducers({

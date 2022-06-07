@@ -1,7 +1,6 @@
 import NotFound from "components/App/NotFound";
 import React from "react";
 import store from "redux/store";
-
 const {
   auth: { data },
 } = store.getState();
@@ -23,15 +22,12 @@ const Details = React.lazy(() => import("components/App/Details"));
 const ContactUs = React.lazy(() => import("components/App/ContactUs"));
 const AboutUs = React.lazy(() => import("components/App/AboutUs"));
 const Drones = React.lazy(() => import("components/App/Drones"));
-const Reviews = React.lazy(() => import("components/App/Reviews"));
 
 // protected routes
 const Cart = React.lazy(() => import("components/App/Cart"));
 const Wishlist = React.lazy(() => import("components/App/Wishlist"));
 const Purchase = React.lazy(() => import("components/App/Purchase"));
-const Pay = React.lazy(
-  () => import("components/App/Dashboards/UserDashboard/Pay")
-);
+const Pay = React.lazy(() => import("components/App/Pay"));
 
 // user dashboard routes
 const MyOrders = React.lazy(
@@ -56,7 +52,7 @@ const ManageAllOrders = React.lazy(
 );
 
 const getRoleBasedDashboard = (role: string = "user") => {
-  if (role === "user") return AdminDashboard;
+  if (role === "admin") return AdminDashboard;
   return UserDashboard;
 };
 
@@ -70,11 +66,6 @@ export const generalRoutes = [
     path: "/drones",
     name: "All Drones",
     element: Drones,
-  },
-  {
-    path: "/reviews",
-    name: "Reviews",
-    element: Reviews,
   },
 
   {
@@ -103,11 +94,7 @@ export const generalRoutes = [
     name: "About Us",
     element: AboutUs,
   },
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    element: getRoleBasedDashboard(data?.role),
-  },
+
   {
     path: "*",
     name: "Error",
@@ -132,7 +119,7 @@ export const protectedRoutes = [
     element: Purchase,
   },
   {
-    path: "/dashboard/pay",
+    path: "/pay",
     name: "Payment",
     element: Pay,
   },

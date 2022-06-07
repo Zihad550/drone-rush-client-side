@@ -8,6 +8,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/system";
+import axios from "axios";
 import Modal from "components/Shared/Modal";
 import Spinner from "components/Shared/Spinner";
 import { useEffect, useState } from "react";
@@ -44,24 +45,41 @@ const Purchased = () => {
 
   useEffect(() => {
     const controller = new AbortController();
-    /* (async () => {
+    (async () => {
       setPurchasedProducts(
         await axios
-          .get(`/orders/purchased?email=${user.email}`, {
+          .get(`http://localhost:8000/purchases/${user?.email}`, {
             headers: {
-              authorization: `Bearer ${token}`,
+              authorization: `Bearer ${user?.accessToken}`,
             },
             signal: controller.signal,
           })
           .then((res) => res.data)
       );
-    })(); */
+    })();
 
     return () => {
       controller.abort();
     };
   }, [user?.email]);
 
+  if (!purchasedProducts) return <Spinner />;
+  if (purchasedProducts.length === 0) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+        }}
+      >
+        <Typography variant="h3">
+          You don't have any purchased products.
+        </Typography>
+      </Box>
+    );
+  }
   return (
     <>
       {/* modal */}
@@ -90,46 +108,42 @@ const Purchased = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {purchasedProducts ? (
-              purchasedProducts.map((product) => (
-                <StyledTableRow key={product._id}>
-                  <StyledTableCell sx={{ width: "100px" }} scope="row">
-                    <img src={product.img} style={{ width: "100px" }} />
-                  </StyledTableCell>
-                  <StyledTableCell component="th" scope="row">
-                    {product.productName}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">{product.disc}</StyledTableCell>
-                  <StyledTableCell
-                    sx={{ width: "100px" }}
-                    align="left"
-                  >{`$ ${product.price}`}</StyledTableCell>
-                  <StyledTableCell
+            {purchasedProducts.map((product) => (
+              <StyledTableRow key={product._id}>
+                <StyledTableCell sx={{ width: "100px" }} scope="row">
+                  <img src={product.img} style={{ width: "100px" }} />
+                </StyledTableCell>
+                <StyledTableCell component="th" scope="row">
+                  {product.productName}
+                </StyledTableCell>
+                <StyledTableCell align="left">{product.disc}</StyledTableCell>
+                <StyledTableCell
+                  sx={{ width: "100px" }}
+                  align="left"
+                >{`$ ${product.price}`}</StyledTableCell>
+                <StyledTableCell
+                  sx={{
+                    width: "100px",
+                  }}
+                  align="left"
+                >
+                  <Box
                     sx={{
-                      width: "100px",
+                      textAlign: "center",
+                      color: "white",
+                      py: 1,
+                      px: 1.5,
+                      borderRadius: 3,
+                      fontWeight: "bold",
+                      background:
+                        product.orderStatus === "pending" ? "red" : "green",
                     }}
-                    align="left"
                   >
-                    <Box
-                      sx={{
-                        textAlign: "center",
-                        color: "white",
-                        py: 1,
-                        px: 1.5,
-                        borderRadius: 3,
-                        fontWeight: "bold",
-                        background:
-                          product.orderStatus === "pending" ? "red" : "green",
-                      }}
-                    >
-                      {product.orderStatus}
-                    </Box>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))
-            ) : (
-              <Spinner />
-            )}
+                    {product.orderStatus}
+                  </Box>
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>

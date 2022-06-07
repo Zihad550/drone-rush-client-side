@@ -10,9 +10,10 @@ import {
 } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import Spinner from "components/Shared/Spinner";
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router";
 import { addToWishlist } from "redux/actions/wishlistAction";
+import { AppState } from "redux/store";
 import IProduct from "types/ProductType";
 import useAPI from "../../../hooks/useAPI";
 import { addToCart } from "../../../redux/actions/cartAction";
@@ -21,10 +22,12 @@ import RatingChart from "./RatingChart";
 
 const Details = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
   const { data } = useAPI<IProduct>(() =>
     ProductService.getProduct(id as string)
   );
+  const { data: user } = useSelector((state: AppState) => state.auth);
   if (!data) return <Spinner />;
 
   const { img, name, price, reviews, brand } = data;
@@ -101,7 +104,13 @@ const Details = () => {
                 <IconButton>
                   <ShareIcon />
                 </IconButton>
-                <IconButton onClick={() => dispatch(addToWishlist(data))}>
+                <IconButton
+                  onClick={
+                    user
+                      ? () => dispatch(addToWishlist(data))
+                      : () => navigate("/login")
+                  }
+                >
                   <FavoriteBorderIcon />
                 </IconButton>
               </Box>
@@ -114,7 +123,11 @@ const Details = () => {
 
             {/* actions */}
             <Button
-              onClick={() => dispatch(addToCart(data))}
+              onClick={
+                user
+                  ? () => dispatch(addToCart(data))
+                  : () => navigate("/login")
+              }
               variant="contained"
               sx={{ color: "white" }}
             >

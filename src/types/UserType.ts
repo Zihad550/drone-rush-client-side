@@ -4,5 +4,4 @@ export default interface IUser {
   role: string;
   accessToken: string;
   _id: string;
-  token: string;
 }

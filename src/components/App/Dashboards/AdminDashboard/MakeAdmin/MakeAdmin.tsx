@@ -17,7 +17,7 @@ const MakeAdmin = () => {
       .put("/users/admin", {
         headers: {
           "content-type": "application/json",
-          authorization: `Bearer ${data?.token}`,
+          authorization: `Bearer ${data?.accessToken}`,
         },
         data: { email },
       })

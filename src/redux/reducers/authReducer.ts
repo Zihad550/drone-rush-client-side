@@ -39,6 +39,27 @@ const authReducer = (
         error: action.payload,
       };
 
+    case authActionTypes.REGISTER_SUCCESS:
+      return {
+        data: action.payload,
+        state: "success",
+        error: null,
+      };
+
+    case authActionTypes.REGISTER_PENDING:
+      return {
+        data: null,
+        state: "pending",
+        error: null,
+      };
+
+    case authActionTypes.REGISTER_FAIL:
+      return {
+        data: null,
+        state: "error",
+        error: action.payload,
+      };
+
     case authActionTypes.LOGOUT:
       return {
         data: null,

@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import React, { ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router";
 import { NavLink, useNavigate } from "react-router-dom";
 import { register } from "redux/actions/authAction";
 import { AppState } from "redux/store";
@@ -29,14 +30,11 @@ const Register = () => {
     email: "",
   });
 
-  const {
-    data: user,
-    state,
-    error,
-  } = useSelector((state: AppState) => state.auth);
-  console.log(user, state, error);
+  const { data: user, error } = useSelector((state: AppState) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { state }: any = useLocation();
+  if (user) navigate(state?.from || "/");
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const field = e.target.name;
@@ -171,7 +169,7 @@ const Register = () => {
                 User created successfully
               </Alert>
             )}
-            {error && <Alert severity="error">{error}</Alert>}
+            {error && <Alert severity="error">{"authentication failed"}</Alert>}
           </>
         </Grid>
         <Grid item xs={12} md={6}>

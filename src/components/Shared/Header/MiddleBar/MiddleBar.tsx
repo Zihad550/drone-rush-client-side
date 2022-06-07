@@ -1,5 +1,4 @@
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ScaleOutlinedIcon from "@mui/icons-material/ScaleOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import {
@@ -29,7 +28,7 @@ const MiddleBar = () => {
     products: IProduct[];
   }) => {
     if (!products.length) {
-      alert("You don't have any products in cart");
+      alert("You don't have any products");
       return;
     }
     navigate(link);
@@ -64,12 +63,13 @@ const MiddleBar = () => {
 
       {/* features */}
       <Box sx={{ display: "flex" }}>
-        <Box className="primary-hover-effect">
+        {/* <Box className="primary-hover-effect">
           <IconButton className="primary-hover-effect">
             <ScaleOutlinedIcon sx={{ color: "black" }} fontSize="large" />
           </IconButton>
           <Typography variant="body2">Compare</Typography>
         </Box>
+         */}
         <Box
           sx={{
             display: "flex",
@@ -86,7 +86,7 @@ const MiddleBar = () => {
               <FavoriteBorderIcon sx={{ color: "black" }} fontSize="large" />
             </Badge>
           </IconButton>
-          <Typography variant="body2">Cart</Typography>
+          <Typography variant="body2">Wishlist</Typography>
         </Box>
         <Box
           sx={{

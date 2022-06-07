@@ -46,11 +46,7 @@ function NavBar() {
       name: "All Drones",
       link: "/drones",
     },
-    {
-      id: 3,
-      name: "Reviews",
-      link: "/reviews",
-    },
+
     {
       id: 4,
       name: "About Us",

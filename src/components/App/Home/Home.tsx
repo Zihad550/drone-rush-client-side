@@ -12,7 +12,7 @@ const Home = () => {
   );
   const date = new Date();
   const title = ` The Best Drones for ${date.getFullYear()}`;
-  if (!data?.products) return <Spinner />;
+  if (!data) return <Spinner />;
   return (
     <div>
       <Banner />

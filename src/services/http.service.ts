@@ -6,20 +6,21 @@ const axiosConfig: AxiosRequestConfig = {
 };
 
 const instance: AxiosInstance = axios.create(axiosConfig);
-
-instance.interceptors.request.use(
+/* 
+axios.interceptors.request.use(
   (config) => {
     return {
       ...config,
       headers: {
-        Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("persist:root") || "").auth.token
-        }`,
+        Authorization: `Bearer ${JSON.parse(
+          JSON.parse(localStorage.getItem("persist:root") || "").auth.data
+            .accessToken
+        )}`,
       },
     };
   },
   (error) => Promise.reject(error)
-);
+); */
 
 class Request {
   async get(url: string): Promise<AxiosResponse> {

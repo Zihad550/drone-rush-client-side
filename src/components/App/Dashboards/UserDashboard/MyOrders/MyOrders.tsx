@@ -9,13 +9,33 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/system";
+import axios from "axios";
 import Modal from "components/Shared/Modal";
 import Spinner from "components/Shared/Spinner";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { AppState } from "redux/store";
 import IOrder from "types/OrderType";
 
 const MyOrders = () => {
+  let { data: user } = useSelector((state: AppState) => state.auth);
+  // !! use prover type
   const [orders, setOrders] = useState<IOrder[] | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      setOrders(
+        await axios
+          .get(`http://localhost:8000/orders/${user?.email}`, {
+            headers: {
+              Authorization: `Bearer ${user?.accessToken}`,
+            },
+          })
+          .then((res) => res.data)
+      );
+    })();
+  }, []);
+
   const [isDeleted, setIsDeleted] = useState(false);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -32,7 +52,6 @@ const MyOrders = () => {
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
-    // hide last border
     "&:last-child td, &:last-child th": {
       border: 0,
     },
@@ -55,26 +74,22 @@ const MyOrders = () => {
         }); */
     }
   };
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    (async () => {
-      /* await axios
-          .get(`/orders/myOrders?email=${user.email}`, {
-            headers: {
-              authorization: `Bearer ${token}`,
-            },
-            signal: controller.signal,
-          })
-          .then((res) => res.data) */
-    })();
-
-    return () => {
-      controller.abort();
-    };
-  }, []);
-
+  console.log(orders);
+  if (!orders) return <Spinner />;
+  if (orders.length === 0) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+        }}
+      >
+        <Typography variant="h3">You don't have any orders.</Typography>
+      </Box>
+    );
+  }
   return (
     <>
       {/* modal */}

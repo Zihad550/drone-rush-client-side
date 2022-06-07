@@ -30,7 +30,6 @@ export const login = (payload: ILoginData) => {
     });
     AuthService.login(payload)
       .then((user) => {
-        console.log(user);
         dispatch({
           type: authActionTypes.LOGIN_SUCCESS,
           payload: user,
@@ -45,11 +44,8 @@ export const login = (payload: ILoginData) => {
   };
 };
 
-export const logout = (payload: string) => {
+export const logout = () => {
   return {
     type: authActionTypes.LOGOUT,
-    payload,
   };
 };
-
-// const register = (payload: IRegisterData)

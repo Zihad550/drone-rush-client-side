@@ -25,11 +25,11 @@ const Login = () => {
 
   const {
     data: user,
-    state,
+    state: loadingState,
     error,
   } = useSelector((state: AppState) => state.auth);
-  console.log(user);
-  const location = useLocation();
+
+  const { state }: any = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -41,13 +41,14 @@ const Login = () => {
     setLoginData(newLoginData);
   };
 
+  if (user?.email) navigate(state?.from || "/");
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // !! change to proper type
     dispatch<any>(login(loginData));
   };
 
-  if (state === "pending") return <Spinner />;
+  if (loadingState === "pending") return <Spinner />;
   return (
     <Container sx={{ my: 5 }}>
       <Grid
@@ -125,7 +126,7 @@ const Login = () => {
               )}
               {error && (
                 <Alert sx={{ mt: 3 }} severity="error">
-                  {error}
+                  {"authentication failed"}
                 </Alert>
               )}
             </form>

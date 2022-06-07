@@ -16,11 +16,14 @@ import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { logout } from "redux/actions/authAction";
 import { AppState } from "redux/store";
 
 const TopBar = () => {
   const { data: user } = useSelector((state: AppState) => state.auth);
   const [anchorElUser, setAnchorElUser] = useState<any>(null);
+  const cart = useSelector((state: AppState) => state.cart);
+  const wishlist = useSelector((state: AppState) => state.wishlist);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const settings = [
@@ -32,7 +35,7 @@ const TopBar = () => {
     {
       id: 2,
       name: "Dashboard",
-      link: "",
+      link: "/dashboard",
     },
   ];
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -41,6 +44,10 @@ const TopBar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   return (
@@ -147,13 +154,23 @@ const TopBar = () => {
                 >
                   {settings.map((setting) => (
                     <MenuItem key={setting.id}>
-                      <Typography variant="body2" textAlign="center">
+                      <Button
+                        sx={{ color: "black" }}
+                        variant="text"
+                        onClick={() => navigate(setting.link)}
+                      >
                         {setting.name}
-                      </Typography>
+                      </Button>
                     </MenuItem>
                   ))}
                   <MenuItem>
-                    <Typography variant="body2">Log Out</Typography>
+                    <Button
+                      onClick={handleLogout}
+                      sx={{ color: "black" }}
+                      variant="text"
+                    >
+                      Log Out
+                    </Button>
                   </MenuItem>
                 </Menu>
               </>
