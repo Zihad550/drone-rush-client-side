@@ -34,6 +34,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 const AdminDashboard = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const [showOrders, setShowOrders] = useState(false);
   const navigate = useNavigate();
 
   const handleDrawerOpen = () => {
@@ -57,17 +58,18 @@ const AdminDashboard = () => {
       link: "/dashboard/addDrone",
       icon: <AddCircleIcon />,
     },
+
     {
       id: 3,
-      name: "Manage Orders",
-      link: "/dashboard/manageOrders",
-      icon: <CategoryIcon />,
-    },
-    {
-      id: 4,
       name: "Manage Drones",
       link: "/dashboard/manageDrones",
       icon: <FlightIcon />,
+    },
+    {
+      id: 4,
+      name: "Manage Orders",
+      link: "/dashboard/manageOrders",
+      icon: <CategoryIcon />,
     },
   ];
 

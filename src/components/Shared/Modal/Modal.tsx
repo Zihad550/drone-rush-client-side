@@ -1,11 +1,11 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Alert, AlertColor, IconButton } from "@mui/material";
+import { Alert, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 
 interface ModalProps {
   message: string;
-  severity: AlertColor | undefined;
+  severity: "error" | "success" | "warning" | "info";
   setClose: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const Modal = ({ message, severity, setClose }: ModalProps) => (

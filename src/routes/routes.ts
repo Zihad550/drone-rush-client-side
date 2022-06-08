@@ -47,8 +47,8 @@ const MakeAdmin = React.lazy(
 const ManageDrones = React.lazy(
   () => import("components/App/Dashboards/AdminDashboard/ManageDrones")
 );
-const ManageAllOrders = React.lazy(
-  () => import("components/App/Dashboards/AdminDashboard/ManageAllOrders")
+const ManageOrders = React.lazy(
+  () => import("components/App/Dashboards/AdminDashboard/ManageOrders")
 );
 
 const getRoleBasedDashboard = (role: string = "user") => {
@@ -156,7 +156,7 @@ export const adminRoutes = [
   },
   {
     path: "/dashboard/manageOrders",
-    name: "Manage All Orders",
-    element: ManageAllOrders,
+    name: "Manage Orders",
+    element: ManageOrders,
   },
 ];
