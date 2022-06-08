@@ -28,6 +28,7 @@ const Cart = React.lazy(() => import("components/App/Cart"));
 const Wishlist = React.lazy(() => import("components/App/Wishlist"));
 const Purchase = React.lazy(() => import("components/App/Purchase"));
 const Pay = React.lazy(() => import("components/App/Pay"));
+const Checkout = React.lazy(() => import("components/App/Checkout"));
 
 // user dashboard routes
 const MyOrders = React.lazy(
@@ -122,6 +123,11 @@ export const protectedRoutes = [
     path: "/pay",
     name: "Payment",
     element: Pay,
+  },
+  {
+    path: "/checkout",
+    name: "Checkout",
+    element: Checkout,
   },
 ];
 

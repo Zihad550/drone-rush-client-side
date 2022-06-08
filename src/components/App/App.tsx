@@ -2,6 +2,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Footer from "components/Shared/Footer";
 import Header from "components/Shared/Header";
 import { Suspense } from "react";
+import "react-phone-number-input/style.css";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AppState } from "redux/store";
