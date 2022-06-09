@@ -125,7 +125,7 @@ export const protectedRoutes = [
     element: Pay,
   },
   {
-    path: "/checkout",
+    path: "/checkout/:totalPrice",
     name: "Checkout",
     element: Checkout,
   },

@@ -1,25 +1,15 @@
-import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Paper,
-  Typography,
-} from "@mui/material";
-import { useState } from "react";
-import PaymentOptions from "./PaymentOptions";
+import { Checkbox, FormControlLabel, Paper, Typography } from "@mui/material";
+import CardForm from "./CardForm";
 
-const PaymentMethods = () => {
-  const [openOptions, setOpenOptions] = useState(false);
+const PaymentMethods = ({ totalPrice }: { totalPrice: number }) => {
   return (
     <Paper sx={{ p: 3, mt: 3 }}>
       <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }}>
         Payment Methods
       </Typography>
-      <Button onClick={() => setOpenOptions(true)} variant="text">
-        Add new card
-      </Button>
-      <FormControlLabel control={<Checkbox />} label="COD" />
-      <PaymentOptions open={openOptions} setOpen={setOpenOptions} />
+
+      <FormControlLabel sx={{ ml: 5 }} control={<Checkbox />} label="COD" />
+      <CardForm totalPrice={totalPrice} />
     </Paper>
   );
 };
