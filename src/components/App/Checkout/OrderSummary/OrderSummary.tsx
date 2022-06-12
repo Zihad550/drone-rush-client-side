@@ -2,16 +2,22 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { Button, Checkbox, Paper, TextField, Typography } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import { SelectChangeEvent } from "@mui/material/Select";
 import { Box } from "@mui/system";
 import { useState } from "react";
 
-const OrderSummary = () => {
-  const [age, setAge] = useState("");
+const OrderSummary = ({
+  totalPrice,
+  shippingInformations,
+  paymentMethod,
+}: {
+  totalPrice: number;
+  shippingInformations: {};
+  paymentMethod: string;
+}) => {
   const [showCoupons, setShowCoupons] = useState(false);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
+  const handlePlaceOrder = () => {
+    console.log("order placed");
   };
   return (
     <Paper sx={{ p: 3, ml: 3 }}>
@@ -61,12 +67,16 @@ const OrderSummary = () => {
       >
         <Typography variant="body1">Total</Typography>
         <Typography variant="body1" sx={{ fontSize: 40 }}>
-          $ 11.42
+          $ {totalPrice}
         </Typography>
       </Box>
 
       {/* place order */}
-      <Button variant="contained" sx={{ color: "white", width: "100%" }}>
+      <Button
+        onClick={handlePlaceOrder}
+        variant="contained"
+        sx={{ color: "white", width: "100%" }}
+      >
         Place Order
       </Button>
     </Paper>

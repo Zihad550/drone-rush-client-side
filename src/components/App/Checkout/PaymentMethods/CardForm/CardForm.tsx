@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import {
   CardElement,
   Elements,
@@ -6,49 +7,49 @@ import {
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
+import Spinner from "components/Shared/Spinner";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "redux/store";
 
-const stripePromise = loadStripe(
-  "pk_test_51Jw3kbLVgc5NjgAR409h6hUSTdwq0as9kKvYXXSPiqob358eiEBtMgyg5cQGCVv90ObujNsQenPXuAZpU0Rg1kP900aqI4I95q"
-);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY || "");
 
 const CardEl = ({ totalPrice }: { totalPrice: number }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { data: user } = useSelector((state: AppState) => state.auth);
   const [clientSecret, setClientSecret] = useState("");
+  console.log(clientSecret);
 
   useEffect(() => {
     (async () => {
-      setClientSecret(
-        await axios
-          .post("http://localhost:8000/create-checkout-session", {
-            headers: {
-              Authorization: `Bearer ${user?.accessToken}`,
-            },
-            data: { price: totalPrice },
-          })
-          .then((res) => res.data)
-      );
+      // setClientSecret(
+      await axios("http://localhost:8000/create-checkout-session", {
+        method: "POST",
+        /* headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_STRIPE_KEY}`,
+        }, */
+        data: { price: totalPrice },
+      }).then((res) => console.log(res.data));
+      // );
     })();
-  }, [totalPrice]);
+  }, [totalPrice, user]);
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+    console.log("here");
 
     if (!stripe || !elements) return;
-
+    console.log("here2", elements);
     const card = elements.getElement(CardElement);
-
+    console.log(card);
     if (card == null) return;
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card,
     });
-
+    console.log("here 3");
     if (error) {
       console.log("stripe-error", error);
     } else {
@@ -56,37 +57,39 @@ const CardEl = ({ totalPrice }: { totalPrice: number }) => {
     }
   };
   return (
-    <Elements stripe={stripePromise}>
-      <form onSubmit={handleSubmit}>
-        <CardElement
-          options={{
-            style: {
-              base: {
-                fontSize: "16px",
-                color: "#424770",
-                "::placeholder": {
-                  color: "#aab7c4",
-                },
-              },
-              invalid: {
-                color: "#9e2146",
+    // <Elements stripe={stripePromise}>
+    <form onSubmit={handleSubmit}>
+      <CardElement
+        options={{
+          style: {
+            base: {
+              fontSize: "16px",
+              color: "#424770",
+              "::placeholder": {
+                color: "#aab7c4",
               },
             },
-          }}
-        />
-        <button type="submit" disabled={!stripe}>
-          Pay
-        </button>
-      </form>
-    </Elements>
+            invalid: {
+              color: "#9e2146",
+            },
+          },
+        }}
+      />
+      <Button variant="outlined" type="submit" disabled={!stripe}>
+        Pay
+      </Button>
+    </form>
+    // </Elements>
   );
 };
 
 const CardForm = ({ totalPrice }: { totalPrice: number }) => {
-  return (
+  return totalPrice ? (
     <Elements stripe={stripePromise}>
       <CardEl totalPrice={totalPrice} />
     </Elements>
+  ) : (
+    <Spinner />
   );
 };
 

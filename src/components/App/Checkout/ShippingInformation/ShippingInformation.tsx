@@ -2,8 +2,21 @@ import { Box, Paper, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import PhoneInput from "react-phone-number-input";
 import "./ShippingInformation.css";
-const ShippingInformation = () => {
+const ShippingInformation = ({
+  shippingInformations,
+  setShippingInformations,
+}: {
+  shippingInformations: {};
+  setShippingInformations: React.Dispatch<React.SetStateAction<{}>>;
+}) => {
   const [phoneNumber, setPhoneNumber] = useState();
+  console.log(shippingInformations);
+
+  const handleInputData = (e: React.FocusEvent<HTMLInputElement>) => {
+    const newInformations: any = { ...shippingInformations };
+    newInformations[e.target.name] = e.target.value;
+    setShippingInformations(newInformations);
+  };
   return (
     <Paper sx={{ p: 3 }}>
       <Typography variant="h5" sx={{ fontWeight: "bold", mb: 2 }}>
@@ -18,15 +31,18 @@ const ShippingInformation = () => {
             sx={{ width: "50%" }}
             variant="outlined"
             label="Name"
+            name="name"
             size="small"
             required
+            onBlur={handleInputData}
           />
           <PhoneInput
             required
             className="phone-input"
+            name="phone"
             placeholder="Phone"
             value={phoneNumber}
-            onChange={(e: any) => setPhoneNumber(e?.target.value)}
+            onChange={(e: any) => setPhoneNumber(e)}
           />
         </Box>
 
@@ -39,13 +55,17 @@ const ShippingInformation = () => {
               required
               type="text"
               label="Street, house/apartment/unit"
+              name="street"
               size="small"
               sx={{ width: "100%" }}
+              onBlur={handleInputData}
             />
             <TextField
               size="small"
               type="text"
               label="Apt, Suite, Unit, etc. (Optional)"
+              name="apt"
+              onBlur={handleInputData}
               sx={{ width: "100%", ml: 3 }}
             />
           </Box>
@@ -54,29 +74,37 @@ const ShippingInformation = () => {
               required
               type="text"
               label="Country"
+              name="country"
               size="small"
               sx={{ width: "100%" }}
+              onBlur={handleInputData}
             />
             <TextField
               required
               type="text"
               label="State/Province/Region"
+              name="state"
               size="small"
               sx={{ width: "100%", ml: 3 }}
+              onBlur={handleInputData}
             />
             <TextField
               required
               type="text"
               label="City"
+              name="city"
               size="small"
               sx={{ width: "100%", ml: 3 }}
+              onBlur={handleInputData}
             />
             <TextField
               required
-              type="text"
+              type="number"
               label="Zip Code"
+              name="zipCode"
               size="small"
               sx={{ width: "100%", ml: 3 }}
+              onBlur={handleInputData}
             />
           </Box>
         </Box>
