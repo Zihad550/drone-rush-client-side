@@ -4,21 +4,22 @@ import { Button, Checkbox, Paper, TextField, Typography } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { Box } from "@mui/system";
 import { useState } from "react";
+import IShippingInfo from "types/ShippingInfoType";
 
 const OrderSummary = ({
   totalPrice,
-  shippingInformations,
   paymentMethod,
+  shippingInformations,
 }: {
   totalPrice: number;
-  shippingInformations: {};
   paymentMethod: string;
+  shippingInformations: IShippingInfo;
 }) => {
   const [showCoupons, setShowCoupons] = useState(false);
-
   const handlePlaceOrder = () => {
-    console.log("order placed");
+    if (!paymentMethod) return alert("Please! select a payment method");
   };
+
   return (
     <Paper sx={{ p: 3, ml: 3 }}>
       <Typography variant="h4" sx={{ fontWeight: "bold", mb: 1 }}>

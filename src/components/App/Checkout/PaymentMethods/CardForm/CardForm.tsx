@@ -6,9 +6,8 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import axios from "axios";
 import Spinner from "components/Shared/Spinner";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "redux/store";
 
@@ -20,20 +19,6 @@ const CardEl = ({ totalPrice }: { totalPrice: number }) => {
   const { data: user } = useSelector((state: AppState) => state.auth);
   const [clientSecret, setClientSecret] = useState("");
   console.log(clientSecret);
-
-  useEffect(() => {
-    (async () => {
-      // setClientSecret(
-      await axios("http://localhost:8000/create-checkout-session", {
-        method: "POST",
-        /* headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_STRIPE_KEY}`,
-        }, */
-        data: { price: totalPrice },
-      }).then((res) => console.log(res.data));
-      // );
-    })();
-  }, [totalPrice, user]);
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
