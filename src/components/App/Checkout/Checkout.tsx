@@ -3,7 +3,7 @@ import { Container } from "@mui/system";
 import Spinner from "components/Shared/Spinner";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { AppState } from "redux/store";
 import IShippingInfo from "types/ShippingInfoType";
 import OrderSummary from "./OrderSummary";
@@ -15,6 +15,7 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState("COD");
   const { data: user } = useSelector((state: AppState) => state.auth);
   const [hasShippingInfo, setHasShippingInfo] = useState(false);
+  const navigate = useNavigate();
   const [shippingInformations, setShippingInformations] =
     useState<IShippingInfo>({
       customerName: "",
@@ -39,6 +40,7 @@ const Checkout = () => {
         if (data) {
           setShippingInformations(data);
           setHasShippingInfo(true);
+          navigate("/orderPlaced");
         }
       });
   }, [user?.email]);

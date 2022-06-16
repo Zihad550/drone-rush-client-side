@@ -1,6 +1,5 @@
 import { Checkbox, FormControlLabel, Paper, Typography } from "@mui/material";
 import React, { useState } from "react";
-import CardForm from "./CardForm";
 
 const PaymentMethods = ({
   totalPrice,
@@ -27,10 +26,10 @@ const PaymentMethods = ({
         checked={isCOD}
         label="COD (Cash On Delivery)"
       />
-      <Typography sx={{ display: "block" }} variant="caption">
+      {/* <Typography sx={{ display: "block" }} variant="caption">
         or, Pay with card
       </Typography>
-      <CardForm totalPrice={totalPrice} />
+      <CardForm totalPrice={totalPrice} /> */}
     </Paper>
   );
 };

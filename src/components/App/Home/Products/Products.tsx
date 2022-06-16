@@ -1,6 +1,5 @@
 import { Container, Grid, Typography } from "@mui/material";
 import Spinner from "components/Shared/Spinner";
-import React from "react";
 import IProduct from "types/ProductType";
 import Product from "./Product";
 

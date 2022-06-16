@@ -3,7 +3,11 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { Button, Checkbox, Paper, TextField, Typography } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { Box } from "@mui/system";
+import axios from "axios";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCart } from "redux/actions/cartAction";
+import { AppState } from "redux/store";
 import IShippingInfo from "types/ShippingInfoType";
 
 const OrderSummary = ({
@@ -16,8 +20,35 @@ const OrderSummary = ({
   shippingInformations: IShippingInfo;
 }) => {
   const [showCoupons, setShowCoupons] = useState(false);
+  const cartProducts = useSelector((state: AppState) => state.cart);
+  const { data: user } = useSelector((state: AppState) => state.auth);
+  const dispatch = useDispatch();
   const handlePlaceOrder = () => {
+    // if the payment method is not selected then don't place order
     if (!paymentMethod) return alert("Please! select a payment method");
+
+    // collect details
+    const orderDetails = {
+      ...shippingInformations,
+      paymentMethod,
+      products: cartProducts,
+    };
+
+    // place order
+    axios({
+      method: "POST",
+      url: "http://localhost:8000/order",
+      headers: {
+        Authorization: `Bearer ${user?.accessToken}`,
+      },
+      data: orderDetails,
+    }).then((res) => {
+      console.log(res.data);
+      if (res.data.insertedId) {
+        dispatch(clearCart());
+        console.log(res.data);
+      }
+    });
   };
 
   return (
