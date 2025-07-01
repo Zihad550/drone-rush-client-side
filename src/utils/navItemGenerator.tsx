@@ -2,7 +2,7 @@
 import type { INavItem, IUserPath } from "@/types/router.type";
 
 const generatePath = ({ role, path }: { role?: string; path?: string }) => {
-  if (role) return `/${role}/${path}`;
+  if (role) return `/${role}/dashboard/${path}`;
   else if (path) return `/${path}`;
   else return "/";
 };
@@ -13,12 +13,12 @@ export const navItemGenerator = (paths: IUserPath[], role?: string) => {
       acc.push({
         key: cur.name,
         path: generatePath({ role, path: cur.path }),
+        icon: cur.icon,
       });
     }
     if (cur.children) {
       acc.push({
         key: cur.name as string,
-        label: cur.name,
         path: cur.path as string,
         children: cur.children
           .map((child) => {

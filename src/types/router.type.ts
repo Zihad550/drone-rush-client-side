@@ -5,16 +5,17 @@ export interface IUserPath {
   path?: string;
   element?: ReactNode;
   children?: { name?: string; path: string; element: ReactNode }[];
+  icon?: ReactNode;
 }
 
 export interface IRoute {
   path: string;
   element: ReactNode;
-  index?: boolean;
 }
 
 export interface INavItem {
   key: string;
   path: string;
+  icon?: ReactNode;
   children?: { key: string; path: string }[];
 }

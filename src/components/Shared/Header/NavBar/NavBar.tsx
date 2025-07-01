@@ -1,12 +1,6 @@
-import {
-  logout,
-  selectToken,
-  type IUser,
-} from "@/redux/features/auth/authSlice";
+import { logout, selectToken } from "@/redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { adminPaths } from "@/routes/admin.routes";
 import { publicPaths } from "@/routes/public.routes";
-import { userPaths } from "@/routes/user.routes";
 import type { INavItem } from "@/types";
 import { navItemGenerator } from "@/utils/navItemGenerator";
 import { verifyToken } from "@/utils/verifyToken";
@@ -23,7 +17,6 @@ import {
   Button,
   Container,
   Divider,
-  Link,
   ListItemButton,
   TextField,
   Typography,
@@ -40,11 +33,6 @@ import UserMenu from "../UserMenu/UserMenu";
 
 const drawerWidth = 200;
 
-const userRole = {
-  ADMIN: "admin",
-  USER: "user",
-};
-
 function NavBar() {
   const token = useAppSelector(selectToken);
   const dispatch = useAppDispatch();
@@ -59,23 +47,14 @@ function NavBar() {
   let user;
   if (token) {
     try {
-      user = verifyToken(token);
+      const verified = verifyToken(token);
+      user = verified?.user;
     } catch (err) {
       dispatch(logout());
     }
   }
 
-  let pages: INavItem[] = [];
-  switch ((user as IUser)?.role) {
-    case userRole.ADMIN:
-      pages = navItemGenerator(adminPaths, userRole.ADMIN);
-      break;
-    case userRole.USER:
-      pages = navItemGenerator(userPaths, userRole.ADMIN);
-      break;
-    default:
-      pages = navItemGenerator(publicPaths);
-  }
+  const pages: INavItem[] = navItemGenerator(publicPaths);
 
   const drawer = (
     <div>

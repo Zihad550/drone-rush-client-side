@@ -8,7 +8,6 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "../store";
 
-console.log(import.meta.env.VITE_APP_API_URL);
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_APP_API_URL,
   prepareHeaders: (headers, { getState }) => {

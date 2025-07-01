@@ -7,17 +7,20 @@ import Pay from "@/pages/Pay";
 import Purchase from "@/pages/Purchase";
 import Wishlist from "@/pages/Wishlist";
 import type { IUserPath } from "@/types";
+import { Inventory, ShoppingBasket } from "@mui/icons-material";
 
 export const userDashboardPaths: IUserPath[] = [
   {
     path: "myOrders",
     name: "My Orders",
     element: <MyOrders />,
+    icon: <Inventory />,
   },
   {
     path: "purchased",
     name: "Purchased",
     element: <Purchased />,
+    icon: <ShoppingBasket />,
   },
 ];
 

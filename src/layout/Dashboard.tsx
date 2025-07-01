@@ -19,7 +19,15 @@ import Typography from "@mui/material/Typography";
 import DashboardDrawer from "@/components/Shared/DashboardDrawer";
 import DashboardHeader from "@/components/Shared/DashboardHeader";
 import { useState } from "react";
-import { Outlet, useNavigate } from "react-router";
+import { NavLink, Outlet, useNavigate } from "react-router";
+import { useAppSelector } from "@/redux/hooks";
+import { selectToken } from "@/redux/features/auth/authSlice";
+import { verifyToken } from "@/utils/verifyToken";
+import { navItemGenerator } from "@/utils/navItemGenerator";
+import { userDashboardPaths, userPaths } from "@/routes/user.routes";
+import type { INavItem } from "@/types";
+import { USER_ROLE } from "@/constants";
+import { adminPaths } from "@/routes/admin.routes";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -29,7 +37,8 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-const UserDashboard = () => {
+const Dashboard = () => {
+  const token = useAppSelector(selectToken);
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -42,20 +51,22 @@ const UserDashboard = () => {
     setOpen(false);
   };
 
-  const pages = [
-    {
-      id: 1,
-      name: "My Orders",
-      link: "/dashboard/myOrders",
-      icon: <InventoryIcon />,
-    },
-    {
-      id: 2,
-      name: "Purchased Products",
-      link: "/dashboard/purchased",
-      icon: <ShoppingBasketIcon />,
-    },
-  ];
+  let user;
+  if (token) {
+    const verified = verifyToken(token);
+    user = verified?.user;
+  }
+
+  let pages: INavItem[] = [];
+
+  switch (user?.role) {
+    case USER_ROLE.ADMIN:
+      pages = navItemGenerator(adminPaths, USER_ROLE.ADMIN);
+      break;
+    case USER_ROLE.USER:
+      pages = navItemGenerator(userDashboardPaths, USER_ROLE.USER);
+      break;
+  }
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -75,7 +86,7 @@ const UserDashboard = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
+            Dashboard
           </Typography>
         </Toolbar>
       </DashboardHeader>
@@ -92,14 +103,15 @@ const UserDashboard = () => {
         <Divider />
         <List>
           {pages.map((page) => (
-            <ListItem key={page.id} disablePadding sx={{ display: "block" }}>
+            <ListItem key={page.key} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
                   px: 2.5,
                 }}
-                onClick={() => navigate(page.link)}
+                component={NavLink}
+                to={page.path}
               >
                 <ListItemIcon
                   sx={{
@@ -111,7 +123,7 @@ const UserDashboard = () => {
                   {page.icon}
                 </ListItemIcon>
                 <ListItemText
-                  primary={page.name}
+                  primary={page.key}
                   sx={{ opacity: open ? 1 : 0 }}
                 />
               </ListItemButton>
@@ -149,4 +161,4 @@ const UserDashboard = () => {
   );
 };
 
-export default UserDashboard;
+export default Dashboard;

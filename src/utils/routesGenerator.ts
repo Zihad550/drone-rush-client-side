@@ -8,6 +8,7 @@ export const routeGenerator = (paths: IUserPath[]) => {
         element: cur.element,
       });
     }
+
     if (cur.children) {
       cur.children.forEach((child) => {
         acc.push({

@@ -1,4 +1,4 @@
-export default interface IUser {
+export default interface IAppUser {
   name: string;
   email: string;
   role: string;
