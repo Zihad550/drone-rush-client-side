@@ -57,10 +57,8 @@ const OurTeam = () => {
       <Grid container spacing={2}>
         {members.map((member) => (
           <Grid
-            item
-            xs={12}
-            sm={6}
-            md={3}
+            key={member.id}
+            size={{ xs: 12, sm: 6, md: 3 }}
             className="team"
             sx={{ mb: { xs: 5, md: 0 } }}
           >

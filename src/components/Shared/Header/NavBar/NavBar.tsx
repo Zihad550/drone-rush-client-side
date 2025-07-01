@@ -1,3 +1,11 @@
+import { selectToken, type IUser } from "@/redux/features/auth/authSlice";
+import { useAppSelector } from "@/redux/hooks";
+import { adminPaths } from "@/routes/admin.routes";
+import { publicPaths } from "@/routes/public.routes";
+import { userPaths } from "@/routes/user.routes";
+import type { INavItem } from "@/types";
+import { navItemGenerator } from "@/utils/navItemGenerator";
+import { verifyToken } from "@/utils/verifyToken";
 import FacebookRoundedIcon from "@mui/icons-material/FacebookRounded";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -26,6 +34,11 @@ import { useNavigate } from "react-router";
 
 const drawerWidth = 200;
 
+const userRole = {
+  ADMIN: "admin",
+  USER: "user",
+};
+
 function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -35,29 +48,23 @@ function NavBar() {
 
   const navigate = useNavigate();
 
-  const pages = [
-    {
-      id: 1,
-      name: "Home",
-      link: "/",
-    },
-    {
-      id: 2,
-      name: "All Drones",
-      link: "/drones",
-    },
+  const token = useAppSelector(selectToken);
+  let user;
+  if (token) {
+    user = verifyToken(token);
+  }
 
-    {
-      id: 4,
-      name: "About Us",
-      link: "/aboutUs",
-    },
-    {
-      id: 5,
-      name: "Contact Us",
-      link: "/contactUs",
-    },
-  ];
+  let pages: INavItem[] = [];
+  switch ((user as IUser)?.role) {
+    case userRole.ADMIN:
+      pages = navItemGenerator(adminPaths, userRole.ADMIN);
+      break;
+    case userRole.USER:
+      pages = navItemGenerator(userPaths, userRole.ADMIN);
+      break;
+    default:
+      pages = navItemGenerator(publicPaths);
+  }
 
   const drawer = (
     <div>
@@ -69,8 +76,12 @@ function NavBar() {
       <Divider />
       <List>
         {pages.map((page) => (
-          <ListItemButton key={page.id} onClick={() => navigate(page.link)}>
-            {page.name}
+          <ListItemButton
+            // LinkComponent={page.label}
+            key={page.key}
+            onClick={() => navigate(page.path)}
+          >
+            {page.key}
           </ListItemButton>
         ))}
       </List>
@@ -127,7 +138,7 @@ function NavBar() {
               >
                 {pages.map((page) => (
                   <Button
-                    key={page.id}
+                    key={page.key}
                     sx={{
                       color: "white",
                       fontSize: 17,
@@ -135,9 +146,9 @@ function NavBar() {
                       display: "block",
                       mx: 3,
                     }}
-                    onClick={() => navigate(page.link)}
+                    onClick={() => navigate(page.path)}
                   >
-                    {page.name}
+                    {page.key}
                   </Button>
                 ))}
               </Box>

@@ -42,11 +42,8 @@ const WhyUs = () => {
       <Grid container spacing={2}>
         {services.map((service) => (
           <Grid
-            item
-            xs={6}
-            sm={4}
-            md={2.4}
-            lg={2.4}
+            key={service.id}
+            style={{ xs: 6, sm: 4, md: 2.4, lg: 2.4 }}
             sx={{
               display: "flex",
               flexDirection: "column",

@@ -14,17 +14,13 @@ import ProtectedRoute from "@/layout/ProtectedRoute";
 import { routeGenerator } from "@/utils/routesGenerator";
 import { userDashboardPaths, userPaths } from "./user.routes";
 import { adminPaths } from "./admin.routes";
+import { publicPaths } from "./public.routes";
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component: App,
-    children: [
-      {
-        index: true,
-        Component: Home,
-      },
-    ],
+    children: routeGenerator(publicPaths),
   },
   {
     path: "/user/dashboard",
@@ -49,10 +45,7 @@ const router = createBrowserRouter([
     Component: UserDashboard,
     children: routeGenerator(userPaths),
   },
-  {
-    path: "/drones",
-    Component: Drones,
-  },
+
   {
     path: "/login",
     Component: Login,
@@ -61,18 +54,7 @@ const router = createBrowserRouter([
     path: "/register",
     Component: Register,
   },
-  {
-    path: `/details/:id`,
-    Component: Details,
-  },
-  {
-    path: "/contactUs",
-    Component: ContactUs,
-  },
-  {
-    path: "/aboutUs",
-    Component: AboutUs,
-  },
+
   {
     path: "*",
     element: <div>Page Not Found</div>,

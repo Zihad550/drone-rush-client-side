@@ -3,6 +3,8 @@ import { Suspense } from "react";
 import "react-phone-number-input/style.css";
 import Spinner from "./components/Shared/Spinner";
 import { Outlet } from "react-router";
+import NavBar from "./components/Shared/Header/NavBar";
+import MainLayout from "./layout/MainLayout";
 
 const theme = createTheme({
   typography: {
@@ -28,7 +30,7 @@ const App = () => {
   return (
     <Suspense fallback={<Spinner />}>
       <ThemeProvider theme={theme}>
-        <Outlet />
+        <MainLayout />
       </ThemeProvider>
     </Suspense>
   );

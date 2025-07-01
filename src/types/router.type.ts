@@ -10,4 +10,12 @@ export interface IUserPath {
 export interface IRoute {
   path: string;
   element: ReactNode;
+  index?: boolean;
+}
+
+export interface INavItem {
+  key: string;
+  label?: ReactNode;
+  path: string;
+  children?: { key: string; label?: ReactNode; path: string }[];
 }

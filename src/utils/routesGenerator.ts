@@ -1,10 +1,10 @@
-import type { IRoute, IUserPaths } from "@/types";
+import type { IRoute, IUserPath } from "@/types";
 
-export const routeGenerator = (paths: IUserPaths[]) => {
+export const routeGenerator = (paths: IUserPath[]) => {
   const routes = paths.reduce<IRoute[]>((acc, cur) => {
-    if (cur.path && cur.element) {
+    if (cur.element) {
       acc.push({
-        path: cur.path,
+        path: cur.path ?? "",
         element: cur.element,
       });
     }

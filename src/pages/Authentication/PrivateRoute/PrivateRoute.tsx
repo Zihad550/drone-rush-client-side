@@ -10,7 +10,6 @@ const PrivateRoute = ({
   children: React.ReactElement;
 }) => {
   const { data: user } = useSelector((state: AppState) => state.auth);
-  console.log(user);
   const location = useLocation();
 
   if (user) return children;

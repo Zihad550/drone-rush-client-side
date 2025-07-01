@@ -1,5 +1,4 @@
-import { Container, Grid, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import Address from "./Address";
 import FooterNav from "./FooterNav";
 
@@ -106,7 +105,7 @@ const Footer = () => {
       <Container sx={{ width: "100%" }}>
         <Grid container spacing={{ xs: 2, md: 3 }}>
           {/* about & address */}
-          <Grid item lg={4} md={6} xs={12} sx={{ textAlign: "left" }}>
+          <Grid size={{ lg: 4, md: 6, xs: 12 }} sx={{ textAlign: "left" }}>
             {/* about */}
             <Typography
               sx={{ fontFamily: "'Courgette', cursive" }}
@@ -124,23 +123,32 @@ const Footer = () => {
           </Grid>
 
           {/* quick links */}
-          <Grid item lg={2.33} md={6} sm={6} xs={12} sx={{ textAlign: "left" }}>
+          <Grid
+            size={{ lg: 2.33, md: 6, sm: 6, xs: 12 }}
+            sx={{ textAlign: "left" }}
+          >
             <FooterNav navs={quickNavs} subtitle="Company" />
           </Grid>
 
           {/* account links */}
-          <Grid item lg={2.33} md={6} sm={6} xs={12} sx={{ textAlign: "left" }}>
+          <Grid
+            size={{ lg: 2.33, md: 6, sm: 6, xs: 12 }}
+            sx={{ textAlign: "left" }}
+          >
             <FooterNav navs={accountNavs} title="Account" />
           </Grid>
 
           {/* corporate links */}
-          <Grid item lg={2.33} md={6} sm={6} xs={12} sx={{ textAlign: "left" }}>
+          <Grid
+            size={{ lg: 2.33, md: 6, sm: 6, xs: 12 }}
+            sx={{ textAlign: "left" }}
+          >
             <FooterNav navs={corporateNavs} title="Corporate" />
           </Grid>
 
           {/* copyright */}
-          <Grid item md={12} xs={12} sx={{ textAlign: "center" }}>
-            <Typography variant="body2" sx={{ testAlign: "center" }}>
+          <Grid size={{ lg: 4, md: 6, xs: 12 }} sx={{ textAlign: "center" }}>
+            <Typography variant="body2" sx={{ textAlign: "center" }}>
               &copy; 2022 Drone Rush. All rights reserved.
             </Typography>
           </Grid>

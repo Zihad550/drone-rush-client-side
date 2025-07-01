@@ -13,14 +13,14 @@ const Features = () => {
       src: feature1,
     },
     {
-      id: 1,
+      id: 2,
       title: "Mobile Device Supported",
       about:
         "When an unknown printer took a galley of type and scrambled it to make.",
       src: feature2,
     },
     {
-      id: 1,
+      id: 3,
       title: "Mobile Device Supported",
       about:
         "When an unknown printer took a galley of type and scrambled it to make.",
