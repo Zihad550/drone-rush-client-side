@@ -1,31 +1,17 @@
-import { applyMiddleware, combineReducers, createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
-import { persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import ReduxThunk from "redux-thunk";
-import authReducer from "./reducers/authReducer";
-import cartReducer from "./reducers/cartReducer";
-import wishlistReducer from "./reducers/wishlistReducer";
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "./features/auth/authSlice";
+import { baseApi } from "./api/baseApi";
 
-const persistConfig = {
-  key: "root",
-  storage,
-  // blacklist: ["auth"],
-};
-
-const rootReducer = combineReducers({
-  cart: cartReducer,
-  auth: authReducer,
-  wishlist: wishlistReducer,
+export const store = configureStore({
+  reducer: {
+    auth: authReducer,
+    [baseApi.reducerPath]: baseApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(baseApi.middleware),
 });
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-const store = createStore(
-  persistedReducer,
-  composeWithDevTools(applyMiddleware(ReduxThunk))
-);
-
-export const persistor = persistStore(store);
-export type AppState = ReturnType<typeof rootReducer>;
-export default store;
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>;
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch;

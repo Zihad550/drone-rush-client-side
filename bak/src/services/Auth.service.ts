@@ -1,6 +1,6 @@
 import IRegisterData from "types/RegisterType";
-import { ILoginData } from "../types/LoginType";
-import IUser from "../types/UserType";
+import { ILoginData } from "../../../src/types/LoginType";
+import IUser from "../../../src/types/UserType";
 import httpReq from "./http.service";
 
 class AuthService {

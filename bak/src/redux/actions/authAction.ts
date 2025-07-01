@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import IRegisterData from "types/RegisterType";
 import AuthService from "../../services/Auth.service";
-import { ILoginData } from "../../types/LoginType";
+import { ILoginData } from "../../../../src/types/LoginType";
 import { authActionType, authActionTypes } from "../types";
 
 export const register = (payload: IRegisterData) => {
@@ -12,7 +12,7 @@ export const register = (payload: IRegisterData) => {
         dispatch({
           type: authActionTypes.REGISTER_SUCCESS,
           payload: user,
-        })
+        }),
       )
       .catch((error) => {
         dispatch({

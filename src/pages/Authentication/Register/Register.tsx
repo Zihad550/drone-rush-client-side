@@ -8,13 +8,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { ChangeEvent, useState } from "react";
+import React, { useState } from "react";
+import type { ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
-import { NavLink, useNavigate } from "react-router-dom";
-import { register } from "redux/actions/authAction";
-import { AppState } from "redux/store";
+import { NavLink, useNavigate } from "react-router";
 import loginImage from "../../../../images/login.jpg";
+import { useAppSelector } from "@/redux/hooks";
+import { selectUser } from "@/redux/features/auth/authSlice";
 
 type LoginData = {
   password: string;
@@ -30,16 +31,16 @@ const Register = () => {
     email: "",
   });
 
-  const { data: user, error } = useSelector((state: AppState) => state.auth);
+  const user = useAppSelector(selectUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { state }: any = useLocation();
+  const { state } = useLocation();
   if (user) navigate(state?.from || "/");
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const field = e.target.name;
     const value = e.target.value;
-    const newLoginData: any = { ...registerData };
+    const newLoginData = { ...registerData };
     newLoginData[field] = value;
     setRegisterData(newLoginData);
   };
@@ -54,7 +55,7 @@ const Register = () => {
           name: registerData.name,
           email: registerData.email,
           password: registerData.password,
-        })
+        }),
       );
     }
   };
@@ -71,12 +72,12 @@ const Register = () => {
       >
         <Grid
           sx={{ display: "flex", flexDirection: "column" }}
-          item
-          xs={12}
-          md={6}
+          size={{
+            xs: 12,
+            md: 6,
+          }}
         >
           <Typography variant="h6">Register</Typography>
-
           <>
             <form onSubmit={handleRegister}>
               <TextField
