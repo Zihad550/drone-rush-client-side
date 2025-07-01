@@ -11,8 +11,6 @@ const Drones = () => {
 
   const { data, isLoading } = useGetProductsQuery(page);
 
-  console.log("call", data);
-
   if (isLoading) return <Spinner />;
 
   const handleCurrentPage = (e: React.ChangeEvent<unknown>, value: number) => {

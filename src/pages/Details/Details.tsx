@@ -15,26 +15,22 @@ import {
 // import { useNavigate, useParams } from "react-router";
 // import IProduct from "@/types/ProductType";
 import RatingChart from "./RatingChart";
+import { useParams } from "react-router";
+import { useGetProductQuery } from "@/redux/features/product/productApi";
+import Spinner from "@/components/Shared/Spinner";
 
-const Details = () => {
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  // const { id } = useParams();
-  // const { data } = useAPI<IProduct>(() =>
-  //   ProductService.getProduct(id as string)
-  // );
-  // const { data: user } = useSelector((state: AppState) => state.auth);
-  // if (!data) return <Spinner />;
+const calculateRatings = (ratings: number[]) => {
+  if (!ratings.length)
+    return {
+      totalRatings: 0,
+      averageRating: 0,
+      fiveStars: 0,
+      fourStars: 0,
+      threeStars: 0,
+      twoStars: 0,
+      oneStars: 0,
+    };
 
-  const data = {
-    img: "https://example.com/image.jpg",
-    name: "Product Name",
-    price: 100,
-    reviews: [{ rating: 4 }, { rating: 5 }, { rating: 3 }],
-    brand: "Brand Name",
-  };
-  const { img, name, price, reviews, brand } = data;
-  const ratings: number[] = reviews.map((review) => Number(review.rating));
   const totalRatings: number = ratings.length;
   const averageRating: number =
     Number(ratings.reduce((previous, current) => previous + current)) /
@@ -45,6 +41,44 @@ const Details = () => {
   const twoStars = ratings.filter((rating) => rating === 2).length;
   const oneStars = ratings.filter((rating) => rating === 1).length;
 
+  return {
+    totalRatings,
+    averageRating,
+    fiveStars,
+    fourStars,
+    threeStars,
+    twoStars,
+    oneStars,
+  };
+};
+
+const Details = () => {
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  // const { data } = useAPI<IProduct>(() =>
+  //   ProductService.getProduct(id as string)
+  // );
+  // const { data: user } = useSelector((state: AppState) => state.auth);
+  // if (!data) return <Spinner />;
+
+  const { id } = useParams();
+  const { data, isLoading } = useGetProductQuery(id as string);
+
+  if (isLoading) return <Spinner />;
+
+  const { img, name, price, reviews, brand } = data.data;
+  const ratings: number[] =
+    reviews.map((review) => Number(review.rating)) || [];
+
+  const {
+    totalRatings,
+    averageRating,
+    fiveStars,
+    fourStars,
+    threeStars,
+    twoStars,
+    oneStars,
+  } = calculateRatings(ratings);
   return (
     <Box sx={{ background: "#f2eef5" }}>
       <Container maxWidth="md">
@@ -184,13 +218,13 @@ const Details = () => {
           {/* all reviews */}
           <Box sx={{ mt: 5 }}>
             <Typography variant="body1">Product Reviews</Typography>
-            {/* {reviews.map((review) => (
+            {reviews.map((review) => (
               <Box sx={{ mt: 2 }}>
                 <Rating value={Number(review.rating)} readOnly />
                 <Typography variant="body2">by {review.user}</Typography>
                 <Typography variant="body1">{review.comment}</Typography>
               </Box>
-            ))} */}
+            ))}
           </Box>
         </Paper>
       </Container>

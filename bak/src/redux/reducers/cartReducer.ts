@@ -3,12 +3,12 @@ import { cartActionType, cartActionTypes } from "../types";
 
 const cartReducer = (
   state: IProduct[] = [],
-  action: cartActionType
+  action: cartActionType,
 ): IProduct[] => {
   switch (action.type) {
     case cartActionTypes.ADD_TO_CART:
       const existingProduct: any = state.find(
-        (product) => product._id === action.payload._id
+        (product) => product._id === action.payload._id,
       );
 
       if (!existingProduct) {
@@ -22,7 +22,7 @@ const cartReducer = (
         ];
       }
       const cartProducts = state.filter(
-        (product) => product._id !== existingProduct._id
+        (product) => product._id !== existingProduct._id,
       );
       return [
         ...cartProducts,
@@ -35,11 +35,10 @@ const cartReducer = (
 
     case cartActionTypes.INCREASE_QTY:
       const product: any = state.find(
-        (product) => product._id === action.payload
+        (product) => product._id === action.payload,
       );
-      console.log(product);
       const index = state.findIndex(
-        (product) => product._id === action.payload
+        (product) => product._id === action.payload,
       );
       state[index].qty = product.qty + 1;
       state[index].totalPrice = product.totalPrice + Number(product.price);
@@ -52,7 +51,7 @@ const cartReducer = (
         return state.filter((product) => product._id !== action.payload);
       }
       const productIndex = state.findIndex(
-        (product) => product._id === action.payload
+        (product) => product._id === action.payload,
       );
       if (product2.qty && product2.totalPrice) {
         state[productIndex].qty = product2.qty - 1;

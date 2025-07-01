@@ -46,9 +46,7 @@ const Login = () => {
     e.preventDefault();
     const toastId = toast.loading("Logging in");
     try {
-      console.log(loginData);
       const res = await login(loginData).unwrap();
-      console.log(res);
       toast.success("Logged in", { id: toastId, duration: 2000 });
       const verified = verifyToken(res.data.accessToken);
       dispatch(setUser({ user: verified?.user, token: res.data.accessToken }));
@@ -58,7 +56,6 @@ const Login = () => {
       // !! change to proper type
       // dispatch<any>(login(loginData));
     } catch (err) {
-      console.log(err);
       toast.error("Something went wrong", { id: toastId, duration: 2000 });
     }
   };

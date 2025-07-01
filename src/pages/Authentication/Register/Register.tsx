@@ -57,7 +57,6 @@ const Register = () => {
           id: toastId,
         });
       } else {
-        console.log({ registerData });
         const res = await register({
           name: registerData.name,
           email: registerData.email,

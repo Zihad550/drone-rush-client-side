@@ -14,7 +14,13 @@ const authApi = baseApi.injectEndpoints({
       },
       providesTags: ["products"],
     }),
+    getProduct: build.query({
+      query: (id: string) => ({
+        url: `/products/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetProductsQuery } = authApi;
+export const { useGetProductsQuery, useGetProductQuery } = authApi;
