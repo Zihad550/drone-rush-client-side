@@ -6,6 +6,7 @@ import { store } from "./redux/store.ts";
 import { RouterProvider } from "react-router";
 import router from "./routes/index.tsx";
 import { CssBaseline } from "@mui/material";
+import { Toaster } from "sonner";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -13,5 +14,6 @@ createRoot(document.getElementById("root")!).render(
       <CssBaseline />
       <RouterProvider router={router} />
     </Provider>
+    <Toaster />
   </StrictMode>,
 );

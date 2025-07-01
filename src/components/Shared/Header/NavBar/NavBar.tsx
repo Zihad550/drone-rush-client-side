@@ -1,5 +1,9 @@
-import { selectToken, type IUser } from "@/redux/features/auth/authSlice";
-import { useAppSelector } from "@/redux/hooks";
+import {
+  logout,
+  selectToken,
+  type IUser,
+} from "@/redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { adminPaths } from "@/routes/admin.routes";
 import { publicPaths } from "@/routes/public.routes";
 import { userPaths } from "@/routes/user.routes";
@@ -30,8 +34,9 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import Toolbar from "@mui/material/Toolbar";
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
+import UserMenu from "../UserMenu/UserMenu";
 
 const drawerWidth = 200;
 
@@ -41,18 +46,23 @@ const userRole = {
 };
 
 function NavBar() {
+  const token = useAppSelector(selectToken);
+  const dispatch = useAppDispatch();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleDrawerToggle = () => {
+  const handleMobileMenuToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   const navigate = useNavigate();
 
-  const token = useAppSelector(selectToken);
   let user;
   if (token) {
-    user = verifyToken(token);
+    try {
+      user = verifyToken(token);
+    } catch (err) {
+      dispatch(logout());
+    }
   }
 
   let pages: INavItem[] = [];
@@ -116,7 +126,7 @@ function NavBar() {
                 color="inherit"
                 aria-label="open drawer"
                 edge="start"
-                onClick={handleDrawerToggle}
+                onClick={handleMobileMenuToggle}
                 sx={{ display: { sm: "none" } }}
               >
                 <MenuIcon />
@@ -181,13 +191,30 @@ function NavBar() {
                   </IconButton>
                 </Box>
               </Box>
+              {user ? (
+                <UserMenu />
+              ) : (
+                <Button
+                  sx={{
+                    color: "white",
+                    fontSize: 17,
+                    fontWeight: "600",
+                    display: "block",
+                    mx: 3,
+                  }}
+                  component={NavLink}
+                  to="/login"
+                >
+                  Login
+                </Button>
+              )}
             </Toolbar>
           </Container>
         </AppBar>
-        <Box aria-label="mailbox folders">
+        <Box aria-label="navigation items">
           <Drawer
             open={mobileOpen}
-            onClose={handleDrawerToggle}
+            onClose={handleMobileMenuToggle}
             ModalProps={{
               keepMounted: true,
             }}

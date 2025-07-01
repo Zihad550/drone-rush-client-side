@@ -13,9 +13,11 @@ import type { ChangeEvent } from "react";
 import { useLocation } from "react-router";
 import { NavLink, useNavigate } from "react-router";
 import loginImage from "@/assets/login.jpg";
-import { useAppSelector } from "@/redux/hooks";
-import { selectUser } from "@/redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { selectUser, setUser } from "@/redux/features/auth/authSlice";
 import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import { toast } from "sonner";
+import { verifyToken } from "@/utils/verifyToken";
 
 type LoginData = {
   password: string;
@@ -33,6 +35,7 @@ const Register = () => {
 
   const [register, { error }] = useRegisterMutation();
   const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { state } = useLocation();
   if (user) navigate(state?.from || "/");
@@ -47,15 +50,26 @@ const Register = () => {
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (registerData.password !== registerData.retype_password) {
-      alert("password did not match");
-    } else {
-      const data = await register({
-        name: registerData.name,
-        email: registerData.email,
-        password: registerData.password,
-      });
-      console.log(data);
+    const toastId = toast.loading("Registering user...");
+    try {
+      if (registerData.password !== registerData.retype_password) {
+        toast.error("Password did not match", {
+          id: toastId,
+        });
+      } else {
+        console.log({ registerData });
+        const res = await register({
+          name: registerData.name,
+          email: registerData.email,
+          password: registerData.password,
+        }).unwrap();
+        const user = verifyToken(res.data.accessToken);
+        dispatch(setUser({ user, token: res.data.accessToken }));
+        toast.success("Registered successfully");
+        navigate("/");
+      }
+    } catch (err) {
+      toast.error("Something went wrong", { id: toastId });
     }
   };
 

@@ -8,14 +8,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-// import Spinner from "@/components/Shared/Spinner";
+import Spinner from "@/components/Shared/Spinner";
 import React, { useState } from "react";
 import type { ChangeEvent } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router";
 import loginImage from "@/assets/login.jpg";
 import type { ILoginData } from "@/types/LoginType";
-import { useAppSelector } from "@/redux/hooks";
-import { selectUser } from "@/redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { selectUser, setUser } from "@/redux/features/auth/authSlice";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import { toast } from "sonner";
+import { verifyToken } from "@/utils/verifyToken";
 
 const Login = () => {
   const [loginData, setLoginData] = useState<ILoginData>({
@@ -24,10 +27,11 @@ const Login = () => {
   });
 
   const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
+  const [login, { isLoading }] = useLoginMutation();
 
   const { state }: any = useLocation();
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const field: string = e.target.name;
@@ -38,13 +42,29 @@ const Login = () => {
   };
 
   if (user?.id) navigate(state?.from || "/");
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // !! change to proper type
-    // dispatch<any>(login(loginData));
+    const toastId = toast.loading("Logging in");
+    try {
+      console.log(loginData);
+      const res = await login(loginData).unwrap();
+      console.log(res);
+      toast.success("Logged in", { id: toastId, duration: 2000 });
+      const user = verifyToken(res.data.accessToken);
+      dispatch(setUser({ user, token: res.data.accessToken }));
+      navigate("/");
+      // dispatch(setUser())
+
+      // !! change to proper type
+      // dispatch<any>(login(loginData));
+    } catch (err) {
+      console.log(err);
+      toast.error("Something went wrong", { id: toastId, duration: 2000 });
+    }
   };
 
-  // if (loadingState === "pending") return <Spinner />;
+  if (isLoading) return <Spinner />;
+
   return (
     <Container sx={{ my: 5 }}>
       <Grid
