@@ -3,19 +3,18 @@ import Banner from "./Banner";
 import FAQ from "./FAQ";
 import Features from "./Features";
 import Products from "./Products";
+import { useGetProductsQuery } from "@/redux/features/product/productApi";
 
 const Home = () => {
-  // const { data } = useAPI(() =>
-  //   ProductService.getAllProducts({ productsPerPage: 6 })
-  // );
+  const { data, isLoading } = useGetProductsQuery(undefined);
+
   const date = new Date();
   const title = ` The Best Drones for ${date.getFullYear()}`;
-  const data = [];
-  if (!data) return <Spinner />;
+  if (isLoading) return <Spinner />;
   return (
     <div>
       <Banner />
-      <Products products={data.products} title={title} />
+      <Products products={data?.data} title={title} />
       <Features />
       <FAQ />
     </div>

@@ -3,30 +3,24 @@ import Spinner from "@/components/Shared/Spinner";
 import React, { useState } from "react";
 import type IProduct from "@/types/ProductType";
 import Products from "../Home/Products";
+import { useGetProductsQuery } from "@/redux/features/product/productApi";
 
 const PRODUCTS_PER_PAGE = 8;
 const Drones = () => {
   const [page, setPage] = useState(1);
-  // const { data } = useAPI<{ products: IProduct[]; totalProducts: number }>(
-  //   () =>
-  //     ProductService.getAllProducts({
-  //       productsPerPage: PRODUCTS_PER_PAGE,
-  //       currentPage: page,
-  //     }),
-  //   page,
-  // );
 
-  const data = { products: [], totalProducts: 0 };
-  console.log("call");
+  const { data, isLoading } = useGetProductsQuery(page);
 
-  if (!data?.products) return <Spinner />;
+  console.log("call", data);
+
+  if (isLoading) return <Spinner />;
 
   const handleCurrentPage = (e: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
   return (
     <div>
-      <Products products={data.products} title="All Available Drones" />
+      <Products products={data.data} title="All Available Drones" />
       <Box
         sx={{
           display: "flex",
@@ -35,7 +29,7 @@ const Drones = () => {
         }}
       >
         <Pagination
-          count={Math.ceil(data?.totalProducts / PRODUCTS_PER_PAGE)}
+          count={Math.ceil(data?.meta.total / PRODUCTS_PER_PAGE)}
           variant="outlined"
           color="primary"
           onChange={handleCurrentPage}
