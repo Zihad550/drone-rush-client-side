@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@mui/material";
-import { Box, Container } from "@mui/system";
-import src from "images/about-us-bg.png";
+import { Box, Container } from "@mui/material";
+import src from "@/assets/about-us-bg.png";
 
 const AboutUsBanner = () => {
   return (
@@ -16,9 +16,7 @@ const AboutUsBanner = () => {
           }}
         >
           <Grid
-            item
-            md={6}
-            xs={12}
+            size={{ md: 6, xs: 12 }}
             sx={{
               textAlign: { xs: "center", md: "left" },
             }}
@@ -42,7 +40,10 @@ const AboutUsBanner = () => {
               We usually get back to you within 24 hours.
             </Typography>
           </Grid>
-          <Grid item md={6} sx={{ display: { md: "flex", xs: "none" } }}>
+          <Grid
+            size={{ md: 6, xs: 12 }}
+            sx={{ display: { md: "flex", xs: "none" } }}
+          >
             <img style={{ width: "100%", height: "auto" }} src={src} alt="" />
           </Grid>
         </Grid>

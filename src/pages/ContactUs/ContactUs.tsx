@@ -8,14 +8,14 @@ import PersonIcon from "@mui/icons-material/Person";
 import PhoneIcon from "@mui/icons-material/Phone";
 import {
   Alert,
+  Box,
   Button,
   Container,
   Grid,
   TextField,
   Typography,
 } from "@mui/material";
-import { Box } from "@mui/system";
-import emailjs from "emailjs-com";
+import emailjs from "@emailjs/browser";
 import React, { useRef, useState } from "react";
 
 const ContactUs = () => {
@@ -23,24 +23,24 @@ const ContactUs = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
+    if (!form.current) return;
     e.preventDefault();
     setSuccess(false);
-    form.current &&
-      emailjs
-        .sendForm(
-          "service_f285mw9",
-          "template_dp3s2l4",
-          form.current,
-          "user_zhFfInA9MfeHXHO7YmUav"
-        )
-        .then(
-          (result) => {
-            console.log(result.text);
-          },
-          (error) => {
-            setError(error.text);
-          }
-        );
+    emailjs
+      .sendForm(
+        "service_f285mw9",
+        "template_dp3s2l4",
+        form.current,
+        "user_zhFfInA9MfeHXHO7YmUav",
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          setError(error.text);
+        },
+      );
     setSuccess(true);
   };
 
@@ -99,7 +99,7 @@ const ContactUs = () => {
         container
         spacing={{ xs: 2, md: 3 }}
       >
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Typography
             textAlign="center"
             sx={{ fontSize: 30, mb: 1 }}
@@ -167,7 +167,7 @@ const ContactUs = () => {
           )}
         </Grid>
 
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Typography
             textAlign="center"
             sx={{ fontSize: 30, mb: 1 }}

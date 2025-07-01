@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { logout, selectCurrentToken } from "@/redux/features/auth/authSlice";
+import { logout, selectToken } from "@/redux/features/auth/authSlice";
 import { Navigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { verifyToken } from "@/utils/verifyToken";
@@ -9,7 +9,7 @@ interface IProps {
   role: string | undefined;
 }
 const ProtectedRoute = ({ children, role }: IProps) => {
-  const token = useAppSelector(selectCurrentToken);
+  const token = useAppSelector(selectToken);
   let user;
   if (token) {
     user = verifyToken(token);

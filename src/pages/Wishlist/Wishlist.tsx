@@ -7,12 +7,8 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Spinner from "components/Shared/Spinner";
-import { useDispatch, useSelector } from "react-redux";
+import Spinner from "@/components/Shared/Spinner";
 import { useNavigate } from "react-router";
-import { addToCart, removeFromCart } from "redux/actions/cartAction";
-import { removeFromWishlist } from "redux/actions/wishlistAction";
-import { AppState } from "redux/store";
 
 interface Column {
   id: string;
@@ -24,9 +20,10 @@ interface Column {
 
 const Wishlist = () => {
   // cart data
-  const products = useSelector((state: AppState) => state.wishlist);
-  const dispatch = useDispatch();
+  // const products = useSelector((state: AppState) => state.wishlist);
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
+  const products = [];
 
   if (!products.length) {
     navigate("/");
@@ -34,7 +31,7 @@ const Wishlist = () => {
   }
 
   const handleRemoveFromCart = (id: string) => {
-    dispatch(removeFromCart(id));
+    // dispatch(removeFromCart(id));
     if (products.length === 0) navigate("/");
   };
 
@@ -103,8 +100,8 @@ const Wishlist = () => {
                     <Button
                       variant="outlined"
                       onClick={() => {
-                        dispatch(addToCart(product));
-                        dispatch(removeFromWishlist(product._id));
+                        // dispatch(addToCart(product));
+                        // dispatch(removeFromWishlist(product._id));
                       }}
                     >
                       Add To Cart

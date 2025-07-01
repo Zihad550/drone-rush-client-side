@@ -1,14 +1,19 @@
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import { Button, Checkbox, Paper, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Box,
+  Checkbox,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import { Box } from "@mui/system";
 import axios from "axios";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { clearCart } from "redux/actions/cartAction";
-import { AppState } from "redux/store";
-import IShippingInfo from "types/ShippingInfoType";
+import type IShippingInfo from "@/types/ShippingInfoType";
+import { useAppSelector } from "@/redux/hooks";
+import { selectToken, selectUser } from "@/redux/features/auth/authSlice";
 
 const OrderSummary = ({
   totalPrice,
@@ -20,9 +25,11 @@ const OrderSummary = ({
   shippingInformations: IShippingInfo;
 }) => {
   const [showCoupons, setShowCoupons] = useState(false);
-  const cartProducts = useSelector((state: AppState) => state.cart);
-  const { data: user } = useSelector((state: AppState) => state.auth);
-  const dispatch = useDispatch();
+  // const cartProducts = useSelector((state: AppState) => state.cart);
+  const cartProducts = [];
+  const user = useAppSelector(selectUser);
+  const token = useAppSelector(selectToken);
+  // const dispatch = useDispatch();
   const handlePlaceOrder = () => {
     // if the payment method is not selected then don't place order
     if (!paymentMethod) return alert("Please! select a payment method");
@@ -39,13 +46,13 @@ const OrderSummary = ({
       method: "POST",
       url: "http://localhost:8000/order",
       headers: {
-        Authorization: `Bearer ${user?.accessToken}`,
+        Authorization: token,
       },
       data: orderDetails,
     }).then((res) => {
       console.log(res.data);
       if (res.data.insertedId) {
-        dispatch(clearCart());
+        // dispatch(clearCart());
         console.log(res.data);
       }
     });

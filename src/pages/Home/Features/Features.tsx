@@ -1,9 +1,8 @@
-import { Grid, Typography } from "@mui/material";
-import { Box, Container } from "@mui/system";
-import src from "images/feature-img.jpg";
-import feature1 from "images/feature3-1.png";
-import feature2 from "images/feature3-2.png";
-import feature3 from "images/feature3-3.png";
+import { Grid, Typography, Box, Container } from "@mui/material";
+import src from "@/assets/feature-img.jpg";
+import feature1 from "@/assets/feature3-1.png";
+import feature2 from "@/assets/feature3-2.png";
+import feature3 from "@/assets/feature3-3.png";
 const Features = () => {
   const features = [
     {
@@ -31,12 +30,11 @@ const Features = () => {
   return (
     <Container sx={{ my: 20 }}>
       <Grid container spacing={6}>
-        <Grid item md={6} xs={12}>
+        <Grid size={{ md: 6, xs: 12 }}>
           <img style={{ width: "100%", height: "auto" }} src={src} alt="" />
         </Grid>
         <Grid
-          md={6}
-          xs={12}
+          size={{ md: 6, xs: 12 }}
           sx={{ alignItems: "center", justifyContent: "center" }}
         >
           <Box

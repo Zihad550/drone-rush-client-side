@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -6,9 +7,8 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { Box } from "@mui/system";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 const CartMenu = ({
   subTotal,
@@ -21,7 +21,7 @@ const CartMenu = ({
 }) => {
   const navigate = useNavigate();
   return (
-    <Grid item md={4} xs={12}>
+    <Grid size={{ md: 4, xs: 12 }}>
       <Card>
         <CardContent>
           <Typography

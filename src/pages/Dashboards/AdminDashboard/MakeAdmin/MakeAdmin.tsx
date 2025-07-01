@@ -1,15 +1,15 @@
+import { selectToken, selectUser } from "@/redux/features/auth/authSlice";
+import { useAppSelector } from "@/redux/hooks";
 import CloseIcon from "@mui/icons-material/Close";
-import { Alert, Button, IconButton, TextField } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, Alert, Button, IconButton, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { AppState } from "redux/store";
 
 const MakeAdmin = () => {
   const [email, setEmail] = useState<string>("");
   const [success, setSuccess] = useState(false);
-  const { data } = useSelector((state: AppState) => state.auth);
+  const user = useAppSelector(selectUser);
+  const token = useAppSelector(selectToken);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -17,7 +17,7 @@ const MakeAdmin = () => {
       .put("/users/admin", {
         headers: {
           "content-type": "application/json",
-          authorization: `Bearer ${data?.accessToken}`,
+          authorization: token,
         },
         data: { email },
       })

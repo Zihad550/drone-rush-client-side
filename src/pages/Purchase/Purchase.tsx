@@ -1,5 +1,6 @@
 import { SendOutlined } from "@mui/icons-material";
 import {
+  Box,
   Button,
   Card,
   CardContent,
@@ -9,23 +10,22 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Box } from "@mui/system";
-import Header from "components/Shared/Header";
+import Header from "@/components/Shared/Header";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { AppState } from "redux/store";
-import IProduct from "types/ProductType";
+import type IProduct from "@/types/ProductType";
+// import { selectUser } from "@/redux/features/auth/authSlice";
+// import { useAppSelector } from "@/redux/hooks";
 
 const Purchase = () => {
   const { name } = useParams();
-  const user = useSelector((state: AppState) => state.auth.data);
+  // const user = useAppSelector(selectUser);
   const [drone, setDrone] = useState({} as IProduct);
   const { disc, img, price } = drone;
 
   const [orderInfo, setOrderInfo] = useState({
-    name: user?.name,
-    email: user?.email,
+    name: "",
+    email: "",
   });
 
   const handleOnBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -82,7 +82,7 @@ const Purchase = () => {
           container
           spacing={{ xs: 2, md: 3 }}
         >
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Card sx={{ boxShadow: 3, display: "flex" }}>
               <CardMedia
                 component="img"
@@ -108,14 +108,13 @@ const Purchase = () => {
               </CardContent>
             </Card>
           </Grid>
-          <Grid sx={{ my: "auto" }} item xs={12} md={6}>
+          <Grid sx={{ my: "auto" }} size={{ xs: 12, md: 6 }}>
             <form onSubmit={handlePurchase}>
               <TextField
                 required
                 onChange={handleOnBlur}
                 name="userName"
                 label="Your name"
-                defaultValue={user?.name}
                 size="small"
                 fullWidth
               />
@@ -132,7 +131,6 @@ const Purchase = () => {
               <TextField
                 required
                 label="Your email"
-                defaultValue={user?.email}
                 type="email"
                 size="small"
                 onChange={handleOnBlur}

@@ -1,17 +1,16 @@
-import Spinner from "components/Shared/Spinner";
-import useAPI from "../../../hooks/useAPI";
-import ProductService from "../../../services/Product.service";
+import Spinner from "@/components/Shared/Spinner";
 import Banner from "./Banner";
 import FAQ from "./FAQ";
 import Features from "./Features";
 import Products from "./Products";
 
 const Home = () => {
-  const { data } = useAPI(() =>
-    ProductService.getAllProducts({ productsPerPage: 6 })
-  );
+  // const { data } = useAPI(() =>
+  //   ProductService.getAllProducts({ productsPerPage: 6 })
+  // );
   const date = new Date();
   const title = ` The Best Drones for ${date.getFullYear()}`;
+  const data = [];
   if (!data) return <Spinner />;
   return (
     <div>

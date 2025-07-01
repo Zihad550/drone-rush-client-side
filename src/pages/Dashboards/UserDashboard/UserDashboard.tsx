@@ -16,8 +16,8 @@ import ListItemText from "@mui/material/ListItemText";
 import { styled, useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import DashboardDrawer from "components/Shared/DashboardDrawer";
-import DashboardHeader from "components/Shared/DashboardHeader";
+import DashboardDrawer from "@/components/Shared/DashboardDrawer";
+import DashboardHeader from "@/components/Shared/DashboardHeader";
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 

@@ -1,7 +1,6 @@
-import { Container, Grid, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import bannerBg from "../../../../images/banner-bg.jpg";
-import bannerImg from "../../../../images/banner-img.svg";
+import { Box, Container, Grid, Typography } from "@mui/material";
+import bannerBg from "@/assets/banner-bg.jpg";
+import bannerImg from "@/assets/banner-img.svg";
 
 const bgStyle = {
   background: `url(${bannerBg}) center `,
@@ -13,8 +12,8 @@ const bgStyle = {
 const Banner = () => (
   <Box style={bgStyle} sx={{ height: "auto", mt: { md: 3, xs: 0 } }}>
     <Container>
-      <Grid container spacing={{ sx: 2, md: 3 }}>
-        <Grid sx={{ my: "auto", color: "white" }} item xs={12} md={6}>
+      <Grid container spacing={{ xs: 2, md: 3 }}>
+        <Grid sx={{ my: "auto", color: "white" }} size={{ xs: 12, md: 6 }}>
           <Typography
             sx={{ fontWeight: 500, mb: 2 }}
             variant="h3"
@@ -30,7 +29,7 @@ const Banner = () => (
             Shop now!
           </Typography>{" "}
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <img src={bannerImg} alt="banner" />
         </Grid>
       </Grid>

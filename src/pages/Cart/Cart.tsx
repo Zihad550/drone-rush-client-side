@@ -1,7 +1,7 @@
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import { Container, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Container, Grid, IconButton, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,16 +9,8 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Box } from "@mui/system";
-import Spinner from "components/Shared/Spinner";
-import { useDispatch, useSelector } from "react-redux";
+import Spinner from "@/components/Shared/Spinner";
 import { useNavigate } from "react-router";
-import {
-  decreaseQty,
-  increaseQty,
-  removeFromCart,
-} from "redux/actions/cartAction";
-import { AppState } from "redux/store";
 import CartMenu from "./CartMenu/CartMenu";
 
 interface Column {
@@ -31,8 +23,8 @@ interface Column {
 
 const Cart = () => {
   // cart data
-  const products = useSelector((state: AppState) => state.cart);
-  const dispatch = useDispatch();
+  // const products = useSelector((state: AppState) => state.cart);
+  const products = [];
   const navigate = useNavigate();
 
   console.log(products);
@@ -43,25 +35,25 @@ const Cart = () => {
   }
 
   const productPrices: number[] = products.map((product) =>
-    Number(product.totalPrice)
+    Number(product.totalPrice),
   );
 
   const shippingCosts: number[] = products.map((product) =>
-    Number(product.shipping)
+    Number(product.shipping),
   );
 
   const subTotal: number = productPrices.reduce(
-    (previous, current) => previous + current
+    (previous, current) => previous + current,
   );
 
   const shippingCost: number = shippingCosts.reduce(
-    (previous, current) => previous + current
+    (previous, current) => previous + current,
   );
 
   const totalPrice: number = subTotal + shippingCost;
 
   const handleRemoveFromCart = (id: string) => {
-    dispatch(removeFromCart(id));
+    // dispatch(removeFromCart(id));
     if (products.length === 0) navigate("/");
   };
 
@@ -86,7 +78,7 @@ const Cart = () => {
         {/*============
          products
          =========== */}
-        <Grid item md={8} xs={12}>
+        <Grid size={{ md: 8, xs: 12 }}>
           <Paper sx={{ width: "100%", overflow: "hidden" }}>
             <TableContainer sx={{ maxHeight: 700 }}>
               <Table stickyHeader aria-label="sticky table">
@@ -126,7 +118,7 @@ const Cart = () => {
                         >
                           <Box sx={{ display: "flex" }}>
                             <IconButton
-                              onClick={() => dispatch(decreaseQty(product._id))}
+                            // onClick={() => dispatch(decreaseQty(product._id))}
                             >
                               <RemoveCircleOutlineIcon />
                             </IconButton>
@@ -143,7 +135,7 @@ const Cart = () => {
                               {product.qty}
                             </Typography>
                             <IconButton
-                              onClick={() => dispatch(increaseQty(product._id))}
+                            // onClick={() => dispatch(increaseQty(product._id))}
                             >
                               <AddCircleOutlineIcon />
                             </IconButton>
@@ -172,7 +164,7 @@ const Cart = () => {
           </Paper>
         </Grid>
 
-        {/*=========== 
+        {/*===========
           cart
           ================ */}
         <CartMenu

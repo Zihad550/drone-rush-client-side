@@ -2,10 +2,10 @@ import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import React from "react";
 import PhoneInput from "react-phone-number-input";
-import { useSelector } from "react-redux";
-import { AppState } from "redux/store";
-import IShippingInfo from "types/ShippingInfoType";
+// import IShippingInfo from "@/types/ShippingInfoType";
 import "./ShippingInformation.css";
+import { useAppSelector } from "@/redux/hooks";
+import { selectUser } from "@/redux/features/auth/authSlice";
 const ShippingInformation = ({
   hasShippingInfo,
   shippingInformations,
@@ -15,7 +15,7 @@ const ShippingInformation = ({
   shippingInformations: IShippingInfo;
   setShippingInformations: React.Dispatch<React.SetStateAction<IShippingInfo>>;
 }) => {
-  const { data: user } = useSelector((state: AppState) => state.auth);
+  const user = useAppSelector(selectUser);
 
   const { customerName, phone, street, country, state, city, zipCode, apt } =
     shippingInformations;
@@ -35,20 +35,20 @@ const ShippingInformation = ({
   };
 
   const handleSaveShippingInformation = (
-    e: React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault();
     const shippingInfo = {
       ...shippingInformations,
-      customerEmail: user?.email,
+      // customerEmail: user?.email,
     };
 
     axios({
       url: "http://localhost:8000/shippingInformation",
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${user?.accessToken}`,
-      },
+      // headers: {
+      //   Authorization: `Bearer ${user?.accessToken}`,
+      // },
       data: shippingInfo,
     }).then((res) => {
       if (res.data.insertedId) {

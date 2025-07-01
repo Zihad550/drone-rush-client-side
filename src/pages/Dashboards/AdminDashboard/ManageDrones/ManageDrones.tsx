@@ -1,6 +1,10 @@
+import Modal from "@/components/Shared/Modal";
+import Spinner from "@/components/Shared/Spinner";
+import { selectToken, selectUser } from "@/redux/features/auth/authSlice";
+import { useAppSelector } from "@/redux/hooks";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CloseIcon from "@mui/icons-material/Close";
-import { Alert, IconButton, Typography } from "@mui/material";
+import { Alert, Box, IconButton, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -9,25 +13,21 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Box } from "@mui/system";
 import axios from "axios";
-import Modal from "components/Shared/Modal";
-import Spinner from "components/Shared/Spinner";
-import useAPI from "hooks/useAPI";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { AppState } from "redux/store";
-import ProductService from "services/Product.service";
 
 const ManageDrones = () => {
   // const [drones, setDrones] = useState<IProduct[] | null>(null);
   const [refresh, setRefresh] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
   const [noPermission, setNoPermission] = useState(false);
-  const { data } = useAPI(() =>
-    ProductService.getAllProducts({ productsPerPage: 0 })
-  );
-  const { data: user } = useSelector((state: AppState) => state.auth);
+  // const { data } = useAPI(() =>
+  //   ProductService.getAllProducts({ productsPerPage: 0 })
+  // );
+  const data = { products: [] };
+  const user = useAppSelector(selectUser);
+  const token = useAppSelector(selectToken);
 
   useEffect(() => {
     setRefresh(false);
@@ -68,7 +68,7 @@ const ManageDrones = () => {
       axios
         .delete(`http://localhost:8000/product/${id}`, {
           headers: {
-            Authorization: `Bearer ${user?.accessToken}`,
+            Authorization: token,
           },
         })
         .then(({ data }) => {

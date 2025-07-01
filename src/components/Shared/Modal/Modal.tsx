@@ -1,6 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Alert, IconButton } from "@mui/material";
-import { Box } from "@mui/system";
+import { Alert, IconButton, Box } from "@mui/material";
 import React from "react";
 
 interface ModalProps {

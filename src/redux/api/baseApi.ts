@@ -1,7 +1,7 @@
 import {
   createApi,
-  DefinitionType,
   fetchBaseQuery,
+  type DefinitionType,
   type BaseQueryApi,
   type BaseQueryFn,
   type FetchArgs,
@@ -9,7 +9,7 @@ import {
 import type { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.REACT_APP_API_URL,
+  baseUrl: import.meta.env.REACT_APP_API_URL,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
     if (token) headers.set("authorization", token);

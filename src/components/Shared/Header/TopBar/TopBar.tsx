@@ -1,3 +1,5 @@
+import { selectUser } from "@/redux/features/auth/authSlice";
+import { useAppSelector } from "@/redux/hooks";
 import FacebookRoundedIcon from "@mui/icons-material/FacebookRounded";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import PinterestIcon from "@mui/icons-material/Pinterest";
@@ -14,18 +16,15 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
-import { logout } from "redux/actions/authAction";
-import { AppState } from "redux/store";
+// import { useNavigate } from "react-router";
 
 const TopBar = () => {
-  const { data: user } = useSelector((state: AppState) => state.auth);
+  const user = useAppSelector(selectUser);
   const [anchorElUser, setAnchorElUser] = useState<any>(null);
-  const cart = useSelector((state: AppState) => state.cart);
-  const wishlist = useSelector((state: AppState) => state.wishlist);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const cart = useSelector((state: AppState) => state.cart);
+  // const wishlist = useSelector((state: AppState) => state.wishlist);
+  // const navigate = useNavigate();
+  // const dispatch = useDispatch();
   const settings = [
     {
       id: 1,
@@ -47,7 +46,7 @@ const TopBar = () => {
   };
 
   const handleLogout = () => {
-    dispatch(logout());
+    // dispatch(logout());
   };
 
   return (
@@ -126,7 +125,7 @@ const TopBar = () => {
           ================= */}
 
           <Box sx={{ flexGrow: 0 }}>
-            {user?.email ? (
+            {user?.id ? (
               <>
                 <Tooltip title="Open settings">
                   <IconButton
@@ -157,7 +156,7 @@ const TopBar = () => {
                       <Button
                         sx={{ color: "black" }}
                         variant="text"
-                        onClick={() => navigate(setting.link)}
+                        // onClick={() => navigate(setting.link)}
                       >
                         {setting.name}
                       </Button>
@@ -175,7 +174,10 @@ const TopBar = () => {
                 </Menu>
               </>
             ) : (
-              <Button onClick={() => navigate("/login")} color="secondary">
+              <Button
+                // onClick={() => navigate("/login")}
+                color="secondary"
+              >
                 Log In
               </Button>
             )}

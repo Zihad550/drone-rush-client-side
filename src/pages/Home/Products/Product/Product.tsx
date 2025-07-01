@@ -5,11 +5,9 @@ import {
   CardMedia,
   Grid,
   Typography,
-  useTheme,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router";
-import IProduct from "types/ProductType";
+import type IProduct from "@/types/ProductType";
 
 const Product = ({
   drone: { name, disc, price, img, _id },
@@ -17,20 +15,10 @@ const Product = ({
   drone: IProduct;
 }) => {
   const navigate = useNavigate();
-  const theme = useTheme();
-  const useStyle = makeStyles({
-    directionRow: {
-      [theme.breakpoints.up("sm")]: {
-        display: "flex !important",
-      },
-    },
-  });
-  const { directionRow } = useStyle();
 
   return (
-    <Grid item xs={12} md={12} lg={6}>
+    <Grid size={{ xs: 12, md: 12, lg: 6 }}>
       <Card
-        className={directionRow}
         sx={{
           boxShadow: 3,
           height: "100%",

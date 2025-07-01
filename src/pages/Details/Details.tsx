@@ -7,29 +7,32 @@ import {
   Paper,
   Rating,
   Typography,
+  Box,
+  Container,
 } from "@mui/material";
-import { Box, Container } from "@mui/system";
-import Spinner from "components/Shared/Spinner";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router";
-import { addToWishlist } from "redux/actions/wishlistAction";
-import { AppState } from "redux/store";
-import IProduct from "types/ProductType";
-import useAPI from "../../../hooks/useAPI";
-import { addToCart } from "../../../redux/actions/cartAction";
-import ProductService from "../../../services/Product.service";
+// import Spinner from "@/components/Shared/Spinner";
+// import { useDispatch, useSelector } from "react-redux";
+// import { useNavigate, useParams } from "react-router";
+// import IProduct from "@/types/ProductType";
 import RatingChart from "./RatingChart";
 
 const Details = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const { data } = useAPI<IProduct>(() =>
-    ProductService.getProduct(id as string)
-  );
-  const { data: user } = useSelector((state: AppState) => state.auth);
-  if (!data) return <Spinner />;
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  // const { id } = useParams();
+  // const { data } = useAPI<IProduct>(() =>
+  //   ProductService.getProduct(id as string)
+  // );
+  // const { data: user } = useSelector((state: AppState) => state.auth);
+  // if (!data) return <Spinner />;
 
+  const data = {
+    img: "https://example.com/image.jpg",
+    name: "Product Name",
+    price: 100,
+    reviews: [{ rating: 4 }, { rating: 5 }, { rating: 3 }],
+    brand: "Brand Name",
+  };
   const { img, name, price, reviews, brand } = data;
   const ratings: number[] = reviews.map((review) => Number(review.rating));
   const totalRatings: number = ratings.length;
@@ -57,7 +60,7 @@ const Details = () => {
           container
         >
           {/* product image */}
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <img
               style={{ width: "100%", height: "auto" }}
               src={img}
@@ -66,7 +69,7 @@ const Details = () => {
           </Grid>
 
           {/* product details */}
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             {/* name */}
             <Typography variant="h4">{name}</Typography>
 
@@ -106,9 +109,10 @@ const Details = () => {
                 </IconButton>
                 <IconButton
                   onClick={
-                    user
-                      ? () => dispatch(addToWishlist(data))
-                      : () => navigate("/login")
+                    () => {}
+                    // user
+                    //   ? () => dispatch(addToWishlist(data))
+                    //   : () => navigate("/login")
                   }
                 >
                   <FavoriteBorderIcon />
@@ -124,9 +128,10 @@ const Details = () => {
             {/* actions */}
             <Button
               onClick={
-                user
-                  ? () => dispatch(addToCart(data))
-                  : () => navigate("/login")
+                () => console.log("")
+                // user
+                //   ? () => dispatch(addToCart(data))
+                //   : () => navigate("/login")
               }
               variant="contained"
               sx={{ color: "white" }}
@@ -179,13 +184,13 @@ const Details = () => {
           {/* all reviews */}
           <Box sx={{ mt: 5 }}>
             <Typography variant="body1">Product Reviews</Typography>
-            {reviews.map((review) => (
+            {/* {reviews.map((review) => (
               <Box sx={{ mt: 2 }}>
                 <Rating value={Number(review.rating)} readOnly />
                 <Typography variant="body2">by {review.user}</Typography>
                 <Typography variant="body1">{review.comment}</Typography>
               </Box>
-            ))}
+            ))} */}
           </Box>
         </Paper>
       </Container>

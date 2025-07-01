@@ -1,26 +1,30 @@
-import { Typography } from "@mui/material";
+import {
+  Typography,
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  tableCellClasses,
+} from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import { Box } from "@mui/system";
 import axios from "axios";
-import Modal from "components/Shared/Modal";
-import Spinner from "components/Shared/Spinner";
+import Modal from "@/components/Shared/Modal";
+import Spinner from "@/components/Shared/Spinner";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { AppState } from "redux/store";
-import IOrder from "types/OrderType";
+import { useAppSelector } from "@/redux/hooks";
+import { selectUser } from "@/redux/features/auth/authSlice";
+import type IOrder from "@/types/OrderType";
 
 const Purchased = () => {
   const [purchasedProducts, setPurchasedProducts] = useState<IOrder[] | null>(
-    null
+    null,
   );
-  const { data: user } = useSelector((state: AppState) => state.auth);
+  const user = useAppSelector(selectUser);
+  console.log(user);
   const [isDeleted, setIsDeleted] = useState(false);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -48,20 +52,17 @@ const Purchased = () => {
     (async () => {
       setPurchasedProducts(
         await axios
-          .get(`http://localhost:8000/purchases/${user?.email}`, {
-            headers: {
-              authorization: `Bearer ${user?.accessToken}`,
-            },
+          .get(`http://localhost:8000/purchases`, {
             signal: controller.signal,
           })
-          .then((res) => res.data)
+          .then((res) => res.data),
       );
     })();
 
     return () => {
       controller.abort();
     };
-  }, [user?.email]);
+  }, []);
 
   if (!purchasedProducts) return <Spinner />;
   if (purchasedProducts.length === 0) {

@@ -1,5 +1,5 @@
-import { Box } from "@mui/system";
 import RatingBar from "./RatingBar";
+import { Box } from "@mui/material";
 
 interface IRatingChartProps {
   totalRatings: number;

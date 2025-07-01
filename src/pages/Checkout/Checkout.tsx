@@ -1,19 +1,19 @@
-import { Box, Grid } from "@mui/material";
-import { Container } from "@mui/system";
-import Spinner from "components/Shared/Spinner";
+import { Box, Grid, Container } from "@mui/material";
+import Spinner from "@/components/Shared/Spinner";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
-import { AppState } from "redux/store";
-import IShippingInfo from "types/ShippingInfoType";
+import type IShippingInfo from "@/types/ShippingInfoType";
 import OrderSummary from "./OrderSummary";
 import PaymentMethods from "./PaymentMethods";
 import ShippingInformation from "./ShippingInformation";
+import { useAppSelector } from "@/redux/hooks";
+import { selectToken, selectUser } from "@/redux/features/auth/authSlice";
 
 const Checkout = () => {
   const { totalPrice } = useParams();
   const [paymentMethod, setPaymentMethod] = useState("COD");
-  const { data: user } = useSelector((state: AppState) => state.auth);
+  const user = useAppSelector(selectUser);
+  const token = useAppSelector(selectToken);
   const [hasShippingInfo, setHasShippingInfo] = useState(false);
   const navigate = useNavigate();
   const [shippingInformations, setShippingInformations] =
@@ -29,10 +29,10 @@ const Checkout = () => {
     });
 
   useEffect(() => {
-    fetch(`http://localhost:8000/shippingInformation/${user?.email}`, {
+    fetch(`http://localhost:8000/shippingInformation/${user?.id}`, {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${user?.accessToken}`,
+        Authorization: token,
       },
     })
       .then((res) => res.json())
@@ -43,13 +43,13 @@ const Checkout = () => {
           navigate("/orderPlaced");
         }
       });
-  }, [user?.email]);
+  }, []);
   if (!totalPrice) return <Spinner />;
   return (
     <Box sx={{ background: "#F2EEF5" }}>
       <Container>
         <Grid container sx={{ pt: 3 }}>
-          <Grid item lg={8}>
+          <Grid size={{ lg: 8 }}>
             <ShippingInformation
               shippingInformations={shippingInformations}
               hasShippingInfo={hasShippingInfo}
@@ -60,7 +60,7 @@ const Checkout = () => {
               setPaymentMethod={setPaymentMethod}
             />
           </Grid>
-          <Grid item lg={4}>
+          <Grid size={{ lg: 4 }}>
             <OrderSummary
               totalPrice={Number(totalPrice)}
               paymentMethod={paymentMethod}

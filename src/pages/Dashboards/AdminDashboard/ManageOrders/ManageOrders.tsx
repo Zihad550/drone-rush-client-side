@@ -20,9 +20,9 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { AppState } from "redux/store";
-import IOrder from "types/OrderType";
+import type IOrder from "@/types/OrderType";
+import { useAppSelector } from "@/redux/hooks";
+import { selectUser } from "@/redux/features/auth/authSlice";
 
 interface Column {
   id: number;
@@ -36,7 +36,7 @@ const ManageOrders = () => {
   const [status, setStatus] = useState<"All" | "pending" | "Shipped">("All");
   const [isUpdated, setIsUpdated] = useState(false);
   const [error, setError] = useState("");
-  const { data: user } = useSelector((state: AppState) => state.auth);
+  const user = useAppSelector(selectUser);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -64,7 +64,7 @@ const ManageOrders = () => {
               Authorization: `Bearer ${user?.accessToken}`,
             },
           })
-          .then((res) => res.data)
+          .then((res) => res.data),
       );
     })();
 

@@ -10,15 +10,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { AppState } from "redux/store";
-import IProduct from "types/ProductType";
+import { useNavigate } from "react-router";
+// import IProduct from "@/types/ProductType";
 
 const MiddleBar = () => {
   const navigate = useNavigate();
-  const cartProducts = useSelector((state: AppState) => state.cart);
-  const wishlistProducts = useSelector((state: AppState) => state.wishlist);
+  const cartProducts = [];
+  const wishlistProducts = [];
+  // const cartProducts = useSelector((state: AppState) => state.cart);
+  // const wishlistProducts = useSelector((state: AppState) => state.wishlist);
 
   const handleNavigate = ({
     link,

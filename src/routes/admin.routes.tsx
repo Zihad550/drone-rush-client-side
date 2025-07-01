@@ -6,22 +6,22 @@ import type { IUserPath } from "@/types";
 
 export const adminPaths: IUserPath[] = [
   {
-    path: "/dashboard/addDrone",
+    path: "addDrone",
     name: "Add Drone",
     element: <AddDrone />,
   },
   {
-    path: "/dashboard/makeAdmin",
+    path: "makeAdmin",
     name: "Make Admin",
     element: <MakeAdmin />,
   },
   {
-    path: "/dashboard/manageDrones",
+    path: "manageDrones",
     name: "Manage Drones",
     element: <ManageDrones />,
   },
   {
-    path: "/dashboard/manageOrders",
+    path: "manageOrders",
     name: "Manage Orders",
     element: <ManageOrders />,
   },

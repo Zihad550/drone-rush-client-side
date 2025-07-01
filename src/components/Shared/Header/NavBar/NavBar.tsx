@@ -11,6 +11,7 @@ import {
   Button,
   Container,
   Divider,
+  ListItemButton,
   TextField,
   Typography,
 } from "@mui/material";
@@ -19,10 +20,9 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import Toolbar from "@mui/material/Toolbar";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 const drawerWidth = 200;
 
@@ -69,9 +69,9 @@ function NavBar() {
       <Divider />
       <List>
         {pages.map((page) => (
-          <ListItem key={page.id} button onClick={() => navigate(page.link)}>
+          <ListItemButton key={page.id} onClick={() => navigate(page.link)}>
             {page.name}
-          </ListItem>
+          </ListItemButton>
         ))}
       </List>
 

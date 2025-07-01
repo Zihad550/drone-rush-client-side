@@ -2,9 +2,8 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import LogoDevIcon from "@mui/icons-material/LogoDev";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import { Container, Grid, IconButton, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import src from "../../../../images/profile.png";
+import { Box, Container, Grid, IconButton, Typography } from "@mui/material";
+import src from "@/assets/profile.png";
 import "./OutTeam.css";
 
 const OurTeam = () => {

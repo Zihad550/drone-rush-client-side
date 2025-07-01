@@ -10,12 +10,12 @@ import type { IUserPath } from "@/types";
 
 export const userDashboardPaths: IUserPath[] = [
   {
-    path: "/dashboard/myOrders",
+    path: "myOrders",
     name: "My Orders",
     element: <MyOrders />,
   },
   {
-    path: "/dashboard/purchased",
+    path: "purchased",
     name: "Purchased",
     element: <Purchased />,
   },
@@ -23,32 +23,32 @@ export const userDashboardPaths: IUserPath[] = [
 
 export const userPaths: IUserPath[] = [
   {
-    path: "/cart",
+    path: "cart",
     name: "Cart",
     element: <Cart />,
   },
   {
-    path: "/wishlist",
+    path: "wishlist",
     name: "Wishlist",
     element: <Wishlist />,
   },
   {
-    path: "/purchase",
+    path: "purchase",
     name: "Purchase",
     element: <Purchase />,
   },
   {
-    path: "/pay",
+    path: "pay",
     name: "Pay",
     element: <Pay />,
   },
   {
-    path: "/checkout/:totalPrice",
+    path: "checkout/:totalPrice",
     name: "Checkout",
     element: <Checkout />,
   },
   {
-    path: "/orderPlaced",
+    path: "orderPlaced",
     name: "Order Placed",
     element: <OrderPlaced />,
   },

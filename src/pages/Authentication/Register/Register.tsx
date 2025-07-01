@@ -10,12 +10,12 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import type { ChangeEvent } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { NavLink, useNavigate } from "react-router";
-import loginImage from "../../../../images/login.jpg";
+import loginImage from "@/assets/login.jpg";
 import { useAppSelector } from "@/redux/hooks";
 import { selectUser } from "@/redux/features/auth/authSlice";
+import { useRegisterMutation } from "@/redux/features/auth/authApi";
 
 type LoginData = {
   password: string;
@@ -31,8 +31,8 @@ const Register = () => {
     email: "",
   });
 
+  const [register, { error }] = useRegisterMutation();
   const user = useAppSelector(selectUser);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { state } = useLocation();
   if (user) navigate(state?.from || "/");
@@ -45,20 +45,20 @@ const Register = () => {
     setRegisterData(newLoginData);
   };
 
-  const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (registerData.password !== registerData.retype_password) {
       alert("password did not match");
     } else {
-      dispatch(
-        register({
-          name: registerData.name,
-          email: registerData.email,
-          password: registerData.password,
-        }),
-      );
+      const data = await register({
+        name: registerData.name,
+        email: registerData.email,
+        password: registerData.password,
+      });
+      console.log(data);
     }
   };
+
   return (
     <Container sx={{ my: 5 }}>
       <Grid
@@ -87,12 +87,14 @@ const Register = () => {
                 onChange={handleOnChange}
                 variant="standard"
                 name="name"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Person />
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Person />
+                      </InputAdornment>
+                    ),
+                  },
                 }}
               />
               <TextField
@@ -103,12 +105,14 @@ const Register = () => {
                 variant="standard"
                 name="email"
                 margin="dense"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Email />
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Email />
+                      </InputAdornment>
+                    ),
+                  },
                 }}
               />
               <br />
@@ -121,12 +125,14 @@ const Register = () => {
                 type="password"
                 margin="dense"
                 name="password"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <VpnKey />
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <VpnKey />
+                      </InputAdornment>
+                    ),
+                  },
                 }}
               />
               <TextField
@@ -138,12 +144,14 @@ const Register = () => {
                 type="password"
                 margin="dense"
                 name="retype_password"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <VpnKey />
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <VpnKey />
+                      </InputAdornment>
+                    ),
+                  },
                 }}
               />
               <br />
@@ -164,7 +172,7 @@ const Register = () => {
                 Register
               </Button>
             </form>
-            {user?.email && (
+            {user?.id && (
               <Alert sx={{ mt: 3 }} severity="success">
                 {" "}
                 User created successfully
@@ -173,7 +181,7 @@ const Register = () => {
             {error && <Alert severity="error">{"authentication failed"}</Alert>}
           </>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <img style={{ width: "100%" }} src={loginImage} alt="login" />
         </Grid>
       </Grid>

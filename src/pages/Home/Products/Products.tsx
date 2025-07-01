@@ -1,6 +1,6 @@
 import { Container, Grid, Typography } from "@mui/material";
-import Spinner from "components/Shared/Spinner";
-import IProduct from "types/ProductType";
+import Spinner from "@/components/Shared/Spinner";
+import type IProduct from "@/types/ProductType";
 import Product from "./Product";
 
 const Products = ({

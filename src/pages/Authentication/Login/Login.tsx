@@ -8,14 +8,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import Spinner from "components/Shared/Spinner";
-import React, { ChangeEvent, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { AppState } from "redux/store";
-import loginImage from "../../../../images/login.jpg";
-import { login } from "../../../../redux/actions/authAction";
-import { ILoginData } from "../../../../types/LoginType";
+// import Spinner from "@/components/Shared/Spinner";
+import React, { useState } from "react";
+import type { ChangeEvent } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router";
+import loginImage from "@/assets/login.jpg";
+import type { ILoginData } from "@/types/LoginType";
+import { useAppSelector } from "@/redux/hooks";
+import { selectUser } from "@/redux/features/auth/authSlice";
 
 const Login = () => {
   const [loginData, setLoginData] = useState<ILoginData>({
@@ -23,15 +23,11 @@ const Login = () => {
     password: "",
   });
 
-  const {
-    data: user,
-    state: loadingState,
-    error,
-  } = useSelector((state: AppState) => state.auth);
+  const user = useAppSelector(selectUser);
 
   const { state }: any = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const field: string = e.target.name;
@@ -41,14 +37,14 @@ const Login = () => {
     setLoginData(newLoginData);
   };
 
-  if (user?.email) navigate(state?.from || "/");
+  if (user?.id) navigate(state?.from || "/");
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // !! change to proper type
-    dispatch<any>(login(loginData));
+    // dispatch<any>(login(loginData));
   };
 
-  if (loadingState === "pending") return <Spinner />;
+  // if (loadingState === "pending") return <Spinner />;
   return (
     <Container sx={{ my: 5 }}>
       <Grid
@@ -62,9 +58,7 @@ const Login = () => {
       >
         <Grid
           sx={{ display: "flex", flexDirection: "column" }}
-          item
-          xs={12}
-          md={6}
+          size={{ xs: 12, md: 6 }}
         >
           <>
             <Typography variant="h6">Login</Typography>
@@ -76,12 +70,14 @@ const Login = () => {
                 onChange={handleOnChange}
                 variant="standard"
                 name="email"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Email />
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Email />
+                      </InputAdornment>
+                    ),
+                  },
                 }}
               />{" "}
               <br />
@@ -94,12 +90,14 @@ const Login = () => {
                 variant="standard"
                 type="password"
                 name="password"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <VpnKey />
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <VpnKey />
+                      </InputAdornment>
+                    ),
+                  },
                 }}
               />
               <br />
@@ -119,16 +117,16 @@ const Login = () => {
               >
                 Login
               </Button>
-              {user?.email && (
+              {user?.id && (
                 <Alert sx={{ mt: 3 }} severity="success">
                   User log in successfully
                 </Alert>
               )}
-              {error && (
+              {/* {error && (
                 <Alert sx={{ mt: 3 }} severity="error">
                   {"authentication failed"}
                 </Alert>
-              )}
+              )} */}
             </form>
             {/* <p>------------------------------------------</p> */}
             {/* <Button

@@ -1,8 +1,6 @@
-import { LinearProgress, Rating, Typography } from "@mui/material";
+import { Box, LinearProgress, Rating, Typography } from "@mui/material";
 import { linearProgressClasses } from "@mui/material/LinearProgress";
 import { styled } from "@mui/material/styles";
-import { Box } from "@mui/system";
-import React from "react";
 
 const RatingBar = ({
   value,

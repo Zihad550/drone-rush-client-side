@@ -1,10 +1,9 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, Container } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
-import { Container } from "@mui/system";
-import src from "images/faq.mp4";
+import src from "@/assets/faq.mp4";
 
 const FAQ = () => {
   const faqs = [
@@ -45,12 +44,12 @@ const FAQ = () => {
         Common Question
       </Typography>
       <Grid container spacing={2}>
-        <Grid item md={6}>
+        <Grid size={{ md: 6 }}>
           <video width="100%" height="auto" controls>
             <source src={src} type="video/mp4" />
           </video>
         </Grid>
-        <Grid item md={6}>
+        <Grid size={{ md: 6 }}>
           <Box
             sx={{
               display: "flex",

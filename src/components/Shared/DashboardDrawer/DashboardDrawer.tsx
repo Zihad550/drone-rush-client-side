@@ -1,5 +1,6 @@
 import MuiDrawer from "@mui/material/Drawer";
-import { CSSObject, styled, Theme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
+import type { CSSObject, Theme } from "@mui/material/styles";
 
 const drawerWidth = 240;
 

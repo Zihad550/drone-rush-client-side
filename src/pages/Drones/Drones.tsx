@@ -1,24 +1,22 @@
-import { Pagination } from "@mui/material";
-import { Box } from "@mui/system";
-import Spinner from "components/Shared/Spinner";
-import useAPI from "hooks/useAPI";
+import { Pagination, Box } from "@mui/material";
+import Spinner from "@/components/Shared/Spinner";
 import React, { useState } from "react";
-import ProductService from "services/Product.service";
-import IProduct from "types/ProductType";
+import type IProduct from "@/types/ProductType";
 import Products from "../Home/Products";
 
 const PRODUCTS_PER_PAGE = 8;
 const Drones = () => {
   const [page, setPage] = useState(1);
-  const { data } = useAPI<{ products: IProduct[]; totalProducts: number }>(
-    () =>
-      ProductService.getAllProducts({
-        productsPerPage: PRODUCTS_PER_PAGE,
-        currentPage: page,
-      }),
-    page
-  );
+  // const { data } = useAPI<{ products: IProduct[]; totalProducts: number }>(
+  //   () =>
+  //     ProductService.getAllProducts({
+  //       productsPerPage: PRODUCTS_PER_PAGE,
+  //       currentPage: page,
+  //     }),
+  //   page,
+  // );
 
+  const data = { products: [], totalProducts: 0 };
   console.log("call");
 
   if (!data?.products) return <Spinner />;
