@@ -1,6 +1,5 @@
 // import { NavLink } from "react-router";
 import type { INavItem, IUserPath } from "@/types/router.type";
-import { NavLink } from "react-router";
 
 const generatePath = ({ role, path }: { role?: string; path?: string }) => {
   if (role) return `/${role}/${path}`;
@@ -14,17 +13,12 @@ export const navItemGenerator = (paths: IUserPath[], role?: string) => {
       acc.push({
         key: cur.name,
         path: generatePath({ role, path: cur.path }),
-        label: (
-          <NavLink to={generatePath({ role, path: cur.path })}>
-            {cur.name}
-          </NavLink>
-        ),
       });
     }
     if (cur.children) {
       acc.push({
         key: cur.name as string,
-        // label?: cur.name,
+        label: cur.name,
         path: cur.path as string,
         children: cur.children
           .map((child) => {
@@ -32,11 +26,6 @@ export const navItemGenerator = (paths: IUserPath[], role?: string) => {
               return {
                 key: child.name as string,
                 path: generatePath({ role, path: child.path }),
-                label: (
-                  <NavLink to={generatePath({ role, path: child.path })}>
-                    {child.name}
-                  </NavLink>
-                ),
               };
             }
             return undefined;

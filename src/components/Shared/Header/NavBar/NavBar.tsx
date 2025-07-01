@@ -19,6 +19,7 @@ import {
   Button,
   Container,
   Divider,
+  Link,
   ListItemButton,
   TextField,
   Typography,
@@ -29,8 +30,8 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import Toolbar from "@mui/material/Toolbar";
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useState, type ReactNode } from "react";
+import { NavLink, useNavigate } from "react-router";
 
 const drawerWidth = 200;
 
@@ -76,11 +77,7 @@ function NavBar() {
       <Divider />
       <List>
         {pages.map((page) => (
-          <ListItemButton
-            // LinkComponent={page.label}
-            key={page.key}
-            onClick={() => navigate(page.path)}
-          >
+          <ListItemButton component={NavLink} key={page.key} to={page.path}>
             {page.key}
           </ListItemButton>
         ))}
@@ -138,6 +135,8 @@ function NavBar() {
               >
                 {pages.map((page) => (
                   <Button
+                    component={NavLink}
+                    to={page.path}
                     key={page.key}
                     sx={{
                       color: "white",
@@ -146,7 +145,6 @@ function NavBar() {
                       display: "block",
                       mx: 3,
                     }}
-                    onClick={() => navigate(page.path)}
                   >
                     {page.key}
                   </Button>
@@ -157,7 +155,7 @@ function NavBar() {
                ================== */}
               <Box sx={{ display: { xs: "flex", sm: "none" }, ml: "auto" }}>
                 <Typography variant="h5" sx={{ mr: 3 }}>
-                  Bazarly
+                  Drone Rush
                 </Typography>
                 <Box className="primary-hover-effect">
                   <IconButton className="primary-hover-effect">

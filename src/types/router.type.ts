@@ -15,7 +15,6 @@ export interface IRoute {
 
 export interface INavItem {
   key: string;
-  label?: ReactNode;
   path: string;
-  children?: { key: string; label?: ReactNode; path: string }[];
+  children?: { key: string; path: string }[];
 }
