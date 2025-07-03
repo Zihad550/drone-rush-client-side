@@ -131,7 +131,7 @@ const Details = () => {
                     Brand:
                   </Typography>
                   <Typography variant="body2" sx={{ color: "#4fc4cf" }}>
-                    {brand}
+                    {brand.name}
                   </Typography>
                 </Box>
               </Box>
@@ -218,7 +218,7 @@ const Details = () => {
           {/* all reviews */}
           <Box sx={{ mt: 5 }}>
             <Typography variant="body1">Product Reviews</Typography>
-            {reviews.map((review) => (
+            {reviews?.map((review) => (
               <Box sx={{ mt: 2 }}>
                 <Rating value={Number(review.rating)} readOnly />
                 <Typography variant="body2">by {review.user}</Typography>

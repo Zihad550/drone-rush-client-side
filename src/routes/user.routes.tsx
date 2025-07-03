@@ -37,22 +37,22 @@ export const userPaths: IUserPath[] = [
   },
   {
     path: "purchase",
-    name: "Purchase",
+    // name: "Purchase",
     element: <Purchase />,
   },
   {
     path: "pay",
-    name: "Pay",
+    // name: "Pay",
     element: <Pay />,
   },
   {
     path: "checkout/:totalPrice",
-    name: "Checkout",
+    // name: "Checkout",
     element: <Checkout />,
   },
   {
     path: "orderPlaced",
-    name: "Order Placed",
+    // name: "Order Placed",
     element: <OrderPlaced />,
   },
 ];

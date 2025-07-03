@@ -60,10 +60,18 @@ const Dashboard = () => {
 
   switch (user?.role) {
     case USER_ROLE.ADMIN:
-      pages = navItemGenerator(adminPaths, USER_ROLE.ADMIN);
+      pages = navItemGenerator({
+        paths: adminPaths,
+        extraPath: "dashboard",
+        role: USER_ROLE.ADMIN,
+      });
       break;
     case USER_ROLE.USER:
-      pages = navItemGenerator(userDashboardPaths, USER_ROLE.USER);
+      pages = navItemGenerator({
+        paths: userDashboardPaths,
+        role: USER_ROLE.USER,
+        extraPath: "dashboard",
+      });
       break;
   }
 
