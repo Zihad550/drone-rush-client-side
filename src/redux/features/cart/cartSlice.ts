@@ -5,6 +5,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 interface ICartState {
   cartProducts: IPurchasableProduct[];
+  totalAmount: number;
 }
 
 const initialState: ICartState = {

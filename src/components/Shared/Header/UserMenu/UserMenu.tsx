@@ -52,6 +52,9 @@ const UserMenu = () => {
             Dashboard
           </MenuItem>
         )}
+        <MenuItem component={NavLink} to="/user/wishlist">
+          Wishlist
+        </MenuItem>
         <MenuItem onClick={() => dispatch(logout())}>Logout</MenuItem>
       </Menu>
     </div>

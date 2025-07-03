@@ -29,7 +29,6 @@ const orderApi = baseApi.injectEndpoints({
         const params = new URLSearchParams();
         if (Object.keys(args)?.length) {
           Object.entries(args).forEach(([key, value]) => {
-            console.log({ key, value });
             if (value) params.append(key, String(value));
           });
         }

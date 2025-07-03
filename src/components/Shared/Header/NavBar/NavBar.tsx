@@ -32,6 +32,7 @@ import { NavLink, useNavigate } from "react-router";
 import UserMenu from "../UserMenu/UserMenu";
 import { userPaths } from "@/routes/user.routes";
 import { USER_ROLE } from "@/constants";
+import CartLink from "../CartLink/CartLink";
 
 const drawerWidth = 200;
 
@@ -54,7 +55,6 @@ function NavBar() {
       dispatch(logout());
     }
   }
-  console.log(user);
 
   const pages: INavItem[] = navItemGenerator({ paths: publicPaths });
   if (user && user.role === USER_ROLE.USER) {
@@ -176,7 +176,10 @@ function NavBar() {
                 </Box>
               </Box>
               {user ? (
-                <UserMenu />
+                <>
+                  <CartLink />
+                  <UserMenu />
+                </>
               ) : (
                 <Button
                   sx={{

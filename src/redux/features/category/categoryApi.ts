@@ -7,8 +7,8 @@ const categoryApi = baseApi.injectEndpoints({
     getCategories: build.query({
       query: ({ page, limit }: { page?: number; limit?: number }) => {
         const params = new URLSearchParams();
-        if (page) params.set("page", page.toString());
-        if (limit) params.set("limit", limit.toString());
+        if (page) params.append("page", page.toString());
+        if (limit) params.append("limit", limit.toString());
         return {
           url: "/categories",
           method: "GET",
@@ -17,7 +17,6 @@ const categoryApi = baseApi.injectEndpoints({
       },
       providesTags: ["categories"],
       transformResponse: (res: IResponseRedux<ICategory[]>) => {
-        console.log("res -.", res);
         return {
           data: res.data,
           meta: res.meta,

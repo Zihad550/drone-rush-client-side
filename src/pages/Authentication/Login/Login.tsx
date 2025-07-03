@@ -11,7 +11,7 @@ import {
 import Spinner from "@/components/Shared/Spinner";
 import React, { useState } from "react";
 import type { ChangeEvent } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router";
+import { Navigate, NavLink, useNavigate } from "react-router";
 import loginImage from "@/assets/login.jpg";
 import type { ILoginData } from "@/types/LoginType";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -30,7 +30,6 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const [login, { isLoading }] = useLoginMutation();
 
-  const { state }: any = useLocation();
   const navigate = useNavigate();
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +40,9 @@ const Login = () => {
     setLoginData(newLoginData);
   };
 
-  if (user?.id) navigate(state?.from || "/");
+  if (user?.id) {
+    <Navigate to="/" />;
+  }
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const toastId = toast.loading("Logging in");
@@ -50,11 +51,7 @@ const Login = () => {
       toast.success("Logged in", { id: toastId, duration: 2000 });
       const user = verifyToken(res.data.accessToken);
       dispatch(setUser({ user, token: res.data.accessToken }));
-      navigate("/");
-      // dispatch(setUser())
-
-      // !! change to proper type
-      // dispatch<any>(login(loginData));
+      await navigate("/");
     } catch (err) {
       toast.error("Something went wrong", { id: toastId, duration: 2000 });
     }

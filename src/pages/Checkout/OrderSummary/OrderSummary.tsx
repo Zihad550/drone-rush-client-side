@@ -13,21 +13,21 @@ import axios from "axios";
 import { useState } from "react";
 import type IShippingInfo from "@/types/shippingInfo.type";
 import { useAppSelector } from "@/redux/hooks";
-import { selectToken, selectUser } from "@/redux/features/auth/authSlice";
+import { selectToken } from "@/redux/features/auth/authSlice";
 
 const OrderSummary = ({
   totalPrice,
   paymentMethod,
   shippingInformations,
+  formattedProducts,
 }: {
   totalPrice: number;
   paymentMethod: string;
   shippingInformations: Partial<IShippingInfo>;
+  formattedProducts: string[];
 }) => {
   const [showCoupons, setShowCoupons] = useState(false);
   // const cartProducts = useSelector((state: AppState) => state.cart);
-  const cartProducts = [];
-  const user = useAppSelector(selectUser);
   const token = useAppSelector(selectToken);
   // const dispatch = useDispatch();
   const handlePlaceOrder = () => {
@@ -49,7 +49,7 @@ const OrderSummary = ({
     const orderDetails = {
       ...shippingInformations,
       paymentMethod,
-      products: cartProducts,
+      products: formattedProducts,
     };
 
     // place order
@@ -62,12 +62,11 @@ const OrderSummary = ({
       data: orderDetails,
     })
       .then((res) => {
-        console.log(res.data);
         if (res.data.success) {
           // dispatch(clearCart());
           alert("Order placed successfully!");
           // Redirect to order success page or order history
-          window.location.href = "/orders";
+          window.location.href = "/user/orders";
         }
       })
       .catch((error) => {

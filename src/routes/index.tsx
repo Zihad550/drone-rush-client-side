@@ -36,7 +36,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/user",
-    Component: App,
+    element: (
+      <ProtectedRoute role="user">
+        <App />
+      </ProtectedRoute>
+    ),
     children: routeGenerator(userPaths),
   },
 

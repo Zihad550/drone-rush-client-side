@@ -14,16 +14,25 @@ import {
 } from "@/redux/features/shipping/shippingInformationApi";
 import { useAppSelector } from "@/redux/hooks";
 import { selectUser } from "@/redux/features/auth/authSlice";
+import { selectCartProducts } from "@/redux/features/cart/cartSlice";
 
 const Checkout = () => {
   const user = useAppSelector(selectUser);
-  const { totalPrice } = useParams();
+  const products = useAppSelector(selectCartProducts);
   const [paymentMethod, setPaymentMethod] = useState("COD");
   const [selectedShippingId, setSelectedShippingId] = useState<string | null>(
     null,
   );
   const [isNewShippingInfo, setIsNewShippingInfo] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const totalPrice = products.reduce(
+    (acc, cur) => (acc += cur.price * cur.quantity),
+    0,
+  );
+  const formattedProducts = products.map((product) => ({
+    _id: product._id,
+    quantity: product.quantity,
+  }));
 
   // API hooks
   const { data: userShippingData, isLoading: isLoadingShipping } =
@@ -160,6 +169,7 @@ const Checkout = () => {
               totalPrice={Number(totalPrice)}
               paymentMethod={paymentMethod}
               shippingInformations={shippingInformations}
+              formattedProducts={formattedProducts}
             />
           </Grid>
         </Grid>

@@ -7,7 +7,7 @@ const authApi = baseApi.injectEndpoints({
     getProducts: build.query({
       query: (page?: number) => {
         const params = new URLSearchParams();
-        if (page) params.set("page", page.toString());
+        if (page) params.append("page", page.toString());
         return {
           url: "/products",
           method: "GET",

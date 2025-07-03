@@ -18,8 +18,9 @@ import RatingChart from "./RatingChart";
 import { useParams } from "react-router";
 import { useGetProductQuery } from "@/redux/features/product/productApi";
 import Spinner from "@/components/Shared/Spinner";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { addProductToCard } from "@/redux/features/cart/cartSlice";
+import { selectUser } from "@/redux/features/auth/authSlice";
 
 const calculateRatings = (ratings: number[]) => {
   if (!ratings.length)
@@ -59,6 +60,7 @@ const Details = () => {
 
   const { id } = useParams();
   const { data, isLoading } = useGetProductQuery(id as string);
+  const user = useAppSelector(selectUser);
 
   if (isLoading) return <Spinner />;
 
@@ -160,6 +162,7 @@ const Details = () => {
               onClick={() => dispatch(addProductToCard(data.data))}
               variant="contained"
               sx={{ color: "white" }}
+              disabled={!user}
             >
               Add To Cart
             </Button>

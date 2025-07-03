@@ -82,7 +82,7 @@ const Cart = () => {
                 <TableBody>
                   {products.map((product) => {
                     return (
-                      <TableRow hover tabIndex={-1}>
+                      <TableRow key={product._id} hover tabIndex={-1}>
                         {/* product name & img */}
                         <TableCell>
                           <img

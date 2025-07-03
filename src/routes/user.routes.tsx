@@ -11,7 +11,7 @@ import { Inventory, ShoppingBasket } from "@mui/icons-material";
 
 export const userDashboardPaths: IUserPath[] = [
   {
-    path: "myOrders",
+    path: "orders",
     name: "My Orders",
     element: <MyOrders />,
     icon: <Inventory />,
@@ -27,12 +27,10 @@ export const userDashboardPaths: IUserPath[] = [
 export const userPaths: IUserPath[] = [
   {
     path: "cart",
-    name: "Cart",
     element: <Cart />,
   },
   {
     path: "wishlist",
-    name: "Wishlist",
     element: <Wishlist />,
   },
   {

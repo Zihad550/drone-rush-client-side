@@ -7,8 +7,8 @@ const brandApi = baseApi.injectEndpoints({
     getBrands: build.query({
       query: ({ page, limit }: { page?: number; limit?: number }) => {
         const params = new URLSearchParams();
-        if (page) params.set("page", page.toString());
-        if (limit) params.set("limit", limit.toString());
+        if (page) params.append("page", page.toString());
+        if (limit) params.append("limit", limit.toString());
         return {
           url: "/brands",
           method: "GET",
