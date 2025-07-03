@@ -16,9 +16,7 @@ const Products = ({
     </Typography>
     <Grid container spacing={{ xs: 2, lg: 3 }}>
       {products ? (
-        products.map((product) => (
-          <Product key={product.name} drone={product} />
-        ))
+        products.map((product) => <Product key={product._id} drone={product} />)
       ) : (
         <Spinner />
       )}

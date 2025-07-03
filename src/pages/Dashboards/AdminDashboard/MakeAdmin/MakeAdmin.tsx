@@ -1,33 +1,41 @@
+import Spinner from "@/components/Shared/Spinner";
 import { selectToken, selectUser } from "@/redux/features/auth/authSlice";
+import { useMakeAdminMutation } from "@/redux/features/user/userApi";
 import { useAppSelector } from "@/redux/hooks";
+import type { IError } from "@/types";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Alert, Button, IconButton, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 const MakeAdmin = () => {
   const [email, setEmail] = useState<string>("");
   const [success, setSuccess] = useState(false);
-  const user = useAppSelector(selectUser);
-  const token = useAppSelector(selectToken);
+  const [makeAdmin, { isLoading }] = useMakeAdminMutation();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    axios
-      .put("/users/admin", {
-        headers: {
-          "content-type": "application/json",
-          authorization: token,
-        },
-        data: { email },
-      })
-      .then(({ data }) => {
-        if (data.modifiedCount) {
-          setSuccess(true);
-        }
-      })
-      .finally(() => setEmail(""));
+    const toastId = toast.loading("Updating user role...");
+    try {
+      const res = await makeAdmin({ email }).unwrap();
+      console.log(res);
+
+      if (res.error) {
+        console.log("error", res.error);
+        toast.error(res.error?.data?.message);
+      }
+      if (res.success) {
+        toast.success(res.message, { id: toastId });
+      }
+    } catch (err: any) {
+      let message = "something went wrong";
+      if ("data" in err && err?.data?.message) message = err.data.message;
+      toast.error(message, { id: toastId });
+    }
   };
+
+  if (isLoading) return <Spinner />;
   return (
     <>
       {success && (
@@ -45,7 +53,7 @@ const MakeAdmin = () => {
         </Box>
       )}
 
-      <h2>Make a new admin</h2>
+      <h2>Request to make a new admin</h2>
       <form onSubmit={handleSubmit}>
         <TextField
           sx={{ width: "50%" }}

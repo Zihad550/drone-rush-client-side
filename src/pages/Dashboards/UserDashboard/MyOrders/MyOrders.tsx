@@ -1,6 +1,7 @@
 import Modal from "@/components/Shared/Modal";
 import Spinner from "@/components/Shared/Spinner";
 import { selectToken, selectUser } from "@/redux/features/auth/authSlice";
+import { useGetUserOrdersQuery } from "@/redux/features/order/orderApi";
 import { useAppSelector } from "@/redux/hooks";
 import type IOrder from "@/types/OrderType";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -17,26 +18,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 const MyOrders = () => {
-  const user = useAppSelector(selectUser);
-  const token = useAppSelector(selectToken);
   // !! use prover type
-  const [orders, setOrders] = useState<IOrder[] | null>(null);
-
-  useEffect(() => {
-    (async () => {
-      setOrders(
-        await axios
-          .get(`http://localhost:8000/orders/${user?.id}`, {
-            headers: {
-              Authorization: token,
-            },
-          })
-          .then((res) => res.data),
-      );
-    })();
-  }, []);
+  const { data, isLoading } = useGetUserOrdersQuery({});
+  console.log(data);
 
   const [isDeleted, setIsDeleted] = useState(false);
+
+  if (isLoading) return <Spinner />;
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -74,9 +62,7 @@ const MyOrders = () => {
         }); */
     }
   };
-  console.log(orders);
-  if (!orders) return <Spinner />;
-  if (orders.length === 0) {
+  if (!data?.data || data?.data.length === 0) {
     return (
       <Box
         sx={{
@@ -118,51 +104,47 @@ const MyOrders = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders ? (
-              orders.map((order) => (
-                <StyledTableRow key={order._id}>
-                  <StyledTableCell sx={{ width: "100px" }} scope="row">
-                    <img src={order.img} style={{ width: "100px" }} />
-                  </StyledTableCell>
-                  <StyledTableCell component="th" scope="row">
-                    {order.productName}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">{order.disc}</StyledTableCell>
-                  <StyledTableCell
-                    sx={{ width: "100px" }}
-                    align="left"
-                  >{`$ ${order.price}`}</StyledTableCell>
-                  <StyledTableCell
+            {data?.data.map((order) => (
+              <StyledTableRow key={order._id}>
+                <StyledTableCell sx={{ width: "100px" }} scope="row">
+                  <img src={order.img} style={{ width: "100px" }} />
+                </StyledTableCell>
+                <StyledTableCell component="th" scope="row">
+                  {order.productName}
+                </StyledTableCell>
+                <StyledTableCell align="left">{order.disc}</StyledTableCell>
+                <StyledTableCell
+                  sx={{ width: "100px" }}
+                  align="left"
+                >{`$ ${order.price}`}</StyledTableCell>
+                <StyledTableCell
+                  sx={{
+                    width: "100px",
+                  }}
+                  align="left"
+                >
+                  <Box
                     sx={{
-                      width: "100px",
+                      textAlign: "center",
+                      color: "white",
+                      py: 1,
+                      px: 1.5,
+                      borderRadius: 3,
+                      fontWeight: "bold",
+                      background:
+                        order.orderStatus === "pending" ? "red" : "green",
                     }}
-                    align="left"
                   >
-                    <Box
-                      sx={{
-                        textAlign: "center",
-                        color: "white",
-                        py: 1,
-                        px: 1.5,
-                        borderRadius: 3,
-                        fontWeight: "bold",
-                        background:
-                          order.orderStatus === "pending" ? "red" : "green",
-                      }}
-                    >
-                      {order.orderStatus}
-                    </Box>
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <IconButton title="Cancel Order">
-                      <CancelIcon />
-                    </IconButton>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))
-            ) : (
-              <Spinner />
-            )}
+                    {order.orderStatus}
+                  </Box>
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <IconButton title="Cancel Order">
+                    <CancelIcon />
+                  </IconButton>
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>

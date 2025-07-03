@@ -1,7 +1,6 @@
 import { Pagination, Box } from "@mui/material";
 import Spinner from "@/components/Shared/Spinner";
 import React, { useState } from "react";
-import type IProduct from "@/types/ProductType";
 import Products from "../Home/Products";
 import { useGetProductsQuery } from "@/redux/features/product/productApi";
 

@@ -1,7 +1,9 @@
 import Modal from "@/components/Shared/Modal";
 import Spinner from "@/components/Shared/Spinner";
-import { selectToken, selectUser } from "@/redux/features/auth/authSlice";
-import { useAppSelector } from "@/redux/hooks";
+import {
+  useDeleteProductMutation,
+  useGetProductsQuery,
+} from "@/redux/features/product/productApi";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CloseIcon from "@mui/icons-material/Close";
 import { Alert, Box, IconButton, Typography } from "@mui/material";
@@ -13,33 +15,14 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const ManageDrones = () => {
-  // const [drones, setDrones] = useState<IProduct[] | null>(null);
-  const [refresh, setRefresh] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
   const [noPermission, setNoPermission] = useState(false);
-  // const { data } = useAPI(() =>
-  //   ProductService.getAllProducts({ productsPerPage: 0 })
-  // );
-  const data = { products: [] };
-  const user = useAppSelector(selectUser);
-  const token = useAppSelector(selectToken);
-
-  useEffect(() => {
-    setRefresh(false);
-    const controller = new AbortController();
-    /* (async () => {
-      setDrones(await axiosInstance.get("/drones").then((res) => res.data));
-    })(); */
-
-    return () => {
-      controller.abort();
-    };
-  }, [refresh]);
+  const { data, isLoading } = useGetProductsQuery(undefined);
+  const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -62,24 +45,24 @@ const ManageDrones = () => {
   }));
 
   // handle delete drone
-  const handleDelete = (id: string) => {
-    if (window.confirm("Are you sure?")) {
-      // ProductService.deleteProduct(id).then(res => console.log(res))
-      axios
-        .delete(`http://localhost:8000/product/${id}`, {
-          headers: {
-            Authorization: token,
-          },
-        })
-        .then(({ data }) => {
-          data.deletedCount > 0 && setRefresh(true);
-          data.deletedCount > 0 && setIsDeleted(true);
-          data.deletedCount === 0 && setNoPermission(true);
-        });
+  const handleDelete = async (id: string) => {
+    const confirmation = window.confirm("Are you sure?");
+    if (!confirmation) return;
+    const toastId = toast.loading("Deleting...");
+    try {
+      const res = await deleteProduct(id).unwrap();
+      if (res.success) {
+        toast.success("Drone deleted successfully", { id: toastId });
+      }
+    } catch (err: any) {
+      if ("data" in err && err.data?.message)
+        toast.error(err.data.message, { id: toastId });
+      else toast.error("An error occurred", { id: toastId });
     }
   };
 
-  if (!data) return <Spinner />;
+  if (isLoading || isDeleting) return <Spinner />;
+  if (!data?.data?.length) return <div>No products available</div>;
 
   return (
     <>
@@ -124,7 +107,7 @@ const ManageDrones = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.products.map((drone) => (
+            {data.data.map((drone) => (
               <StyledTableRow key={drone._id}>
                 <StyledTableCell sx={{ width: "100px" }} scope="row">
                   <img src={drone.img} style={{ width: "100px" }} />

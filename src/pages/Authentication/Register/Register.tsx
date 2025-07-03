@@ -62,11 +62,9 @@ const Register = () => {
           email: registerData.email,
           password: registerData.password,
         }).unwrap();
-        const verified = verifyToken(res.data.accessToken);
-        dispatch(
-          setUser({ user: verified?.user, token: res.data.accessToken }),
-        );
-        toast.success("Registered successfully");
+        const user = verifyToken(res.data.accessToken);
+        dispatch(setUser({ user, token: res.data.accessToken }));
+        toast.success("Registered successfully", { id: toastId });
         navigate("/");
       }
     } catch (err) {

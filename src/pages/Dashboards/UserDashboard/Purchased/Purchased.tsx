@@ -11,21 +11,15 @@ import {
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-import axios from "axios";
 import Modal from "@/components/Shared/Modal";
 import Spinner from "@/components/Shared/Spinner";
-import { useEffect, useState } from "react";
-import { useAppSelector } from "@/redux/hooks";
-import { selectUser } from "@/redux/features/auth/authSlice";
-import type IOrder from "@/types/OrderType";
+import { useState } from "react";
+import { useGetUserOrdersQuery } from "@/redux/features/order/orderApi";
 
 const Purchased = () => {
-  const [purchasedProducts, setPurchasedProducts] = useState<IOrder[] | null>(
-    null,
-  );
-  const user = useAppSelector(selectUser);
-  console.log(user);
   const [isDeleted, setIsDeleted] = useState(false);
+  const { data, isLoading } = useGetUserOrdersQuery({ status: "completed" });
+  console.log(data);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -47,25 +41,8 @@ const Purchased = () => {
     },
   }));
 
-  useEffect(() => {
-    const controller = new AbortController();
-    (async () => {
-      setPurchasedProducts(
-        await axios
-          .get(`http://localhost:8000/purchases`, {
-            signal: controller.signal,
-          })
-          .then((res) => res.data),
-      );
-    })();
-
-    return () => {
-      controller.abort();
-    };
-  }, []);
-
-  if (!purchasedProducts) return <Spinner />;
-  if (purchasedProducts.length === 0) {
+  if (isLoading) return <Spinner />;
+  if (!data?.data || !data.data.length) {
     return (
       <Box
         sx={{
@@ -81,6 +58,7 @@ const Purchased = () => {
       </Box>
     );
   }
+
   return (
     <>
       {/* modal */}
@@ -109,7 +87,7 @@ const Purchased = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {purchasedProducts.map((product) => (
+            {data.data.map((product) => (
               <StyledTableRow key={product._id}>
                 <StyledTableCell sx={{ width: "100px" }} scope="row">
                   <img src={product.img} style={{ width: "100px" }} />

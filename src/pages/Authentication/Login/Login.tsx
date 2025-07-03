@@ -48,8 +48,8 @@ const Login = () => {
     try {
       const res = await login(loginData).unwrap();
       toast.success("Logged in", { id: toastId, duration: 2000 });
-      const verified = verifyToken(res.data.accessToken);
-      dispatch(setUser({ user: verified?.user, token: res.data.accessToken }));
+      const user = verifyToken(res.data.accessToken);
+      dispatch(setUser({ user, token: res.data.accessToken }));
       navigate("/");
       // dispatch(setUser())
 

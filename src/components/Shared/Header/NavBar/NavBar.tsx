@@ -47,8 +47,7 @@ function NavBar() {
   let user;
   if (token) {
     try {
-      const verified = verifyToken(token);
-      user = verified?.user;
+      user = verifyToken(token);
     } catch (err) {
       dispatch(logout());
     }

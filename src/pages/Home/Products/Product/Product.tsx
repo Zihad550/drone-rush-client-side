@@ -10,7 +10,7 @@ import { useNavigate } from "react-router";
 import type IProduct from "@/types/ProductType";
 
 const Product = ({
-  drone: { name, disc, price, img, _id },
+  drone: { name, description: disc, price, img, _id },
 }: {
   drone: IProduct;
 }) => {

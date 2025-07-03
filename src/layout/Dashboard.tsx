@@ -24,7 +24,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { selectToken } from "@/redux/features/auth/authSlice";
 import { verifyToken } from "@/utils/verifyToken";
 import { navItemGenerator } from "@/utils/navItemGenerator";
-import { userDashboardPaths, userPaths } from "@/routes/user.routes";
+import { userDashboardPaths } from "@/routes/user.routes";
 import type { INavItem } from "@/types";
 import { USER_ROLE } from "@/constants";
 import { adminPaths } from "@/routes/admin.routes";
@@ -53,8 +53,7 @@ const Dashboard = () => {
 
   let user;
   if (token) {
-    const verified = verifyToken(token);
-    user = verified?.user;
+    user = verifyToken(token);
   }
 
   let pages: INavItem[] = [];

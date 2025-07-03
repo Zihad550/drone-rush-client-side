@@ -7,6 +7,7 @@ import {
   IconButton,
   Snackbar,
   Typography,
+  type SelectChangeEvent,
 } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -18,11 +19,12 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import type IOrder from "@/types/OrderType";
-import { useAppSelector } from "@/redux/hooks";
-import { selectUser } from "@/redux/features/auth/authSlice";
+import React, { useState } from "react";
+import { useGetOrdersQuery } from "@/redux/features/order/orderApi";
+import Spinner from "@/components/Shared/Spinner";
+import type { TOrderStatus } from "@/types";
+import AppSelect from "@/components/ui/AppSelect";
+import UpdateOrderStatusModal from "./UpdateStatusModal";
 
 interface Column {
   id: number;
@@ -30,70 +32,58 @@ interface Column {
   minWidth?: number;
 }
 
+const orderStatusOptions: { value: TOrderStatus; label: string }[] = [
+  {
+    value: "pending",
+    label: "Pending",
+  },
+  {
+    value: "processing",
+    label: "Processing",
+  },
+  {
+    value: "packaged",
+    label: "Packaged",
+  },
+  {
+    value: "delivering",
+    label: "Delivering",
+  },
+  {
+    value: "completed",
+    label: "Completed",
+  },
+  {
+    value: "admin-cancelled",
+    label: "Admin cancelled",
+  },
+  {
+    value: "user-cancelled",
+    label: "User cancelled",
+  },
+];
+
 const ManageOrders = () => {
-  // hooks
-  const [orders, setOrders] = useState<IOrder[]>([]);
-  const [status, setStatus] = useState<"All" | "pending" | "Shipped">("All");
+  const [status, setStatus] = useState<TOrderStatus | undefined>(undefined);
+  console.log(status);
+  const [page, setPage] = useState(0);
+  const { data, isLoading } = useGetOrdersQuery({
+    status,
+    page,
+    fields: ["product", "status"],
+  });
+
   const [isUpdated, setIsUpdated] = useState(false);
   const [error, setError] = useState("");
-  const user = useAppSelector(selectUser);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
-  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
-  useEffect(() => {
-    setIsUpdated(false);
-    const controller = new AbortController();
-    (async () => {
-      setOrders(
-        await axios
-          .get(`http://localhost:8000/orders?status=${status}`, {
-            headers: {
-              Authorization: `Bearer ${user?.accessToken}`,
-            },
-          })
-          .then((res) => res.data),
-      );
-    })();
-
-    return () => {
-      controller.abort();
-    };
-  }, [status, isUpdated]);
-
-  // handle status
-  const handleUpdateStatus = (id: string) => {
-    axios({
-      method: "patch",
-      url: "http://localhost:8000/orders",
-      data: { _id: id, orderStatus: "Shipped" },
-      headers: {
-        Authorization: `Bearer ${user?.accessToken}`,
-      },
-    })
-      .then(({ data }) => {
-        console.log(data);
-        if (data.modifiedCount > 0) {
-          setIsUpdated(true);
-        }
-      })
-      .catch((error) => setError(error.message));
-  };
-
-  const handleStatus = (e: any) => {
-    setStatus(e.target.innerText);
+  const handleStatus: (event: SelectChangeEvent) => void = (e) => {
+    setStatus(e.target.value as TOrderStatus);
   };
 
   const columns: readonly Column[] = [
@@ -116,6 +106,8 @@ const ManageOrders = () => {
     },
   ];
 
+  if (isLoading) return <Spinner />;
+  if (!data?.data?.length && !status) return <p>No orders</p>;
   return (
     <>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -124,85 +116,74 @@ const ManageOrders = () => {
             <TableHead>
               <TableRow>
                 {columns.map((column) => (
-                  <>
-                    <TableCell
-                      key={column.id}
-                      style={{
-                        minWidth: column.minWidth,
-                      }}
-                    >
-                      {column.label}
-                      {column.label === "Status" && (
-                        <>
-                          <Button
-                            aria-controls={open ? "basic-menu" : undefined}
-                            aria-haspopup="true"
-                            aria-expanded={open ? "true" : undefined}
-                            onClick={handleClick}
-                          >
-                            <IconButton>
-                              <MoreVertIcon />
-                            </IconButton>
-                          </Button>
-                          <Menu
-                            id="basic-menu"
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            MenuListProps={{
-                              "aria-labelledby": "basic-button",
-                            }}
-                          >
-                            <MenuItem onClick={handleStatus}>All</MenuItem>
-                            <MenuItem onClick={handleStatus}>Shipped</MenuItem>
-                            <MenuItem onClick={handleStatus}>pending</MenuItem>
-                          </Menu>
-                        </>
-                      )}
-                    </TableCell>
-                  </>
+                  <TableCell
+                    key={column.id}
+                    style={{
+                      minWidth: column.minWidth,
+                    }}
+                  >
+                    {column.label === "Status" ? (
+                      <AppSelect
+                        sx={{ width: 150 }}
+                        options={orderStatusOptions}
+                        name="status"
+                        label="Status"
+                        defaultValue=""
+                        handleChange={handleStatus}
+                      />
+                    ) : (
+                      column.label
+                    )}
+                  </TableCell>
                 ))}
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders.map((order) => (
+              {data.data.map((order) => (
                 <TableRow hover role="checkbox" tabIndex={-1} key={order._id}>
                   {/* product img & name */}
                   <TableCell sx={{ width: { md: "13%", xs: "15%" } }}>
-                    <img src={order.img} alt={order.productName} />
-                    <Typography variant="body2">{order.productName}</Typography>
+                    <img
+                      style={{ width: 200, height: 200 }}
+                      src={order.product.img}
+                      alt={order.product.name}
+                    />
+                    <Typography variant="body2">
+                      {order.product.name}
+                    </Typography>
                   </TableCell>
                   {/* customer details */}
                   <TableCell>
                     <Typography variant="body2">
-                      Name: {order.userName}
+                      Name: {order.user.name}
                     </Typography>
                     <Typography variant="body2">
-                      Email: {order.email}
+                      Email: {order.user.email}
                     </Typography>
                     <Typography variant="body2">
-                      Phone: {order.phone}
+                      Phone: {order.user.phone}
                     </Typography>
                   </TableCell>
-                  <TableCell>$ {order.price}</TableCell>
+                  <TableCell>$ {order.product.price}</TableCell>
                   <TableCell>
-                    <Chip
-                      label={order.orderStatus}
-                      color={
-                        order.orderStatus === "Shipped" ? "success" : "warning"
-                      }
-                    />
+                    {/* <AppSelect
+                      options={orderStatusOptions}
+                      name="status"
+                      label="Status"
+                      defaultValue={order.status}
+                      handleChange={(e) => handleStatusUpdate(order._id, status)}
+                      sx={{ width: 150 }}
+                    /> */}
+                    <Chip label={order.status} />
                   </TableCell>
                   {/* order actions */}
                   <TableCell>
                     <ButtonGroup size="small" variant="outlined">
-                      <Button
-                        disabled={order.orderStatus === "Shipped"}
-                        color="warning"
-                        onClick={() => handleUpdateStatus(order._id)}
-                      >
-                        Update Status
-                      </Button>
+                      <UpdateOrderStatusModal
+                        status={order.status}
+                        id={order._id}
+                        orderStatusOptions={orderStatusOptions}
+                      />
                       <Button color="error">Delete Order</Button>
                     </ButtonGroup>
                   </TableCell>
@@ -214,9 +195,9 @@ const ManageOrders = () => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={orders.length}
+          count={data.meta?.total}
           rowsPerPage={rowsPerPage}
-          page={page}
+          page={data.meta.page}
           onPageChange={handleChangePage}
           // onRowsPerPageChange={handleChangeRowsPerPage}
         />

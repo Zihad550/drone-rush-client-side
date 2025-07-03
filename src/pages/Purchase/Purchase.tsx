@@ -21,7 +21,7 @@ const Purchase = () => {
   const { name } = useParams();
   // const user = useAppSelector(selectUser);
   const [drone, setDrone] = useState({} as IProduct);
-  const { disc, img, price } = drone;
+  const { description: disc, img, price } = drone;
 
   const [orderInfo, setOrderInfo] = useState({
     name: "",

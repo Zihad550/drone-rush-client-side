@@ -1,4 +1,6 @@
 import { baseApi } from "@/redux/api/baseApi";
+import type { IResponseRedux, TProductWriteDoc } from "@/types";
+import type IProduct from "@/types/product.type";
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -20,7 +22,27 @@ const authApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    createProduct: build.mutation({
+      query: (payload: TProductWriteDoc) => ({
+        url: `/products`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["products"],
+    }),
+    deleteProduct: build.mutation<IResponseRedux<IProduct>, string>({
+      query: (id) => ({
+        url: `/products/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["products"],
+    }),
   }),
 });
 
-export const { useGetProductsQuery, useGetProductQuery } = authApi;
+export const {
+  useGetProductsQuery,
+  useGetProductQuery,
+  useCreateProductMutation,
+  useDeleteProductMutation,
+} = authApi;
