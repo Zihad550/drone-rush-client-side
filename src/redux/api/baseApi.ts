@@ -7,7 +7,6 @@ import {
   type FetchArgs,
 } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "../store";
-import type { ThunkDispatch } from "@reduxjs/toolkit";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_APP_API_URL,
@@ -36,6 +35,12 @@ const baseQueryWithToken: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithToken,
-  tagTypes: ["products", "user-orders", "categories", "brands"],
+  tagTypes: [
+    "products",
+    "user-orders",
+    "categories",
+    "brands",
+    "shipping-informations",
+  ],
   endpoints: () => ({}),
 });

@@ -1,95 +1,171 @@
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
-import axios from "axios";
-import React from "react";
-import PhoneInput from "react-phone-number-input";
-// import IShippingInfo from "@/types/ShippingInfoType";
+import {
+  Box,
+  Button,
+  Paper,
+  TextField,
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  type SelectChangeEvent,
+  Tooltip,
+} from "@mui/material";
+import React, { useState } from "react";
 import "./ShippingInformation.css";
 import { useAppSelector } from "@/redux/hooks";
 import { selectUser } from "@/redux/features/auth/authSlice";
+import type IShippingInfo from "@/types/shippingInfo.type";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 const ShippingInformation = ({
-  hasShippingInfo,
   shippingInformations,
   setShippingInformations,
+  userShippingInfos,
+  selectedShippingId,
+  onSelectShipping,
+  onSaveShipping,
+  onDeleteShipping,
+  isNewShippingInfo,
+  isEditing,
+  setIsEditing,
+  isLoading,
 }: {
-  hasShippingInfo: boolean;
-  shippingInformations: IShippingInfo;
-  setShippingInformations: React.Dispatch<React.SetStateAction<IShippingInfo>>;
+  shippingInformations: Partial<IShippingInfo>;
+  setShippingInformations: React.Dispatch<
+    React.SetStateAction<Partial<IShippingInfo>>
+  >;
+  userShippingInfos: IShippingInfo[];
+  selectedShippingId: string | null;
+  onSelectShipping: (id: string | null) => void;
+  onSaveShipping: (data: Partial<IShippingInfo>) => Promise<void>;
+  onDeleteShipping: (id: string) => Promise<void>;
+  isNewShippingInfo: boolean;
+  isEditing: boolean;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoading: boolean;
 }) => {
   const user = useAppSelector(selectUser);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [shippingToDelete, setShippingToDelete] = useState<string | null>(null);
 
-  const { customerName, phone, street, country, state, city, zipCode, apt } =
-    shippingInformations;
+  const { street, country, state, city, zipCode, apt } = shippingInformations;
 
   const handleInputData = (e: React.FocusEvent<HTMLInputElement> | any) => {
     const newInformations: any = { ...shippingInformations };
     newInformations[e.target.name] = e.target.value;
-    console.log(shippingInformations);
     setShippingInformations(newInformations);
+
+    // Enable editing mode when user modifies a field
+    if (!isNewShippingInfo && !isEditing) {
+      setIsEditing(true);
+    }
   };
 
-  const handlePhoneNumber = (e: any) => {
-    const newInformations: any = { ...shippingInformations };
-    newInformations["phone"] = e;
-
-    setShippingInformations(newInformations);
+  const handleSelectChange = (event: SelectChangeEvent<string>) => {
+    const value = event.target.value;
+    if (value === "new") {
+      onSelectShipping(null);
+    } else {
+      onSelectShipping(value);
+    }
   };
 
-  const handleSaveShippingInformation = (
+  const handleDeleteClick = (id: string) => {
+    setShippingToDelete(id);
+    setDeleteConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (shippingToDelete) {
+      await onDeleteShipping(shippingToDelete);
+      setDeleteConfirmOpen(false);
+      setShippingToDelete(null);
+    }
+  };
+
+  const handleSaveShippingInformation = async (
     e: React.FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault();
-    const shippingInfo = {
-      ...shippingInformations,
-      // customerEmail: user?.email,
-    };
 
-    axios({
-      url: "http://localhost:8000/shippingInformation",
-      method: "POST",
-      // headers: {
-      //   Authorization: `Bearer ${user?.accessToken}`,
-      // },
-      data: shippingInfo,
-    }).then((res) => {
-      if (res.data.insertedId) {
-        alert("successfully saved");
-      }
-    });
+    try {
+      await onSaveShipping(shippingInformations);
+    } catch (error) {
+      console.error("Error saving shipping information:", error);
+    }
   };
   return (
     <Paper sx={{ p: 3 }}>
       <Typography variant="h5" sx={{ fontWeight: "bold", mb: 2 }}>
         Shipping Information
       </Typography>
+
+      {/* Shipping Information Selection */}
+      <Box sx={{ mb: 3 }}>
+        <FormControl fullWidth size="small">
+          <InputLabel id="shipping-select-label">
+            Select Shipping Address
+          </InputLabel>
+          <Select
+            labelId="shipping-select-label"
+            id="shipping-select"
+            value={selectedShippingId || "new"}
+            label="Select Shipping Address"
+            onChange={handleSelectChange}
+          >
+            <MenuItem value="new">
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <AddIcon fontSize="small" sx={{ mr: 1 }} />
+                Add New Address
+              </Box>
+            </MenuItem>
+            {userShippingInfos.map((info) => (
+              <MenuItem key={info._id} value={info._id}>
+                {info.street}, {info.city}, {info.state}, {info.country}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+
+      {/* Shipping Address Actions */}
+      {!isNewShippingInfo && selectedShippingId && (
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+          <Tooltip title={isEditing ? "Currently editing" : "Edit address"}>
+            <span>
+              <IconButton
+                color={isEditing ? "primary" : "default"}
+                onClick={() => setIsEditing(true)}
+                disabled={isEditing}
+              >
+                <EditIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+          <Tooltip title="Delete address">
+            <IconButton
+              color="error"
+              onClick={() => handleDeleteClick(selectedShippingId)}
+              disabled={isLoading}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      )}
+
       <form onSubmit={handleSaveShippingInformation}>
         <Typography sx={{ mb: 1 }} variant="h6">
-          Contact
-        </Typography>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <TextField
-            sx={{ width: "50%" }}
-            variant="outlined"
-            label="Name"
-            name="customerName"
-            size="small"
-            required
-            onBlur={handleInputData}
-            onChange={handleInputData}
-            value={customerName}
-          />
-          <PhoneInput
-            required
-            className="phone-input"
-            name="phone"
-            placeholder="Phone"
-            onChange={handlePhoneNumber}
-            value={phone}
-          />
-        </Box>
-
-        <Typography sx={{ mb: 1, mt: 3 }} variant="h6">
           Address
         </Typography>
+
         <Box>
           <Box sx={{ display: "flex" }}>
             <TextField
@@ -162,16 +238,52 @@ const ShippingInformation = ({
           </Box>
         </Box>
 
-        {/* submit btb */}
+        {/* submit button */}
         <Button
-          disabled={hasShippingInfo}
+          disabled={isLoading || (!isNewShippingInfo && !isEditing)}
           type="submit"
-          variant="outlined"
+          variant="contained"
+          color="primary"
           sx={{ mt: 1.5 }}
         >
-          Save Information
+          {isNewShippingInfo
+            ? "Save New Address"
+            : isEditing
+              ? "Update Address"
+              : "Save Information"}
         </Button>
+
+        {isEditing && (
+          <Button
+            variant="outlined"
+            sx={{ mt: 1.5, ml: 2 }}
+            onClick={() => {
+              setIsEditing(false);
+              onSelectShipping(selectedShippingId);
+            }}
+          >
+            Cancel Editing
+          </Button>
+        )}
       </form>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={deleteConfirmOpen}
+        onClose={() => setDeleteConfirmOpen(false)}
+      >
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          Are you sure you want to delete this shipping address? This action
+          cannot be undone.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteConfirmOpen(false)}>Cancel</Button>
+          <Button onClick={handleConfirmDelete} color="error">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 };

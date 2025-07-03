@@ -112,7 +112,7 @@ const CartMenu = ({
             alignItems: "center",
           }}
         >
-          <Button onClick={() => navigate(`/checkout/${totalPrice}`)}>
+          <Button onClick={() => navigate(`/user/checkout/${totalPrice}`)}>
             Proceed to Checkout
           </Button>
         </CardActions>

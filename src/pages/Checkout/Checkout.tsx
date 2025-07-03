@@ -1,50 +1,137 @@
 import { Box, Grid, Container } from "@mui/material";
 import Spinner from "@/components/Shared/Spinner";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
-import type IShippingInfo from "@/types/ShippingInfoType";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router";
+import type IShippingInfo from "@/types/shippingInfo.type";
 import OrderSummary from "./OrderSummary";
 import PaymentMethods from "./PaymentMethods";
 import ShippingInformation from "./ShippingInformation";
+import {
+  useGetUserShippingInformationsQuery,
+  useCreateShippingInformationMutation,
+  useUpdateShippingInformationMutation,
+  useDeleteShippingInformationMutation,
+} from "@/redux/features/shipping/shippingInformationApi";
 import { useAppSelector } from "@/redux/hooks";
-import { selectToken, selectUser } from "@/redux/features/auth/authSlice";
+import { selectUser } from "@/redux/features/auth/authSlice";
 
 const Checkout = () => {
+  const user = useAppSelector(selectUser);
   const { totalPrice } = useParams();
   const [paymentMethod, setPaymentMethod] = useState("COD");
-  const user = useAppSelector(selectUser);
-  const token = useAppSelector(selectToken);
-  const [hasShippingInfo, setHasShippingInfo] = useState(false);
-  const navigate = useNavigate();
-  const [shippingInformations, setShippingInformations] =
-    useState<IShippingInfo>({
-      customerName: "",
-      phone: "",
-      street: "",
-      country: "",
-      state: "",
-      city: "",
-      zipCode: "",
-      apt: "",
-    });
+  const [selectedShippingId, setSelectedShippingId] = useState<string | null>(
+    null,
+  );
+  const [isNewShippingInfo, setIsNewShippingInfo] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    fetch(`http://localhost:8000/shippingInformation/${user?.id}`, {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: token,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data) {
-          setShippingInformations(data);
-          setHasShippingInfo(true);
-          navigate("/orderPlaced");
-        }
+  // API hooks
+  const { data: userShippingData, isLoading: isLoadingShipping } =
+    useGetUserShippingInformationsQuery();
+  const [createShippingInfo, { isLoading: isCreating }] =
+    useCreateShippingInformationMutation();
+  const [updateShippingInfo, { isLoading: isUpdating }] =
+    useUpdateShippingInformationMutation();
+  const [deleteShippingInfo, { isLoading: isDeleting }] =
+    useDeleteShippingInformationMutation();
+
+  const [shippingInformations, setShippingInformations] = useState<
+    Partial<IShippingInfo>
+  >({
+    _id: "",
+    user: "",
+    street: "",
+    country: "",
+    state: "",
+    city: "",
+    zipCode: "",
+    apt: "",
+  });
+
+  // Handle shipping information selection
+  const handleSelectShipping = (id: string | null) => {
+    if (!id) {
+      setIsNewShippingInfo(true);
+      setSelectedShippingId(null);
+      setShippingInformations({
+        _id: "",
+        user: "",
+        street: "",
+        country: "",
+        state: "",
+        city: "",
+        zipCode: "",
+        apt: "",
       });
-  }, []);
-  if (!totalPrice) return <Spinner />;
+    } else {
+      const selectedInfo = userShippingData?.data.find(
+        (info) => info._id === id,
+      );
+      if (selectedInfo) {
+        setIsNewShippingInfo(false);
+        setSelectedShippingId(id);
+        setShippingInformations({
+          street: selectedInfo.street,
+          country: selectedInfo.country,
+          state: selectedInfo.state,
+          city: selectedInfo.city,
+          zipCode: selectedInfo.zipCode,
+          apt: selectedInfo.apt,
+        });
+      }
+    }
+    setIsEditing(false);
+  };
+
+  // Save new shipping information
+  const handleSaveShippingInfo = async (
+    shippingData: Partial<IShippingInfo>,
+  ) => {
+    try {
+      if (isNewShippingInfo) {
+        shippingData.user = user?.id;
+        delete shippingData._id;
+        const result = await createShippingInfo(shippingData).unwrap();
+        if (result.success) {
+          setSelectedShippingId(result.data._id);
+          setIsNewShippingInfo(false);
+        }
+      } else if (selectedShippingId && isEditing) {
+        await updateShippingInfo({
+          id: selectedShippingId,
+          payload: shippingData,
+        }).unwrap();
+      }
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error saving shipping information:", error);
+    }
+  };
+
+  // Delete shipping information
+  const handleDeleteShippingInfo = async (id: string) => {
+    try {
+      await deleteShippingInfo(id).unwrap();
+      if (id === selectedShippingId) {
+        setSelectedShippingId(null);
+        setIsNewShippingInfo(true);
+        setShippingInformations({
+          _id: "",
+          user: "",
+          street: "",
+          country: "",
+          state: "",
+          city: "",
+          zipCode: "",
+          apt: "",
+        });
+      }
+    } catch (error) {
+      console.error("Error deleting shipping information:", error);
+    }
+  };
+
+  if (!totalPrice || isLoadingShipping) return <Spinner />;
   return (
     <Box sx={{ background: "#F2EEF5" }}>
       <Container>
@@ -52,8 +139,16 @@ const Checkout = () => {
           <Grid size={{ lg: 8 }}>
             <ShippingInformation
               shippingInformations={shippingInformations}
-              hasShippingInfo={hasShippingInfo}
               setShippingInformations={setShippingInformations}
+              userShippingInfos={userShippingData?.data || []}
+              selectedShippingId={selectedShippingId}
+              onSelectShipping={handleSelectShipping}
+              onSaveShipping={handleSaveShippingInfo}
+              onDeleteShipping={handleDeleteShippingInfo}
+              isNewShippingInfo={isNewShippingInfo}
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
+              isLoading={isCreating || isUpdating || isDeleting}
             />
             <PaymentMethods
               totalPrice={Number(totalPrice)}

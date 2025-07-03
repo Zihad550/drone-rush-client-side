@@ -11,7 +11,7 @@ import {
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
 import { useState } from "react";
-import type IShippingInfo from "@/types/ShippingInfoType";
+import type IShippingInfo from "@/types/shippingInfo.type";
 import { useAppSelector } from "@/redux/hooks";
 import { selectToken, selectUser } from "@/redux/features/auth/authSlice";
 
@@ -22,7 +22,7 @@ const OrderSummary = ({
 }: {
   totalPrice: number;
   paymentMethod: string;
-  shippingInformations: IShippingInfo;
+  shippingInformations: Partial<IShippingInfo>;
 }) => {
   const [showCoupons, setShowCoupons] = useState(false);
   // const cartProducts = useSelector((state: AppState) => state.cart);
@@ -34,6 +34,17 @@ const OrderSummary = ({
     // if the payment method is not selected then don't place order
     if (!paymentMethod) return alert("Please! select a payment method");
 
+    // validate shipping information is complete
+    if (
+      !shippingInformations.street ||
+      !shippingInformations.city ||
+      !shippingInformations.state ||
+      !shippingInformations.country ||
+      !shippingInformations.zipCode
+    ) {
+      return alert("Please complete shipping information before placing order");
+    }
+
     // collect details
     const orderDetails = {
       ...shippingInformations,
@@ -44,18 +55,25 @@ const OrderSummary = ({
     // place order
     axios({
       method: "POST",
-      url: "http://localhost:8000/order",
+      url: `${import.meta.env.VITE_APP_API_URL}/orders`,
       headers: {
         Authorization: token,
       },
       data: orderDetails,
-    }).then((res) => {
-      console.log(res.data);
-      if (res.data.insertedId) {
-        // dispatch(clearCart());
+    })
+      .then((res) => {
         console.log(res.data);
-      }
-    });
+        if (res.data.success) {
+          // dispatch(clearCart());
+          alert("Order placed successfully!");
+          // Redirect to order success page or order history
+          window.location.href = "/orders";
+        }
+      })
+      .catch((error) => {
+        console.error("Error placing order:", error);
+        alert("Failed to place order. Please try again.");
+      });
   };
 
   return (
@@ -115,6 +133,13 @@ const OrderSummary = ({
         onClick={handlePlaceOrder}
         variant="contained"
         sx={{ color: "white", width: "100%" }}
+        disabled={
+          !shippingInformations.street ||
+          !shippingInformations.city ||
+          !shippingInformations.state ||
+          !shippingInformations.country ||
+          !shippingInformations.zipCode
+        }
       >
         Place Order
       </Button>
