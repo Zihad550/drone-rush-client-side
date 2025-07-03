@@ -18,6 +18,8 @@ import RatingChart from "./RatingChart";
 import { useParams } from "react-router";
 import { useGetProductQuery } from "@/redux/features/product/productApi";
 import Spinner from "@/components/Shared/Spinner";
+import { useAppDispatch } from "@/redux/hooks";
+import { addProductToCard } from "@/redux/features/cart/cartSlice";
 
 const calculateRatings = (ratings: number[]) => {
   if (!ratings.length)
@@ -53,13 +55,7 @@ const calculateRatings = (ratings: number[]) => {
 };
 
 const Details = () => {
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  // const { data } = useAPI<IProduct>(() =>
-  //   ProductService.getProduct(id as string)
-  // );
-  // const { data: user } = useSelector((state: AppState) => state.auth);
-  // if (!data) return <Spinner />;
+  const dispatch = useAppDispatch();
 
   const { id } = useParams();
   const { data, isLoading } = useGetProductQuery(id as string);
@@ -161,12 +157,7 @@ const Details = () => {
 
             {/* actions */}
             <Button
-              onClick={
-                () => console.log("")
-                // user
-                //   ? () => dispatch(addToCart(data))
-                //   : () => navigate("/login")
-              }
+              onClick={() => dispatch(addProductToCard(data.data))}
               variant="contained"
               sx={{ color: "white" }}
             >

@@ -9,9 +9,14 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Spinner from "@/components/Shared/Spinner";
-import { useNavigate } from "react-router";
 import CartMenu from "./CartMenu/CartMenu";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import {
+  addProductToCard,
+  deleteProductFromCart,
+  removeProductFromCart,
+  selectCartProducts,
+} from "@/redux/features/cart/cartSlice";
 
 interface Column {
   id: string;
@@ -22,40 +27,19 @@ interface Column {
 }
 
 const Cart = () => {
-  // cart data
-  // const products = useSelector((state: AppState) => state.cart);
-  const products = [];
-  const navigate = useNavigate();
+  const products = useAppSelector(selectCartProducts);
+  const dispatch = useAppDispatch();
 
-  console.log(products);
+  if (!products.length)
+    return <Box sx={{ height: "80vh" }}>No products available</Box>;
 
-  if (!products.length) {
-    navigate("/");
-    return <Spinner />;
-  }
-
-  const productPrices: number[] = products.map((product) =>
-    Number(product.totalPrice),
+  const subTotal = products.reduce(
+    (acc, cur) => (acc += cur.price * cur.quantity),
+    0,
   );
 
-  const shippingCosts: number[] = products.map((product) =>
-    Number(product.shipping),
-  );
-
-  const subTotal: number = productPrices.reduce(
-    (previous, current) => previous + current,
-  );
-
-  const shippingCost: number = shippingCosts.reduce(
-    (previous, current) => previous + current,
-  );
-
+  const shippingCost: number = 50;
   const totalPrice: number = subTotal + shippingCost;
-
-  const handleRemoveFromCart = (id: string) => {
-    // dispatch(removeFromCart(id));
-    if (products.length === 0) navigate("/");
-  };
 
   const columns: readonly Column[] = [
     { id: "1", label: "Product", minWidth: 270 },
@@ -101,7 +85,11 @@ const Cart = () => {
                       <TableRow hover tabIndex={-1}>
                         {/* product name & img */}
                         <TableCell>
-                          <img src={product.img} alt="" />
+                          <img
+                            style={{ width: "auto", height: 100 }}
+                            src={product.img}
+                            alt=""
+                          />
                           <Typography variant="body1">
                             {product.name}
                           </Typography>
@@ -118,7 +106,9 @@ const Cart = () => {
                         >
                           <Box sx={{ display: "flex" }}>
                             <IconButton
-                            // onClick={() => dispatch(decreaseQty(product._id))}
+                              onClick={() =>
+                                dispatch(removeProductFromCart(product._id))
+                              }
                             >
                               <RemoveCircleOutlineIcon />
                             </IconButton>
@@ -132,10 +122,12 @@ const Cart = () => {
                               }}
                               variant="body1"
                             >
-                              {product.qty}
+                              {product.quantity}
                             </Typography>
                             <IconButton
-                            // onClick={() => dispatch(increaseQty(product._id))}
+                              onClick={() =>
+                                dispatch(addProductToCard(product))
+                              }
                             >
                               <AddCircleOutlineIcon />
                             </IconButton>
@@ -144,13 +136,15 @@ const Cart = () => {
                         {/* product price */}
                         <TableCell>
                           <Typography variant="body1">
-                            &#36; {product.totalPrice}
+                            &#36; {product.price}
                           </Typography>
                         </TableCell>
                         {/* remove product */}
                         <TableCell>
                           <IconButton
-                            onClick={() => handleRemoveFromCart(product._id)}
+                            onClick={() =>
+                              dispatch(deleteProductFromCart(product._id))
+                            }
                           >
                             <CancelOutlinedIcon fontSize="large" />
                           </IconButton>

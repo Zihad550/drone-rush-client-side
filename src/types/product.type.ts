@@ -15,3 +15,7 @@ export type TProductWriteDoc = Omit<
   IProduct,
   "_id" | "createdAt" | "updatedAt"
 >;
+
+export interface IPurchasableProduct extends IProduct {
+  quantity: number;
+}

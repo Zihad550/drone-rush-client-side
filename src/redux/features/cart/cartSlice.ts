@@ -1,9 +1,10 @@
 import type { RootState } from "@/redux/store";
+import type { IPurchasableProduct } from "@/types/product.type";
 import type IProduct from "@/types/product.type";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 interface ICartState {
-  cartProducts: IProduct[];
+  cartProducts: IPurchasableProduct[];
 }
 
 const initialState: ICartState = {
@@ -15,17 +16,42 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addProductToCard: (state, action: PayloadAction<IProduct>) => {
-      state.cartProducts.unshift(action.payload);
+      const exists = state.cartProducts.find(
+        (item) => item._id === action.payload._id,
+      );
+      if (exists?.quantity) exists.quantity += 1;
+      else
+        state.cartProducts.unshift({
+          ...action.payload,
+          quantity: 1,
+        });
     },
     removeProductFromCart: (state, action: PayloadAction<string>) => {
-      state.cartProducts = state.cartProducts.filter(
-        (product) => product._id !== action.payload,
+      const index = state.cartProducts.findIndex(
+        (product) => product._id === action.payload,
       );
+      if (state.cartProducts[index].quantity > 1)
+        state.cartProducts[index].quantity -= 1;
+      else if (index !== -1) {
+        state.cartProducts.splice(index, 1);
+      }
+    },
+    deleteProductFromCart: (state, action: PayloadAction<string>) => {
+      const index = state.cartProducts.findIndex(
+        (product) => product._id === action.payload,
+      );
+      if (index !== -1) {
+        state.cartProducts.splice(index, 1);
+      }
     },
   },
 });
 
 export const selectCartProducts = (state: RootState) => state.cart.cartProducts;
 
-export const { addProductToCard, removeProductFromCart } = cartSlice.actions;
+export const {
+  deleteProductFromCart,
+  addProductToCard,
+  removeProductFromCart,
+} = cartSlice.actions;
 export default cartSlice.reducer;
