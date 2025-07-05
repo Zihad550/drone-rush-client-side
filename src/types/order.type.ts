@@ -15,7 +15,7 @@ export default interface IOrder {
   user: string | IUser;
   admin?: string | IUser;
   shippingInformation: string;
-  product: string[] | IProduct[];
+  products: string[] | IProduct[];
   status: TOrderStatus;
   cancelReason?: string;
   totalprice: number;

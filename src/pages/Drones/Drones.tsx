@@ -8,7 +8,10 @@ const PRODUCTS_PER_PAGE = 8;
 const Drones = () => {
   const [page, setPage] = useState(1);
 
-  const { data, isLoading } = useGetProductsQuery(page);
+  const { data, isLoading } = useGetProductsQuery({
+    page,
+    sort: "-quantity",
+  });
 
   if (isLoading) return <Spinner />;
 

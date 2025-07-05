@@ -1,6 +1,7 @@
 import { baseApi } from "@/redux/api/baseApi";
 import type { IResponseRedux, TOrderStatus } from "@/types";
 import type IOrder from "@/types/order.type";
+import type IShippingInfo from "@/types/shippingInfo.type";
 
 const orderApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -56,6 +57,23 @@ const orderApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["user-orders"],
     }),
+    createOrder: build.mutation<
+      IResponseRedux<IOrder>,
+      {
+        shippingInformation: Partial<IShippingInfo>;
+        paymentMethod: string;
+        products: string[];
+      }
+    >({
+      query: (orderDetails) => {
+        return {
+          url: "/orders",
+          method: "POST",
+          body: orderDetails,
+        };
+      },
+      invalidatesTags: ["user-orders"],
+    }),
   }),
 });
 
@@ -63,4 +81,5 @@ export const {
   useGetUserOrdersQuery,
   useGetOrdersQuery,
   useUpdateOrderStatusMutation,
+  useCreateOrderMutation,
 } = orderApi;

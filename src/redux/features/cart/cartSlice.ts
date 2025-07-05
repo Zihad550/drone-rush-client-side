@@ -5,7 +5,6 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 interface ICartState {
   cartProducts: IPurchasableProduct[];
-  totalAmount: number;
 }
 
 const initialState: ICartState = {
@@ -45,6 +44,9 @@ const cartSlice = createSlice({
         state.cartProducts.splice(index, 1);
       }
     },
+    clearCart: (state) => {
+      state.cartProducts = [];
+    },
   },
 });
 
@@ -54,5 +56,6 @@ export const {
   deleteProductFromCart,
   addProductToCard,
   removeProductFromCart,
+  clearCart,
 } = cartSlice.actions;
 export default cartSlice.reducer;

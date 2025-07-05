@@ -1,7 +1,6 @@
 import { Box, Grid, Container } from "@mui/material";
 import Spinner from "@/components/Shared/Spinner";
-import { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { useState } from "react";
 import type IShippingInfo from "@/types/shippingInfo.type";
 import OrderSummary from "./OrderSummary";
 import PaymentMethods from "./PaymentMethods";
@@ -73,7 +72,7 @@ const Checkout = () => {
         apt: "",
       });
     } else {
-      const selectedInfo = userShippingData?.data.find(
+      const selectedInfo = userShippingData?.data?.find(
         (info) => info._id === id,
       );
       if (selectedInfo) {
@@ -101,7 +100,7 @@ const Checkout = () => {
         shippingData.user = user?.id;
         delete shippingData._id;
         const result = await createShippingInfo(shippingData).unwrap();
-        if (result.success) {
+        if (result.success && result.data) {
           setSelectedShippingId(result.data._id);
           setIsNewShippingInfo(false);
         }

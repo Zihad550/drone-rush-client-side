@@ -9,11 +9,12 @@ import {
   Typography,
 } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import axios from "axios";
 import { useState } from "react";
+import { toast } from "sonner";
 import type IShippingInfo from "@/types/shippingInfo.type";
-import { useAppSelector } from "@/redux/hooks";
-import { selectToken } from "@/redux/features/auth/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { useCreateOrderMutation } from "@/redux/features/order/orderApi";
+import { clearCart } from "@/redux/features/cart/cartSlice";
 
 const OrderSummary = ({
   totalPrice,
@@ -24,15 +25,17 @@ const OrderSummary = ({
   totalPrice: number;
   paymentMethod: string;
   shippingInformations: Partial<IShippingInfo>;
-  formattedProducts: string[];
+  formattedProducts: { _id: string; quantity: number }[];
 }) => {
   const [showCoupons, setShowCoupons] = useState(false);
-  // const cartProducts = useSelector((state: AppState) => state.cart);
-  const token = useAppSelector(selectToken);
-  // const dispatch = useDispatch();
-  const handlePlaceOrder = () => {
+  const dispatch = useAppDispatch();
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const handlePlaceOrder = async () => {
     // if the payment method is not selected then don't place order
-    if (!paymentMethod) return alert("Please! select a payment method");
+    if (!paymentMethod) {
+      toast.error("Please select a payment method");
+      return;
+    }
 
     // validate shipping information is complete
     if (
@@ -42,37 +45,30 @@ const OrderSummary = ({
       !shippingInformations.country ||
       !shippingInformations.zipCode
     ) {
-      return alert("Please complete shipping information before placing order");
+      toast.error("Please complete shipping information before placing order");
+      return;
     }
 
     // collect details
     const orderDetails = {
-      ...shippingInformations,
+      shippingInformation: shippingInformations._id,
       paymentMethod,
       products: formattedProducts,
     };
 
-    // place order
-    axios({
-      method: "POST",
-      url: `${import.meta.env.VITE_APP_API_URL}/orders`,
-      headers: {
-        Authorization: token,
-      },
-      data: orderDetails,
-    })
-      .then((res) => {
-        if (res.data.success) {
-          // dispatch(clearCart());
-          alert("Order placed successfully!");
-          // Redirect to order success page or order history
-          window.location.href = "/user/orders";
-        }
-      })
-      .catch((error) => {
-        console.error("Error placing order:", error);
-        alert("Failed to place order. Please try again.");
-      });
+    try {
+      const response = await createOrder(orderDetails).unwrap();
+
+      if (response.success) {
+        dispatch(clearCart());
+        toast.success("Order placed successfully!");
+        // Redirect to order success page or order history
+        window.location.href = "/user/orders";
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+      toast.error("Failed to place order. Please try again.");
+    }
   };
 
   return (
@@ -133,6 +129,7 @@ const OrderSummary = ({
         variant="contained"
         sx={{ color: "white", width: "100%" }}
         disabled={
+          isLoading ||
           !shippingInformations.street ||
           !shippingInformations.city ||
           !shippingInformations.state ||
@@ -140,7 +137,7 @@ const OrderSummary = ({
           !shippingInformations.zipCode
         }
       >
-        Place Order
+        {isLoading ? "Processing..." : "Place Order"}
       </Button>
     </Paper>
   );

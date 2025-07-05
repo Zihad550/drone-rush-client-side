@@ -6,7 +6,7 @@ import Products from "./Products";
 import { useGetProductsQuery } from "@/redux/features/product/productApi";
 
 const Home = () => {
-  const { data, isLoading } = useGetProductsQuery(undefined);
+  const { data, isLoading } = useGetProductsQuery("-quantity");
 
   const date = new Date();
   const title = ` The Best Drones for ${date.getFullYear()}`;

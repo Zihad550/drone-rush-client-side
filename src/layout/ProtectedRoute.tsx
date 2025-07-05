@@ -14,10 +14,13 @@ interface IProps {
 }
 const ProtectedRoute = ({ children, role }: IProps) => {
   const token = useAppSelector(selectToken);
+  console.log(token);
   let user;
   if (token) {
     user = verifyToken(token) as IUser;
+    console.log(user);
   }
+
   const dispatch = useAppDispatch();
   if ((role !== undefined && user?.role !== role) || !token) {
     dispatch(logout());

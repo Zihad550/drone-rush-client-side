@@ -1,16 +1,14 @@
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
   Alert,
+  Box,
   Button,
   ButtonGroup,
   Chip,
-  IconButton,
   Snackbar,
   Typography,
   type SelectChangeEvent,
 } from "@mui/material";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -19,12 +17,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useGetOrdersQuery } from "@/redux/features/order/orderApi";
 import Spinner from "@/components/Shared/Spinner";
 import type { TOrderStatus } from "@/types";
 import AppSelect from "@/components/ui/AppSelect";
 import UpdateOrderStatusModal from "./UpdateStatusModal";
+import type IProduct from "@/types/product.type";
 
 interface Column {
   id: number;
@@ -76,8 +75,6 @@ const ManageOrders = () => {
   const [isUpdated, setIsUpdated] = useState(false);
   const [error, setError] = useState("");
 
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -86,9 +83,7 @@ const ManageOrders = () => {
     setStatus(e.target.value as TOrderStatus);
   };
 
-  const columns: readonly Column[] = [
-    { id: 1, label: "Product", minWidth: 150 },
-    { id: 2, label: "Customer", minWidth: 100 },
+  const productTableColumns: Column[] = [
     {
       id: 4,
       label: "Price",
@@ -99,6 +94,11 @@ const ManageOrders = () => {
       label: "Status",
       minWidth: 170,
     },
+  ];
+
+  const columns: readonly Column[] = [
+    { id: 1, label: "Product", minWidth: 150 },
+    { id: 2, label: "Customer", minWidth: 100 },
     {
       id: 6,
       label: "Actions",
@@ -107,7 +107,7 @@ const ManageOrders = () => {
   ];
 
   if (isLoading) return <Spinner />;
-  if (!data?.data?.length && !status) return <p>No orders</p>;
+  if (!data?.data && !status) return <p>No orders</p>;
   return (
     <>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -139,18 +139,22 @@ const ManageOrders = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.data.map((order) => (
+              {data?.data?.map((order) => (
                 <TableRow hover role="checkbox" tabIndex={-1} key={order._id}>
                   {/* product img & name */}
                   <TableCell sx={{ width: { md: "13%", xs: "15%" } }}>
-                    <img
-                      style={{ width: 200, height: 200 }}
-                      src={order.product.img}
-                      alt={order.product.name}
-                    />
-                    <Typography variant="body2">
-                      {order.product.name}
-                    </Typography>
+                    {order?.products?.map((product) => (
+                      <Box key={product._id} sx={{ display: "flex" }}>
+                        <img
+                          style={{ width: "auto", height: 50 }}
+                          src={product.img}
+                          alt={product.name}
+                        />
+                        <Typography variant="body2">{product.name}</Typography>
+                        <Typography>$ {product.price}</Typography>
+                        <Chip label={order.status} />
+                      </Box>
+                    ))}
                   </TableCell>
                   {/* customer details */}
                   <TableCell>
@@ -163,18 +167,6 @@ const ManageOrders = () => {
                     <Typography variant="body2">
                       Phone: {order.user.phone}
                     </Typography>
-                  </TableCell>
-                  <TableCell>$ {order.product.price}</TableCell>
-                  <TableCell>
-                    {/* <AppSelect
-                      options={orderStatusOptions}
-                      name="status"
-                      label="Status"
-                      defaultValue={order.status}
-                      handleChange={(e) => handleStatusUpdate(order._id, status)}
-                      sx={{ width: 150 }}
-                    /> */}
-                    <Chip label={order.status} />
                   </TableCell>
                   {/* order actions */}
                   <TableCell>
@@ -196,7 +188,7 @@ const ManageOrders = () => {
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
           count={data.meta?.total}
-          rowsPerPage={rowsPerPage}
+          rowsPerPage={data.meta?.limit}
           page={data.meta.page}
           onPageChange={handleChangePage}
           // onRowsPerPageChange={handleChangeRowsPerPage}

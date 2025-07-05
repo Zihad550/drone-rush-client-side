@@ -4,10 +4,17 @@ import type IProduct from "@/types/product.type";
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getProducts: build.query({
-      query: (page?: number) => {
+    getProducts: build.query<
+      IResponseRedux<IProduct[]>,
+      Record<string, unknown> | undefined
+    >({
+      query: (args) => {
         const params = new URLSearchParams();
-        if (page) params.append("page", page.toString());
+        if (args && Object.keys(args).length) {
+          Object.entries(args).forEach(([key, value]) => {
+            if (value) params.append(key, String(value));
+          });
+        }
         return {
           url: "/products",
           method: "GET",
