@@ -1,152 +1,110 @@
-import FacebookIcon from "@mui/icons-material/Facebook";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import LogoDevIcon from "@mui/icons-material/LogoDev";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import { Box, Container, Grid, IconButton, Typography } from "@mui/material";
-import src from "@/assets/profile.png";
-import "./OutTeam.css";
+import src from '@/assets/profile.png';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import LogoDevIcon from '@mui/icons-material/LogoDev';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import styles from './OurTeam.module.css';
 
 const OurTeam = () => {
   const members = [
     {
       id: 1,
-      name: "Jehad Hossain",
-      title: "Founder & CEO",
+      name: 'Jehad Hossain',
+      title: 'Founder & CEO',
       src: src,
-      linkedin: "https://www.linkedin.com/in/jehad-hossain",
-      devTo: "https://dev.to/jehad_hossain",
-      facebook: "https://www.facebook.com/zihad31hussain",
-      twitter: "https://twitter.com/Jehadhossain_",
+      linkedin: 'https://www.linkedin.com/in/jehad-hossain',
+      devTo: 'https://dev.to/jehad_hossain',
+      facebook: 'https://www.facebook.com/zihad31hussain',
+      twitter: 'https://twitter.com/Jehadhossain_',
     },
     {
       id: 2,
-      name: "Jehad Hossain",
-      title: "Frontend Developer",
+      name: 'Jehad Hossain',
+      title: 'Frontend Developer',
       src: src,
-      linkedin: "https://www.linkedin.com/in/jehad-hossain",
-      devTo: "https://dev.to/jehad_hossain",
-      facebook: "https://www.facebook.com/zihad31hussain",
-      twitter: "https://twitter.com/Jehadhossain_",
+      linkedin: 'https://www.linkedin.com/in/jehad-hossain',
+      devTo: 'https://dev.to/jehad_hossain',
+      facebook: 'https://www.facebook.com/zihad31hussain',
+      twitter: 'https://twitter.com/Jehadhossain_',
     },
     {
       id: 3,
-      name: "Jehad Hossain",
-      title: "Backend Developer",
+      name: 'Jehad Hossain',
+      title: 'Backend Developer',
       src: src,
-      linkedin: "https://www.linkedin.com/in/jehad-hossain",
-      devTo: "https://dev.to/jehad_hossain",
-      facebook: "https://www.facebook.com/zihad31hussain",
-      twitter: "https://twitter.com/Jehadhossain_",
+      linkedin: 'https://www.linkedin.com/in/jehad-hossain',
+      devTo: 'https://dev.to/jehad_hossain',
+      facebook: 'https://www.facebook.com/zihad31hussain',
+      twitter: 'https://twitter.com/Jehadhossain_',
     },
     {
       id: 4,
-      name: "Jehad Hossain",
-      title: "Web Developer",
+      name: 'Jehad Hossain',
+      title: 'Web Developer',
       src: src,
-      linkedin: "https://www.linkedin.com/in/jehad-hossain",
-      devTo: "https://dev.to/jehad_hossain",
-      facebook: "https://www.facebook.com/zihad31hussain",
-      twitter: "https://twitter.com/Jehadhossain_",
+      linkedin: 'https://www.linkedin.com/in/jehad-hossain',
+      devTo: 'https://dev.to/jehad_hossain',
+      facebook: 'https://www.facebook.com/zihad31hussain',
+      twitter: 'https://twitter.com/Jehadhossain_',
     },
   ];
   return (
-    <Container sx={{ mb: 10 }}>
-      <Typography variant="h2" sx={{ textAlign: "center", mb: 4 }}>
-        Our Team
-      </Typography>
-      <Grid container spacing={2}>
+    <section className={styles.ourTeamSection}>
+      <div className={styles.ourTeamGrid}>
         {members.map((member) => (
-          <Grid
-            key={member.id}
-            size={{ xs: 12, sm: 6, md: 3 }}
-            className="team"
-            sx={{ mb: { xs: 5, md: 0 } }}
-          >
+          <div className={styles.ourTeamCard} key={member.id}>
             {/* image */}
-            <Box
-              className="team-img-wrapper"
-              sx={{
-                mx: 2,
-                background: "blue",
-                borderRadius: "50%",
-                overflow: "hidden",
-              }}
-              key={member.id}
-            >
+            <div className={styles.avatarWrapper}>
               <img
                 src={member.src}
-                style={{ width: "100%", height: "auto" }}
+                className={styles.avatarImg}
                 alt={member.name}
               />
-            </Box>
+            </div>
             {/* socials */}
-            <Box
-              className="socials"
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <IconButton
+            <div className={styles.socials}>
+              <a
                 href={member.linkedin}
-                className="social-btn"
+                className={styles.socialBtn}
                 target="_blank"
+                rel="noopener noreferrer"
               >
-                <LinkedInIcon
-                  className="social-icon"
-                  sx={{ color: "white", fontSize: 35 }}
-                />
-              </IconButton>
-              <IconButton
+                <LinkedInIcon className={styles.socialIcon} />
+              </a>
+              <a
                 href={member.devTo}
-                className="social-btn"
+                className={styles.socialBtn}
                 target="_blank"
+                rel="noopener noreferrer"
               >
-                <LogoDevIcon
-                  className="social-icon"
-                  sx={{ color: "white", fontSize: 35 }}
-                />
-              </IconButton>
-              <IconButton
+                <LogoDevIcon className={styles.socialIcon} />
+              </a>
+              <a
                 href={member.facebook}
-                className="social-btn"
+                className={styles.socialBtn}
                 target="_blank"
+                rel="noopener noreferrer"
               >
-                <FacebookIcon
-                  className="social-icon"
-                  sx={{ color: "white", fontSize: 35 }}
-                />
-              </IconButton>
-              <IconButton
+                <FacebookIcon className={styles.socialIcon} />
+              </a>
+              <a
                 href={member.twitter}
-                className="social-btn"
+                className={styles.socialBtn}
                 target="_blank"
+                rel="noopener noreferrer"
               >
-                <TwitterIcon
-                  className="social-icon"
-                  sx={{ color: "white", fontSize: 35 }}
-                />
-              </IconButton>
-            </Box>
-
+                <TwitterIcon className={styles.socialIcon} />
+              </a>
+            </div>
             {/* about */}
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexDirection: "column",
-              }}
-            >
-              <Typography variant="h5">{member.name}</Typography>
-              <Typography variant="body2" sx={{ color: "#2e2e2e" }}>
-                {member.title}
-              </Typography>
-            </Box>
-          </Grid>
+            <div>
+              <div className={styles.memberName}>{member.name}</div>
+              <div className={styles.memberTitle}>{member.title}</div>
+            </div>
+          </div>
         ))}
-      </Grid>
-    </Container>
+      </div>
+    </section>
   );
 };
 

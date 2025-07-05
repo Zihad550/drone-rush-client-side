@@ -1,0 +1,99 @@
+.aboutUsContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 16px 48px 16px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+}
+
+.introSection {
+  text-align: center;
+  margin: 32px 0 48px 0;
+}
+
+.pageTitle {
+  font-size: 2.7rem;
+  font-weight: 800;
+  color: #1a202c;
+  margin-bottom: 8px;
+  letter-spacing: -1px;
+}
+
+.accentBar {
+  width: 80px;
+  height: 5px;
+  background: linear-gradient(90deg, #3b82f6 0%, #06b6d4 100%);
+  border-radius: 3px;
+  margin: 0 auto 18px auto;
+}
+
+.missionText {
+  font-size: 1.18rem;
+  color: #374151;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.section {
+  margin-top: 48px;
+  padding: 32px 0;
+  border-top: 1px solid #ececec;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(59, 130, 246, 0.04);
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #1a202c;
+  letter-spacing: -0.5px;
+  text-align: center;
+}
+
+.accentBarSmall {
+  width: 48px;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6 0%, #06b6d4 100%);
+  border-radius: 2px;
+  margin: 0 auto 24px auto;
+}
+
+.fadeIn {
+  opacity: 0;
+  animation: fadeInUp 0.9s ease 0.1s forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 700px) {
+  .aboutUsContainer {
+    padding: 8px 0 16px 0;
+    border-radius: 8px;
+  }
+  .pageTitle {
+    font-size: 1.5rem;
+  }
+  .sectionTitle {
+    font-size: 1.1rem;
+  }
+  .section {
+    padding: 12px 0;
+    margin-top: 18px;
+  }
+  .introSection {
+    margin: 18px 0 24px 0;
+  }
+}
