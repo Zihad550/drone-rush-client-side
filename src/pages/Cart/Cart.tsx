@@ -1,173 +1,178 @@
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import { Box, Container, Grid, IconButton, Typography } from "@mui/material";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import CartMenu from "./CartMenu/CartMenu";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
-  addProductToCard,
   deleteProductFromCart,
-  removeProductFromCart,
   selectCartProducts,
-} from "@/redux/features/cart/cartSlice";
-
-interface Column {
-  id: string;
-  label: string;
-  minWidth?: number;
-  align?: "right";
-  format?: (value: number) => string;
-}
+} from '@/redux/features/cart/cartSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  Paper,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
 
 const Cart = () => {
   const products = useAppSelector(selectCartProducts);
   const dispatch = useAppDispatch();
 
   if (!products.length)
-    return <Box sx={{ height: "80vh" }}>No products available</Box>;
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: 400,
+        }}
+      >
+        <ShoppingCartOutlinedIcon
+          sx={{ fontSize: 64, color: 'grey.400', mb: 2 }}
+        />
+        <Typography variant="h5" sx={{ color: 'grey.600', mb: 1 }}>
+          Your cart is empty
+        </Typography>
+        <Typography variant="body1" sx={{ color: 'grey.500' }}>
+          Browse products and add them to your cart!
+        </Typography>
+      </Box>
+    );
 
   const subTotal = products.reduce(
     (acc, cur) => (acc += cur.price * cur.quantity),
-    0,
+    0
   );
 
   const shippingCost: number = 50;
   const totalPrice: number = subTotal + shippingCost;
 
-  const columns: readonly Column[] = [
-    { id: "1", label: "Product", minWidth: 270 },
-    { id: "2", label: "Quantity", minWidth: 100 },
-    {
-      id: "3",
-      label: "Price",
-      minWidth: 170,
-    },
-    {
-      id: "4",
-      label: "Remove",
-      minWidth: 170,
-    },
-  ];
-
   return (
-    <Container sx={{ minHeight: "80vh", py: 5 }}>
-      <Grid container spacing={{ xs: 1, md: 2 }}>
-        {/*============
-         products
-         =========== */}
-        <Grid size={{ md: 8, xs: 12 }}>
-          <Paper sx={{ width: "100%", overflow: "hidden" }}>
-            <TableContainer sx={{ maxHeight: 700 }}>
-              <Table stickyHeader aria-label="sticky table">
-                <TableHead>
-                  <TableRow>
-                    {columns.map((column) => (
-                      <TableCell
-                        key={column.id}
-                        align="left"
-                        style={{ minWidth: column.minWidth }}
-                      >
-                        {column.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {products.map((product) => {
-                    return (
-                      <TableRow key={product._id} hover tabIndex={-1}>
-                        {/* product name & img */}
-                        <TableCell>
-                          <img
-                            style={{ width: "auto", height: 100 }}
+    <Box sx={{ minHeight: '80vh', py: 4, bgcolor: 'background.default' }}>
+      <Box maxWidth="md" mx="auto">
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 700,
+            mb: 3,
+            color: 'primary.main',
+            textAlign: 'center',
+          }}
+        >
+          Shopping Cart
+        </Typography>
+        <Paper
+          elevation={3}
+          sx={{
+            p: { xs: 1, sm: 3 },
+            borderRadius: 3,
+            boxShadow: '0 4px 24px 0 rgba(30,41,59,0.10)',
+          }}
+        >
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow sx={{ bgcolor: 'grey.100' }}>
+                  <TableCell sx={{ fontWeight: 700 }}>Product</TableCell>
+                  <TableCell align="right" sx={{ fontWeight: 700 }}>
+                    Price
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontWeight: 700 }}>
+                    Quantity
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontWeight: 700 }}>
+                    Total
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontWeight: 700 }}>
+                    Actions
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {products.map((product) => {
+                  return (
+                    <TableRow
+                      key={product._id}
+                      hover
+                      sx={{
+                        transition: 'background 0.2s',
+                        '&:hover': { bgcolor: 'grey.50' },
+                      }}
+                    >
+                      <TableCell>
+                        <Stack direction="row" alignItems="center" spacing={2}>
+                          <Box
+                            component="img"
                             src={product.img}
-                            alt=""
+                            alt={product.name}
+                            sx={{
+                              width: 48,
+                              height: 48,
+                              borderRadius: 2,
+                              objectFit: 'cover',
+                              boxShadow: 1,
+                            }}
                           />
-                          <Typography variant="body1">
+                          <Typography
+                            variant="subtitle1"
+                            sx={{ fontWeight: 600 }}
+                          >
                             {product.name}
                           </Typography>
-                        </TableCell>
-                        {/* product qty & control qty */}
-                        <TableCell
-                          sx={{
-                            // display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            mt: "auto",
-                            height: "auto",
-                          }}
+                        </Stack>
+                      </TableCell>
+                      <TableCell align="right">${product.price}</TableCell>
+                      <TableCell align="right">{product.quantity}</TableCell>
+                      <TableCell align="right">
+                        ${product.price * product.quantity}
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton
+                          onClick={() =>
+                            dispatch(deleteProductFromCart(product._id))
+                          }
                         >
-                          <Box sx={{ display: "flex" }}>
-                            <IconButton
-                              onClick={() =>
-                                dispatch(removeProductFromCart(product._id))
-                              }
-                            >
-                              <RemoveCircleOutlineIcon />
-                            </IconButton>
-                            <Typography
-                              sx={{
-                                border: 1,
-                                display: "flex",
-                                alignItems: "center",
-                                px: 1.2,
-                                borderRadius: 1,
-                              }}
-                              variant="body1"
-                            >
-                              {product.quantity}
-                            </Typography>
-                            <IconButton
-                              onClick={() =>
-                                dispatch(addProductToCard(product))
-                              }
-                            >
-                              <AddCircleOutlineIcon />
-                            </IconButton>
-                          </Box>
-                        </TableCell>
-                        {/* product price */}
-                        <TableCell>
-                          <Typography variant="body1">
-                            &#36; {product.price}
-                          </Typography>
-                        </TableCell>
-                        {/* remove product */}
-                        <TableCell>
-                          <IconButton
-                            onClick={() =>
-                              dispatch(deleteProductFromCart(product._id))
-                            }
-                          >
-                            <CancelOutlinedIcon fontSize="large" />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
-        </Grid>
-
-        {/*===========
-          cart
-          ================ */}
-        <CartMenu
-          subTotal={subTotal}
-          shippingCost={shippingCost}
-          totalPrice={totalPrice}
-        />
-      </Grid>
-    </Container>
+                          <CancelOutlinedIcon fontSize="large" />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Divider sx={{ my: 2 }} />
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            justifyContent="space-between"
+            alignItems="center"
+            spacing={2}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+              Total: ${totalPrice}
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              onClick={() => {}}
+              sx={{ borderRadius: 2, px: 4, fontWeight: 700 }}
+            >
+              Proceed to Checkout
+            </Button>
+          </Stack>
+        </Paper>
+      </Box>
+    </Box>
   );
 };
 

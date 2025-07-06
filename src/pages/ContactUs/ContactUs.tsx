@@ -1,6 +1,8 @@
+import profileImg from '@/assets/profile.png';
 import emailjs from '@emailjs/browser';
 import { SendOutlined } from '@mui/icons-material';
 import EmailIcon from '@mui/icons-material/Email';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -18,6 +20,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Avatar from '@mui/material/Avatar';
 import React, { useRef, useState } from 'react';
 
 const ContactUs = () => {
@@ -90,10 +96,51 @@ const ContactUs = () => {
       sx={{
         bgcolor: 'background.default',
         minHeight: '100vh',
-        py: { xs: 4, md: 8 },
+        py: { xs: 0, md: 0 },
       }}
     >
-      <Container maxWidth="md">
+      {/* Hero Section */}
+      <Box
+        sx={{
+          width: '100%',
+          minHeight: { xs: 180, md: 260 },
+          background: 'linear-gradient(90deg, #3b82f6 0%, #06b6d4 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          color: 'white',
+          mb: 4,
+          px: 2,
+        }}
+      >
+        <Typography
+          variant="h2"
+          sx={{
+            fontWeight: 800,
+            fontSize: { xs: 32, md: 48 },
+            mb: 1,
+            textAlign: 'center',
+          }}
+        >
+          Get in Touch
+        </Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 400,
+            fontSize: { xs: 16, md: 22 },
+            opacity: 0.95,
+            textAlign: 'center',
+            maxWidth: 600,
+          }}
+        >
+          We're here to help! Reach out for support, partnership, or just to say
+          hello.
+        </Typography>
+      </Box>
+      <Container maxWidth="md" sx={{ pb: 6 }}>
+        {/* Main Contact Section */}
         <Typography
           variant="h3"
           sx={{
@@ -288,6 +335,161 @@ const ContactUs = () => {
             </Stack>
           </Paper>
         </Stack>
+        {/* Team/Support Section */}
+        <Box sx={{ mt: 8, mb: 6 }}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: 700,
+              color: 'primary.main',
+              textAlign: 'center',
+              mb: 3,
+            }}
+          >
+            Meet Our Support Team
+          </Typography>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={4}
+            justifyContent="center"
+            alignItems="center"
+          >
+            {[
+              {
+                name: 'Jehad Hossain',
+                role: 'Lead Support',
+                img: profileImg,
+              },
+              {
+                name: 'Sarah Lee',
+                role: 'Customer Success',
+                img: profileImg,
+              },
+              {
+                name: 'Alex Kim',
+                role: 'Technical Support',
+                img: profileImg,
+              },
+            ].map((member) => (
+              <Box
+                key={member.name}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  p: 2,
+                  bgcolor: 'grey.100',
+                  borderRadius: 3,
+                  boxShadow: 1,
+                  minWidth: 180,
+                }}
+              >
+                <Avatar
+                  src={member.img}
+                  alt={member.name}
+                  sx={{ width: 72, height: 72, mb: 1.5, boxShadow: 2 }}
+                />
+                <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                  {member.name}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ color: 'primary.main', fontWeight: 500 }}
+                >
+                  {member.role}
+                </Typography>
+              </Box>
+            ))}
+          </Stack>
+        </Box>
+
+        {/* FAQ Section */}
+        <Box sx={{ mt: 8, mb: 6 }}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: 700,
+              color: 'primary.main',
+              textAlign: 'center',
+              mb: 3,
+            }}
+          >
+            Frequently Asked Questions
+          </Typography>
+          <Accordion sx={{ mb: 2 }}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography sx={{ fontWeight: 600 }}>
+                How quickly do you respond to messages?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              We aim to respond to all inquiries within 24 hours on business
+              days.
+            </AccordionDetails>
+          </Accordion>
+          <Accordion sx={{ mb: 2 }}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography sx={{ fontWeight: 600 }}>
+                Can I visit your office in person?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              Yes! Please contact us to schedule a visit so we can ensure
+              someone is available to greet you.
+            </AccordionDetails>
+          </Accordion>
+          <Accordion sx={{ mb: 2 }}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography sx={{ fontWeight: 600 }}>
+                Do you offer technical support?
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              Absolutely! Our technical support team is available via email,
+              phone, and live chat during business hours.
+            </AccordionDetails>
+          </Accordion>
+        </Box>
+
+        {/* Map Section */}
+        <Box sx={{ mt: 8, mb: 6 }}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: 700,
+              color: 'primary.main',
+              textAlign: 'center',
+              mb: 3,
+            }}
+          >
+            Our Location
+          </Typography>
+          <Box
+            sx={{
+              width: '100%',
+              height: 280,
+              borderRadius: 3,
+              overflow: 'hidden',
+              boxShadow: 2,
+              mb: 2,
+            }}
+          >
+            <iframe
+              title="Office Location"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=90.4125%2C23.8103%2C90.4125%2C23.8103&amp;layer=mapnik"
+              style={{ border: 0, width: '100%', height: '100%' }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </Box>
+          <Typography
+            variant="body2"
+            sx={{ textAlign: 'center', color: 'text.secondary' }}
+          >
+            Dhaka, Bangladesh
+          </Typography>
+        </Box>
       </Container>
     </Box>
   );
