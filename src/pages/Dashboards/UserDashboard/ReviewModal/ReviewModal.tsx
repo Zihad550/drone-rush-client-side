@@ -57,6 +57,7 @@ const ReviewModal = ({
         productName,
         img,
       };
+      console.log(review);
 
       toast.success("Review submitted!", { id: toastId });
     } catch (err: any) {
