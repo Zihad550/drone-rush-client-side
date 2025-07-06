@@ -1,6 +1,7 @@
-import { baseApi } from "@/redux/api/baseApi";
-import type { IResponseRedux, TProductWriteDoc } from "@/types";
-import type IProduct from "@/types/product.type";
+import { baseApi } from '@/redux/api/baseApi';
+import type { IResponseRedux, TProductWriteDoc } from '@/types';
+import type IProduct from '@/types/product.type';
+import generateUrlParams from '@/utils/generateUrlParams';
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -8,41 +9,33 @@ const authApi = baseApi.injectEndpoints({
       IResponseRedux<IProduct[]>,
       Record<string, unknown> | undefined
     >({
-      query: (args) => {
-        const params = new URLSearchParams();
-        if (args && Object.keys(args).length) {
-          Object.entries(args).forEach(([key, value]) => {
-            if (value) params.append(key, String(value));
-          });
-        }
-        return {
-          url: "/products",
-          method: "GET",
-          params,
-        };
-      },
-      providesTags: ["products"],
+      query: (args) => ({
+        url: '/products',
+        method: 'GET',
+        params: generateUrlParams(args),
+      }),
+      providesTags: ['products'],
     }),
     getProduct: build.query({
       query: (id: string) => ({
         url: `/products/${id}`,
-        method: "GET",
+        method: 'GET',
       }),
     }),
     createProduct: build.mutation({
       query: (payload: TProductWriteDoc) => ({
         url: `/products`,
-        method: "POST",
+        method: 'POST',
         body: payload,
       }),
-      invalidatesTags: ["products"],
+      invalidatesTags: ['products'],
     }),
     deleteProduct: build.mutation<IResponseRedux<IProduct>, string>({
       query: (id) => ({
         url: `/products/${id}`,
-        method: "DELETE",
+        method: 'DELETE',
       }),
-      invalidatesTags: ["products"],
+      invalidatesTags: ['products'],
     }),
   }),
 });

@@ -1,26 +1,26 @@
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ShareIcon from "@mui/icons-material/Share";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import ShareIcon from '@mui/icons-material/Share';
 import {
+  Box,
   Button,
+  Container,
   Grid,
   IconButton,
   Paper,
   Rating,
   Typography,
-  Box,
-  Container,
-} from "@mui/material";
+} from '@mui/material';
 // import Spinner from "@/components/Shared/Spinner";
 // import { useDispatch, useSelector } from "react-redux";
 // import { useNavigate, useParams } from "react-router";
 // import IProduct from "@/types/ProductType";
-import RatingChart from "./RatingChart";
-import { useParams } from "react-router";
-import { useGetProductQuery } from "@/redux/features/product/productApi";
-import Spinner from "@/components/Shared/Spinner";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { addProductToCard } from "@/redux/features/cart/cartSlice";
-import { selectUser } from "@/redux/features/auth/authSlice";
+import Spinner from '@/components/Shared/Spinner';
+import { selectUser } from '@/redux/features/auth/authSlice';
+import { addProductToCard } from '@/redux/features/cart/cartSlice';
+import { useGetProductQuery } from '@/redux/features/product/productApi';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useParams } from 'react-router';
+import RatingChart from './RatingChart';
 
 const calculateRatings = (ratings: number[]) => {
   if (!ratings.length)
@@ -66,7 +66,7 @@ const Details = () => {
 
   const { img, name, price, reviews, brand } = data.data;
   const ratings: number[] =
-    reviews.map((review) => Number(review.rating)) || [];
+    reviews.map((review: any) => Number(review.rating)) || [];
 
   const {
     totalRatings,
@@ -78,57 +78,79 @@ const Details = () => {
     oneStars,
   } = calculateRatings(ratings);
   return (
-    <Box sx={{ background: "#f2eef5" }}>
-      <Container maxWidth="md">
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+      <Container maxWidth="md" sx={{ py: { xs: 2, md: 4 } }}>
         {/* booking section */}
         <Grid
-          sx={{
-            alignItems: "center",
-            py: 5,
-            px: 2,
-            background: "#fffffe",
-            boxSizing: "border-box",
-          }}
           container
+          spacing={4}
+          alignItems="center"
+          sx={{
+            py: { xs: 2, md: 5 },
+            px: { xs: 1, md: 2 },
+            bgcolor: 'background.paper',
+            borderRadius: 3,
+            boxShadow: 2,
+          }}
         >
           {/* product image */}
           <Grid size={{ xs: 12, sm: 6 }}>
-            <img
-              style={{ width: "100%", height: "auto" }}
+            <Box
+              component="img"
               src={img}
               alt={`image of ${name}`}
+              sx={{
+                width: '100%',
+                height: 'auto',
+                borderRadius: 2,
+                boxShadow: 1,
+                objectFit: 'cover',
+              }}
             />
           </Grid>
 
           {/* product details */}
           <Grid size={{ xs: 12, sm: 6 }}>
             {/* name */}
-            <Typography variant="h4">{name}</Typography>
+            <Typography
+              variant="h4"
+              sx={{ fontWeight: 700, color: 'primary.main' }}
+            >
+              {name}
+            </Typography>
 
             {/* rating & brand & share & wishlist */}
             <Box
-              sx={{ my: 2, display: "flex", justifyContent: "space-between" }}
+              sx={{
+                my: 2,
+                display: 'flex',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+              }}
             >
               {/* rating & brand */}
               <Box>
                 {/* ratings */}
-                <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                   <Rating
                     size="small"
                     sx={{ mr: 1 }}
                     readOnly
                     value={averageRating}
                   />
-                  <Typography variant="body2" sx={{ color: "#4fc4cf" }}>
+                  <Typography variant="body2" sx={{ color: 'secondary.main' }}>
                     {totalRatings} Ratings
                   </Typography>
                 </Box>
                 {/* brand */}
-                <Box sx={{ display: "flex" }}>
-                  <Typography variant="body2" sx={{ color: "gray", mr: 1 }}>
+                <Box sx={{ display: 'flex' }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: 'text.secondary', mr: 1 }}
+                  >
                     Brand:
                   </Typography>
-                  <Typography variant="body2" sx={{ color: "#4fc4cf" }}>
+                  <Typography variant="body2" sx={{ color: 'secondary.main' }}>
                     {brand.name}
                   </Typography>
                 </Box>
@@ -136,24 +158,24 @@ const Details = () => {
 
               {/* share & wishlist */}
               <Box>
-                <IconButton>
+                <IconButton aria-label="Share">
                   <ShareIcon />
                 </IconButton>
-                <IconButton
-                  onClick={
-                    () => {}
-                    // user
-                    //   ? () => dispatch(addToWishlist(data))
-                    //   : () => navigate("/login")
-                  }
-                >
+                <IconButton aria-label="Add to wishlist" onClick={() => {}}>
                   <FavoriteBorderIcon />
                 </IconButton>
               </Box>
             </Box>
 
             {/* price */}
-            <Typography variant="body1" sx={{ fontSize: 30, color: "#ffc800" }}>
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: 600,
+                color: 'warning.main',
+                fontSize: { xs: 24, md: 30 },
+              }}
+            >
               &#36; {price}
             </Typography>
 
@@ -161,7 +183,14 @@ const Details = () => {
             <Button
               onClick={() => dispatch(addProductToCard(data.data))}
               variant="contained"
-              sx={{ color: "white" }}
+              sx={{
+                color: 'white',
+                mt: 2,
+                px: 4,
+                py: 1,
+                fontWeight: 600,
+                fontSize: { xs: 16, md: 18 },
+              }}
               disabled={!user}
             >
               Add To Cart
@@ -171,54 +200,72 @@ const Details = () => {
 
         {/* review section */}
         <Paper
-          sx={{ background: "#fffffe", width: "100%", px: 2, pb: 5, mt: 1 }}
+          sx={{
+            bgcolor: 'background.paper',
+            width: '100%',
+            px: { xs: 1, md: 2 },
+            pb: 5,
+            mt: 3,
+            borderRadius: 3,
+            boxShadow: 1,
+          }}
         >
-          <Typography variant="subtitle1" sx={{ pt: 1 }}>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              pt: 3,
+              fontWeight: 600,
+              color: 'primary.main',
+              fontSize: { xs: 18, md: 22 },
+            }}
+          >
             Ratings &#38; Reviews of {name}
           </Typography>
 
-          <Box sx={{ display: "flex", mt: 5 }}>
+          <Box sx={{ display: 'flex', mt: 5, flexWrap: 'wrap', gap: 4 }}>
             {/* average & total rating */}
             <Box>
               {/* average rating */}
-              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                <Typography variant="body1" sx={{ fontSize: 50 }}>
+              <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                <Typography
+                  variant="h2"
+                  sx={{
+                    fontWeight: 700,
+                    color: 'primary.main',
+                    fontSize: { xs: 36, md: 50 },
+                  }}
+                >
                   {averageRating}
                 </Typography>
-                <Typography color="gray" variant="body1" sx={{ fontSize: 40 }}>
+                <Typography
+                  sx={{
+                    color: 'text.secondary',
+                    fontSize: { xs: 24, md: 40 },
+                    ml: 1,
+                  }}
+                >
                   /5
                 </Typography>
               </Box>
               {/* total rating */}
               <Box>
                 <Rating value={averageRating} readOnly size="large" />
-                <Typography variant="body2" color="gray">
+                <Typography variant="body2" color="text.secondary">
                   {totalRatings} Ratings
                 </Typography>
               </Box>
             </Box>
-
             {/* rating chart */}
-            <RatingChart
-              totalRatings={totalRatings}
-              fiveStars={fiveStars}
-              fourStars={fourStars}
-              threeStars={threeStars}
-              twoStars={twoStars}
-              oneStars={oneStars}
-            />
-          </Box>
-
-          {/* all reviews */}
-          <Box sx={{ mt: 5 }}>
-            <Typography variant="body1">Product Reviews</Typography>
-            {reviews?.map((review) => (
-              <Box sx={{ mt: 2 }}>
-                <Rating value={Number(review.rating)} readOnly />
-                <Typography variant="body2">by {review.user}</Typography>
-                <Typography variant="body1">{review.comment}</Typography>
-              </Box>
-            ))}
+            <Box sx={{ flex: 1, minWidth: 200 }}>
+              <RatingChart
+                fiveStars={fiveStars}
+                fourStars={fourStars}
+                threeStars={threeStars}
+                twoStars={twoStars}
+                oneStars={oneStars}
+                totalRatings={totalRatings}
+              />
+            </Box>
           </Box>
         </Paper>
       </Container>

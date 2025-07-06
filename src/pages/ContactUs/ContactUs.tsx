@@ -7,8 +7,18 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  IconButton,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import React, { useRef, useState } from 'react';
-import styles from './ContactUs.module.css';
 
 const ContactUs = () => {
   const form = useRef<HTMLFormElement | null>(null);
@@ -76,99 +86,210 @@ const ContactUs = () => {
     { id: 3, title: 'Phone', text: '+88 01855629170', icon: PhoneIcon },
   ];
   return (
-    <div className={styles.contactUsContainer}>
-      <h1 className={styles.contactUsTitle}>Contact Us</h1>
-      <div className={styles.contactUsAccentBar} />
-      <div className={styles.contactUsGrid}>
-        {/* Contact Form Card */}
-        <div className={styles.contactCard}>
-          <div className={styles.formTitle}>Get In Touch</div>
-          <form
-            className={styles.form}
-            onSubmit={sendEmail}
-            ref={form}
-            autoComplete="off"
+    <Box
+      sx={{
+        bgcolor: 'background.default',
+        minHeight: '100vh',
+        py: { xs: 4, md: 8 },
+      }}
+    >
+      <Container maxWidth="md">
+        <Typography
+          variant="h3"
+          sx={{
+            fontWeight: 700,
+            color: 'primary.main',
+            textAlign: 'center',
+            mb: 2,
+            fontSize: { xs: 28, md: 40 },
+          }}
+        >
+          Contact Us
+        </Typography>
+        <Divider
+          sx={{ mb: 4, mx: 'auto', width: 80, borderColor: 'primary.main' }}
+        />
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={4}>
+          {/* Contact Form Card */}
+          <Paper
+            elevation={3}
+            sx={{
+              flex: 1,
+              p: { xs: 2, md: 4 },
+              borderRadius: 3,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+            }}
           >
-            <div className={styles.inputRow}>
-              <input
-                className={styles.input}
-                placeholder="Your Name"
-                type="text"
-                name="user_name"
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: 600, color: 'primary.main', mb: 2 }}
+            >
+              Get In Touch
+            </Typography>
+            <Box
+              component="form"
+              ref={form}
+              onSubmit={sendEmail}
+              autoComplete="off"
+              sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+            >
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                <TextField
+                  name="user_name"
+                  label="Your Name"
+                  variant="outlined"
+                  fullWidth
+                  required
+                />
+                <TextField
+                  name="user_email"
+                  label="Your Email"
+                  type="email"
+                  variant="outlined"
+                  fullWidth
+                  required
+                />
+              </Stack>
+              <TextField
+                name="subject"
+                label="Subject"
+                variant="outlined"
+                fullWidth
                 required
               />
-              <input
-                className={styles.input}
-                placeholder="Your Email"
-                type="email"
-                name="user_email"
+              <TextField
+                name="message"
+                label="Message"
+                variant="outlined"
+                fullWidth
                 required
+                multiline
+                minRows={4}
               />
-            </div>
-            <input
-              className={styles.input}
-              placeholder="Subject"
-              type="text"
-              name="subject"
-              required
-            />
-            <textarea
-              className={styles.textarea}
-              placeholder="Message"
-              name="message"
-              required
-            />
-            <button className={styles.sendBtn} type="submit">
-              Send <SendOutlined style={{ fontSize: 22 }} />
-            </button>
-          </form>
-          {success && (
-            <div className={`${styles.alert} ${styles.success}`}>
-              Message Sent Successfully
-            </div>
-          )}
-          {error && (
-            <div className={`${styles.alert} ${styles.error}`}>{error}</div>
-          )}
-        </div>
-        {/* Contact Info Card */}
-        <div className={styles.contactCard}>
-          <div className={styles.infoTitle}>Contact Information</div>
-          <div className={styles.infoList}>
-            {contactInfos.map((info) => (
-              <div className={styles.infoItem} key={info.id}>
-                <span className={styles.infoIcon}>
-                  <info.icon style={{ fontSize: 22 }} />
-                </span>
-                <span>
-                  <div className={styles.infoTextTitle}>{info.title}</div>
-                  <div className={styles.infoText}>{info.text}</div>
-                </span>
-              </div>
-            ))}
-          </div>
-          <div>
-            <div className={styles.infoTextTitle}>Social</div>
-            <div className={styles.socials}>
+              <Button
+                type="submit"
+                variant="contained"
+                endIcon={<SendOutlined />}
+                sx={{
+                  fontWeight: 600,
+                  fontSize: 18,
+                  alignSelf: 'flex-end',
+                  px: 4,
+                  py: 1,
+                }}
+              >
+                Send
+              </Button>
+            </Box>
+            {success && (
+              <Box
+                sx={{
+                  mt: 2,
+                  p: 2,
+                  bgcolor: 'success.light',
+                  color: 'success.dark',
+                  borderRadius: 2,
+                  fontWeight: 600,
+                  textAlign: 'center',
+                }}
+              >
+                Message Sent Successfully
+              </Box>
+            )}
+            {error && (
+              <Box
+                sx={{
+                  mt: 2,
+                  p: 2,
+                  bgcolor: 'error.light',
+                  color: 'error.dark',
+                  borderRadius: 2,
+                  fontWeight: 600,
+                  textAlign: 'center',
+                }}
+              >
+                {error}
+              </Box>
+            )}
+          </Paper>
+          {/* Contact Info Card */}
+          <Paper
+            elevation={3}
+            sx={{
+              flex: 1,
+              p: { xs: 2, md: 4 },
+              borderRadius: 3,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+            }}
+          >
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: 600, color: 'primary.main', mb: 2 }}
+            >
+              Contact Information
+            </Typography>
+            <Stack spacing={2}>
+              {contactInfos.map((info) => (
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  alignItems="center"
+                  key={info.id}
+                >
+                  <Box
+                    sx={{
+                      bgcolor: 'primary.light',
+                      color: 'primary.contrastText',
+                      p: 1,
+                      borderRadius: '50%',
+                    }}
+                  >
+                    <info.icon sx={{ fontSize: 28 }} />
+                  </Box>
+                  <Box>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                      {info.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {info.text}
+                    </Typography>
+                  </Box>
+                </Stack>
+              ))}
+            </Stack>
+            <Divider sx={{ my: 2 }} />
+            <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+              Social
+            </Typography>
+            <Stack direction="row" spacing={2}>
               {socials.map((social) => {
                 const Icon = social.icon;
                 return (
-                  <a
-                    className={styles.socialLink}
+                  <IconButton
                     key={social.id}
-                    target="_blank"
+                    component="a"
                     href={social.link}
+                    target="_blank"
                     rel="noreferrer"
+                    sx={{
+                      bgcolor: 'primary.light',
+                      color: 'primary.contrastText',
+                      '&:hover': { bgcolor: 'primary.main' },
+                    }}
                   >
-                    <Icon style={{ fontSize: 28 }} />
-                  </a>
+                    <Icon sx={{ fontSize: 28 }} />
+                  </IconButton>
                 );
               })}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            </Stack>
+          </Paper>
+        </Stack>
+      </Container>
+    </Box>
   );
 };
 

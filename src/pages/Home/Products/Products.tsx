@@ -1,24 +1,26 @@
-import { Container, Grid, Typography } from "@mui/material";
-import Spinner from "@/components/Shared/Spinner";
-import type IProduct from "@/types/ProductType";
-import Product from "./Product";
+import type IProduct from '@/types/product.type';
+import { Box, Container, Grid, Typography } from '@mui/material';
+import Product from './Product';
 
-const Products = ({
-  products,
-  title,
-}: {
-  products: IProduct[];
-  title: string;
-}) => (
+const Products = ({ products }: { products: IProduct[] }) => (
   <Container sx={{ mt: 10 }}>
-    <Typography sx={{ mb: 4, mx: "auto" }} variant="h1">
-      {title}
-    </Typography>
     <Grid container spacing={{ xs: 2, lg: 3 }}>
-      {products ? (
+      {products && products.length > 0 ? (
         products.map((product) => <Product key={product._id} drone={product} />)
       ) : (
-        <Spinner />
+        <Box
+          sx={{
+            width: '100%',
+            py: 8,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h6" color="text.secondary" sx={{ opacity: 0.7 }}>
+            No products found.
+          </Typography>
+        </Box>
       )}
     </Grid>
   </Container>
