@@ -1,6 +1,6 @@
 import Title from '@/components/ui/Title';
 import { Box, Container, Divider } from '@mui/material';
-import AboutUsBanner from './AboutUsBanner';
+import AboutUsBanner from './AboutUsBanner/AboutUsBanner';
 import OurTeam from './OurTeam';
 import WhyUs from './WhyUs';
 
@@ -13,9 +13,26 @@ const AboutUs = () => {
         py: { xs: 4, md: 8 },
       }}
     >
-      <Container maxWidth="md">
+              <Container maxWidth="xl">
         {/* banner */}
-        <AboutUsBanner />
+        <Box sx={{ 
+          mb: 10, 
+          mt: { xs: 2, md: 3 },
+          position: 'relative',
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            bottom: -40,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '60%',
+            height: 1,
+            bgcolor: 'rgba(0,0,0,0.06)',
+            borderRadius: 2
+          }
+        }}>
+          <AboutUsBanner />
+        </Box>
         {/* mission statement */}
         <Box sx={{ my: 6, textAlign: 'center' }}>
           <Title>About Drone Rush</Title>
