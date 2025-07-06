@@ -1,6 +1,9 @@
 import Modal from '@/components/Shared/Modal';
 import Spinner from '@/components/Shared/Spinner';
-import { useGetUserOrdersQuery } from '@/redux/features/order/orderApi';
+import {
+  useGetUserOrdersQuery,
+  useUpdateOrderStatusMutation,
+} from '@/redux/features/order/orderApi';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Box, IconButton, Typography } from '@mui/material';
 import Chip from '@mui/material/Chip';
@@ -16,13 +19,13 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 const MyOrders = () => {
-  // !! use prover type
   const { data, isLoading } = useGetUserOrdersQuery({});
-  console.log(data);
+  const [updateOrderStatus, { isLoading: isUpdatingStatus }] =
+    useUpdateOrderStatusMutation();
 
   const [isDeleted, setIsDeleted] = useState(false);
 
-  if (isLoading) return <Spinner />;
+  if (isLoading || isUpdatingStatus) return <Spinner />;
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -44,12 +47,15 @@ const MyOrders = () => {
   }));
 
   const handleCancelOrder = async (orderId: string) => {
-    // orderId is used for cancelling the order: ' + orderId
     const toastId = toast.loading('Cancelling order...');
     const confirmation = window.confirm('Are you sure!');
     if (!confirmation) return;
     try {
-      // TODO: Add actual cancel logic here using orderId
+      updateOrderStatus({
+        payload: { status: 'user-cancelled', cancelReason: '' },
+        id: orderId,
+      }).unwrap();
+
       toast.success('Order cancelled!', { id: toastId });
     } catch (err) {
       if (
@@ -112,9 +118,10 @@ const MyOrders = () => {
                   >
                     {Array.isArray(order.products) &&
                       order.products.map((product, idx) =>
-                        typeof product === 'object' && product !== null ? (
+                        typeof product.id === 'object' &&
+                        product.id !== null ? (
                           <Box
-                            key={product._id ?? idx}
+                            key={product.id._id ?? idx}
                             sx={{
                               display: 'flex',
                               alignItems: 'center',
@@ -122,8 +129,8 @@ const MyOrders = () => {
                             }}
                           >
                             <img
-                              src={product.img ?? ''}
-                              alt={product.name ?? ''}
+                              src={product.id.img ?? ''}
+                              alt={product.id.name ?? ''}
                               width={40}
                               height={40}
                               style={{ borderRadius: 6, objectFit: 'cover' }}
@@ -132,15 +139,15 @@ const MyOrders = () => {
                               variant="body2"
                               sx={{ fontWeight: 600 }}
                             >
-                              {product.name ?? ''}
+                              {product.id.name ?? ''}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                              Qty: {product.quantity ?? 1}
+                              Qty: {product.id.quantity ?? 1}
                             </Typography>
                           </Box>
                         ) : (
                           <Typography key={idx} variant="body2">
-                            {String(product)}
+                            {String(product.id)}
                           </Typography>
                         )
                       )}
