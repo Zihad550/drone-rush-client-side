@@ -187,6 +187,7 @@ const Product = ({ drone }: { drone: IProduct }) => {
                     color: 'white',
                   },
                 }}
+                disabled={inCart}
               >
                 {inWishlist ? (
                   <FavoriteIcon fontSize="small" />

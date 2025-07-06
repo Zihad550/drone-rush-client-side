@@ -72,13 +72,19 @@ const Details = () => {
   const user = useAppSelector(selectUser);
   const cartProducts = useAppSelector(selectCartProducts);
   const wishlistProducts = useAppSelector(selectWishlistProducts);
+
+  if (isLoading) return <Spinner />;
+  if (!data?.data)
+    return (
+      <Box>
+        <Typography>Product details not found</Typography>
+      </Box>
+    );
+
   const inCart = cartProducts.some((item) => item._id === data.data._id);
   const inWishlist = wishlistProducts.some(
     (item) => item._id === data.data._id
   );
-
-  if (isLoading) return <Spinner />;
-
   const { img, name, price, reviews, brand } = data.data;
   const ratings: number[] =
     reviews.map((review: any) => Number(review.rating)) || [];
@@ -184,7 +190,7 @@ const Details = () => {
                       toast.success('Added to wishlist!');
                     }
                   }}
-                  disabled={inWishlist}
+                  disabled={inCart}
                   sx={{
                     bgcolor: inWishlist ? 'secondary.main' : 'grey.100',
                     color: inWishlist ? 'white' : 'secondary.main',
@@ -192,13 +198,6 @@ const Details = () => {
                     '&:hover': {
                       bgcolor: 'secondary.main',
                       color: 'white',
-                    },
-                    '&.Mui-disabled': {
-                      bgcolor: 'secondary.main',
-                      color: 'white',
-                      boxShadow: 2,
-                      opacity: 1,
-                      cursor: 'not-allowed',
                     },
                   }}
                 >

@@ -1,6 +1,7 @@
 import type { RootState } from '@/redux/store';
 import type IProduct from '@/types/product.type';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { addProductToCard } from '../cart/cartSlice';
 
 interface IWishlistState {
   wishlistProducts: IProduct[];
@@ -33,6 +34,14 @@ const wishlistSlice = createSlice({
     clearWishlist: (state) => {
       state.wishlistProducts = [];
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(addProductToCard, (state, action) => {
+      const index = state.wishlistProducts.findIndex(
+        (product) => product._id === action.payload._id
+      );
+      if (index !== -1) state.wishlistProducts.splice(index, 1);
+    });
   },
 });
 
