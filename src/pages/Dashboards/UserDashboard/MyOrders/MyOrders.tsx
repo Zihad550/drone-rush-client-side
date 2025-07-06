@@ -51,20 +51,15 @@ const MyOrders = () => {
     const confirmation = window.confirm("Are you sure!");
     if (!confirmation) return;
     try {
-      updateOrderStatus({
+      await updateOrderStatus({
         payload: { status: "user-cancelled", cancelReason: "" },
         id: orderId,
       }).unwrap();
 
       toast.success("Order cancelled!", { id: toastId });
-    } catch (err) {
-      if (
-        err &&
-        typeof err === "object" &&
-        "data" in err &&
-        (err as any).data?.message
-      ) {
-        toast.error((err as any).data.message, { id: toastId });
+    } catch (err: any) {
+      if (err?.data?.message) {
+        toast.error(err.data.message, { id: toastId });
       } else {
         toast.error("Something went wrong", { id: toastId });
       }

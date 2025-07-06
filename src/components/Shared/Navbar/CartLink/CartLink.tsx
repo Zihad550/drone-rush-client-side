@@ -1,10 +1,10 @@
-import { styled } from "@mui/material/styles";
-import IconButton from "@mui/material/IconButton";
-import Badge, { badgeClasses } from "@mui/material/Badge";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCartOutlined";
-import { NavLink } from "react-router";
-import { useAppSelector } from "@/redux/hooks";
 import { selectCartProducts } from "@/redux/features/cart/cartSlice";
+import { useAppSelector } from "@/redux/hooks";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCartOutlined";
+import Badge, { badgeClasses } from "@mui/material/Badge";
+import IconButton from "@mui/material/IconButton";
+import { styled } from "@mui/material/styles";
+import { NavLink } from "react-router";
 
 const CartBadge = styled(Badge)`
   & .${badgeClasses.badge} {
@@ -16,7 +16,7 @@ const CartBadge = styled(Badge)`
 const CartLink = () => {
   const products = useAppSelector(selectCartProducts);
   return (
-    <IconButton sx={{ mr: 2 }} component={NavLink} to="/user/cart">
+    <IconButton sx={{ ml: 1 }} component={NavLink} to="/user/cart">
       <ShoppingCartIcon sx={{ color: "white" }} fontSize="small" />
       <CartBadge
         badgeContent={products.length}
