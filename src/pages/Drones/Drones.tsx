@@ -1,12 +1,12 @@
-import Spinner from '@/components/Shared/Spinner';
-import Title from '@/components/ui/Title';
-import { useGetBrandsQuery } from '@/redux/features/brand/brandApi';
-import { useGetCategoriesQuery } from '@/redux/features/category/categoryApi';
-import { useGetProductsQuery } from '@/redux/features/product/productApi';
-import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
-import CategoryRoundedIcon from '@mui/icons-material/CategoryRounded';
-import ClearIcon from '@mui/icons-material/Clear';
-import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
+import Spinner from "@/components/Shared/Spinner";
+import Title from "@/components/ui/Title";
+import { useGetBrandsQuery } from "@/redux/features/brand/brandApi";
+import { useGetCategoriesQuery } from "@/redux/features/category/categoryApi";
+import { useGetProductsQuery } from "@/redux/features/product/productApi";
+import BusinessRoundedIcon from "@mui/icons-material/BusinessRounded";
+import CategoryRoundedIcon from "@mui/icons-material/CategoryRounded";
+import ClearIcon from "@mui/icons-material/Clear";
+import FilterAltRoundedIcon from "@mui/icons-material/FilterAltRounded";
 import {
   Box,
   Button,
@@ -19,22 +19,22 @@ import {
   Select,
   Stack,
   Typography,
-} from '@mui/material';
-import InputAdornment from '@mui/material/InputAdornment';
-import React, { useState } from 'react';
-import FAQ from '../Home/FAQ';
-import Features from '../Home/Features';
-import Products from '../Home/Products';
+} from "@mui/material";
+import InputAdornment from "@mui/material/InputAdornment";
+import React, { useState } from "react";
+import FAQ from "../Home/FAQ";
+import Features from "../Home/Features";
+import Products from "../Home/Products";
 
 const PRODUCTS_PER_PAGE = 8;
 const Drones = () => {
   const [page, setPage] = useState(1);
-  const [category, setCategory] = useState('');
-  const [brand, setBrand] = useState('');
+  const [category, setCategory] = useState("");
+  const [brand, setBrand] = useState("");
 
   const { data, isLoading } = useGetProductsQuery({
     page,
-    sort: '-quantity',
+    sort: "-quantity",
     limit: PRODUCTS_PER_PAGE,
     ...(category && { category }),
     ...(brand && { brand }),
@@ -44,37 +44,37 @@ const Drones = () => {
 
   if (isLoading) return <Spinner />;
 
-  const handleCurrentPage = (e: React.ChangeEvent<unknown>, value: number) => {
+  const handleCurrentPage = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
   return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+    <Box sx={{ bgcolor: "background.default", minHeight: "100vh" }}>
       <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 } }}>
         <Stack spacing={6}>
           {/* Filters Section */}
           <Paper
             elevation={0}
             sx={{
-              position: 'sticky',
+              position: "sticky",
               top: 16,
               zIndex: 10,
               p: { xs: 2, md: 3 },
               borderRadius: 4,
               mb: 2,
-              display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' },
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
               gap: 2,
-              alignItems: { sm: 'center' },
-              bgcolor: 'rgba(255,255,255,0.75)',
-              backdropFilter: 'blur(10px)',
-              boxShadow: '0 4px 24px 0 rgba(30,41,59,0.10)',
-              border: '1.5px solid',
-              borderColor: 'grey.100',
-              transition: 'box-shadow 0.2s, border-color 0.2s',
-              '&:hover': {
-                boxShadow: '0 8px 32px 0 rgba(30,41,59,0.16)',
-                borderColor: 'primary.light',
+              alignItems: { sm: "center" },
+              bgcolor: "rgba(255,255,255,0.75)",
+              backdropFilter: "blur(10px)",
+              boxShadow: "0 4px 24px 0 rgba(30,41,59,0.10)",
+              border: "1.5px solid",
+              borderColor: "grey.100",
+              transition: "box-shadow 0.2s, border-color 0.2s",
+              "&:hover": {
+                boxShadow: "0 8px 32px 0 rgba(30,41,59,0.16)",
+                borderColor: "primary.light",
               },
             }}
           >
@@ -90,7 +90,7 @@ const Drones = () => {
               />
               <Typography
                 variant="h6"
-                sx={{ fontWeight: 700, mr: 2, color: 'primary.main' }}
+                sx={{ fontWeight: 700, mr: 2, color: "primary.main" }}
               >
                 Filters
               </Typography>
@@ -111,7 +111,7 @@ const Drones = () => {
                 }
                 sx={{
                   borderRadius: 2,
-                  bgcolor: 'background.paper',
+                  bgcolor: "background.paper",
                   fontWeight: 600,
                 }}
                 MenuProps={{
@@ -144,7 +144,7 @@ const Drones = () => {
                 }
                 sx={{
                   borderRadius: 2,
-                  bgcolor: 'background.paper',
+                  bgcolor: "background.paper",
                   fontWeight: 600,
                 }}
                 MenuProps={{
@@ -167,8 +167,8 @@ const Drones = () => {
                 color="secondary"
                 startIcon={<ClearIcon />}
                 onClick={() => {
-                  setCategory('');
-                  setBrand('');
+                  setCategory("");
+                  setBrand("");
                   setPage(1);
                 }}
                 sx={{
@@ -186,14 +186,14 @@ const Drones = () => {
             <Title>All Available Drones</Title>
             <Products products={data?.data ?? []} />
           </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
+          <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
             <Pagination
               count={Math.ceil((data?.meta?.total ?? 0) / PRODUCTS_PER_PAGE)}
               variant="outlined"
               color="primary"
               onChange={handleCurrentPage}
               sx={{
-                '.MuiPaginationItem-root': {
+                ".MuiPaginationItem-root": {
                   fontWeight: 600,
                   fontSize: { xs: 16, md: 18 },
                 },

@@ -1,20 +1,18 @@
-import { Button, ButtonGroup, TextField } from '@mui/material';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Typography from '@mui/material/Typography';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { AppState } from 'redux/store';
-import { toast } from 'sonner';
+import { Button, ButtonGroup, TextField } from "@mui/material";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
+import React, { useState } from "react";
+import { toast } from "sonner";
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: "background.paper",
+  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
@@ -35,11 +33,10 @@ const ReviewModal = ({
   product,
 }: ReviewModalProps) => {
   const { productName, img } = product;
-  const { data: user } = useSelector((state: AppState) => state.auth);
 
   const [reviewInfo, setReviewInfo] = useState({
-    userName: user?.name,
-    email: user?.email,
+    username: "",
+    email: "",
   });
 
   const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -52,7 +49,7 @@ const ReviewModal = ({
 
   const handleReview: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    const toastId = toast.loading('Submitting review...');
+    const toastId = toast.loading("Submitting review...");
     try {
       // collect data
       const review = {
@@ -60,18 +57,12 @@ const ReviewModal = ({
         productName,
         img,
       };
+      console.log(review);
 
-      // send to the server
-      /* axiosInstance.post("/reviews", { review }).then(({ data }) => {
-        if (data.insertedId) {
-          alert("Review added successfully");
-          handleCloseReview();
-        }
-      }); */
-      toast.success('Review submitted!', { id: toastId });
-    } catch (err) {
+      toast.success("Review submitted!", { id: toastId });
+    } catch (err: any) {
       if (err?.data?.message) toast.error(err.data.message, { id: toastId });
-      else toast.error('Something went wrong', { id: toastId });
+      else toast.error("Something went wrong", { id: toastId });
     }
   };
   return (
@@ -110,7 +101,6 @@ const ReviewModal = ({
           <TextField
             required
             onChange={handleOnChange}
-            defaultValue={user?.name}
             size="small"
             name="userName"
             label="Name"
@@ -120,7 +110,6 @@ const ReviewModal = ({
 
           <TextField
             required
-            defaultValue={user?.email}
             type="email"
             size="small"
             onChange={handleOnChange}
@@ -133,14 +122,14 @@ const ReviewModal = ({
           <ButtonGroup
             variant="contained"
             sx={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              width: '100%',
+              display: "flex",
+              justifyContent: "flex-end",
+              width: "100%",
               boxShadow: 0,
             }}
           >
             <Button
-              sx={{ backgroundColor: 'error.main' }}
+              sx={{ backgroundColor: "error.main" }}
               onClick={handleCloseReview}
             >
               Close modal

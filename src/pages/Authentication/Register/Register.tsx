@@ -1,9 +1,9 @@
-import loginImage from '@/assets/login.jpg';
-import { useRegisterMutation } from '@/redux/features/auth/authApi';
-import { selectUser, setUser } from '@/redux/features/auth/authSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { verifyToken } from '@/utils/verifyToken';
-import { Email, Person, VpnKey } from '@mui/icons-material';
+import loginImage from "@/assets/login.jpg";
+import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import { selectUser, setUser } from "@/redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { verifyToken } from "@/utils/verifyToken";
+import { Email, Person, VpnKey } from "@mui/icons-material";
 import {
   Alert,
   Button,
@@ -12,11 +12,11 @@ import {
   InputAdornment,
   TextField,
   Typography,
-} from '@mui/material';
-import type { ChangeEvent } from 'react';
-import React, { useState } from 'react';
-import { NavLink, useLocation, useNavigate } from 'react-router';
-import { toast } from 'sonner';
+} from "@mui/material";
+import type { ChangeEvent } from "react";
+import React, { useState } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router";
+import { toast } from "sonner";
 
 type LoginData = {
   password: string;
@@ -26,10 +26,10 @@ type LoginData = {
 };
 const Register = () => {
   const [registerData, setRegisterData] = useState<LoginData>({
-    password: '',
-    retype_password: '',
-    name: '',
-    email: '',
+    password: "",
+    retype_password: "",
+    name: "",
+    email: "",
   });
 
   const [register, { error }] = useRegisterMutation();
@@ -37,22 +37,22 @@ const Register = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { state } = useLocation();
-  if (user) navigate(state?.from || '/');
+  if (user) navigate(state?.from || "/");
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const field = e.target.name;
     const value = e.target.value;
     const newLoginData = { ...registerData };
-    newLoginData[field] = value;
+    newLoginData[field as keyof typeof newLoginData] = value;
     setRegisterData(newLoginData);
   };
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const toastId = toast.loading('Registering user...');
+    const toastId = toast.loading("Registering user...");
     try {
       if (registerData.password !== registerData.retype_password) {
-        toast.error('Password did not match', {
+        toast.error("Password did not match", {
           id: toastId,
         });
       } else {
@@ -63,12 +63,12 @@ const Register = () => {
         }).unwrap();
         const user = verifyToken(res.data.accessToken);
         dispatch(setUser({ user, token: res.data.accessToken }));
-        toast.success('Registered successfully', { id: toastId });
-        navigate('/');
+        toast.success("Registered successfully", { id: toastId });
+        navigate("/");
       }
-    } catch (err) {
+    } catch (err: any) {
       if (err?.data?.message) toast.error(err.data.message, { id: toastId });
-      else toast.error('Something went wrong', { id: toastId });
+      else toast.error("Something went wrong", { id: toastId });
     }
   };
 
@@ -76,15 +76,15 @@ const Register = () => {
     <Container sx={{ my: 5 }}>
       <Grid
         sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
         container
         spacing={{ xs: 2, md: 3 }}
       >
         <Grid
-          sx={{ display: 'flex', flexDirection: 'column' }}
+          sx={{ display: "flex", flexDirection: "column" }}
           size={{
             xs: 12,
             md: 6,
@@ -95,7 +95,7 @@ const Register = () => {
             <form onSubmit={handleRegister}>
               <TextField
                 required
-                sx={{ width: '75%' }}
+                sx={{ width: "75%" }}
                 label="Your Name"
                 onChange={handleOnChange}
                 variant="standard"
@@ -112,7 +112,7 @@ const Register = () => {
               />
               <TextField
                 required
-                sx={{ width: '75%' }}
+                sx={{ width: "75%" }}
                 label="Your Email"
                 onChange={handleOnChange}
                 variant="standard"
@@ -131,7 +131,7 @@ const Register = () => {
               <br />
               <TextField
                 required
-                sx={{ width: '75%' }}
+                sx={{ width: "75%" }}
                 onChange={handleOnChange}
                 label="Your Password"
                 variant="standard"
@@ -150,7 +150,7 @@ const Register = () => {
               />
               <TextField
                 required
-                sx={{ width: '75%' }}
+                sx={{ width: "75%" }}
                 onChange={handleOnChange}
                 label="Retype Your Password"
                 variant="standard"
@@ -168,7 +168,7 @@ const Register = () => {
                 }}
               />
               <br />
-              <NavLink style={{ textDecoration: 'none' }} to="/login">
+              <NavLink style={{ textDecoration: "none" }} to="/login">
                 <Button variant="text">Already Registered? Please Login</Button>
               </NavLink>
               <br />
@@ -176,10 +176,10 @@ const Register = () => {
                 variant="contained"
                 type="submit"
                 sx={{
-                  background: 'info.main',
+                  background: "info.main",
                   mt: 3,
-                  width: '75%',
-                  color: 'white',
+                  width: "75%",
+                  color: "white",
                 }}
               >
                 Register
@@ -187,15 +187,15 @@ const Register = () => {
             </form>
             {user?.id && (
               <Alert sx={{ mt: 3 }} severity="success">
-                {' '}
+                {" "}
                 User created successfully
               </Alert>
             )}
-            {error && <Alert severity="error">{'authentication failed'}</Alert>}
+            {error && <Alert severity="error">{"authentication failed"}</Alert>}
           </>
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <img style={{ width: '100%' }} src={loginImage} alt="login" />
+          <img style={{ width: "100%" }} src={loginImage} alt="login" />
         </Grid>
       </Grid>
     </Container>

@@ -1,17 +1,16 @@
+import type IProduct from "@/types/product.type";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import { Grid, IconButton, TextField, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, Grid, IconButton, TextField, Typography } from "@mui/material";
 import React from "react";
-import IProduct from "types/ProductType";
 
 interface ICartProductProps {
   product: IProduct;
   handleRemoveFromCart: (id: string) => void;
 }
 const CartProduct = ({ product, handleRemoveFromCart }: ICartProductProps) => {
-  const { name, price, img, _id, qty } = product;
+  const { name, price, img, _id, quantity } = product;
   return (
     <Grid
       container
@@ -30,9 +29,7 @@ const CartProduct = ({ product, handleRemoveFromCart }: ICartProductProps) => {
           alignItems: "center",
           flexDirection: { md: "row", xs: "column" },
         }}
-        item
-        md={6}
-        xs={12}
+        size={{ md: 6, xs: 12 }}
       >
         <Box>
           <img src={img} alt="" />
@@ -43,8 +40,7 @@ const CartProduct = ({ product, handleRemoveFromCart }: ICartProductProps) => {
       </Grid>
       {/* Price */}
       <Grid
-        item
-        md={4}
+        size={{ md: 4 }}
         sx={{
           alignItems: "center",
           justifyContent: "center",
@@ -59,22 +55,18 @@ const CartProduct = ({ product, handleRemoveFromCart }: ICartProductProps) => {
           alignItems: "center",
           justifyContent: "flex-start",
         }}
-        item
-        md={2}
-        xs={12}
+        size={{ md: 2, xs: 12 }}
       >
         <IconButton>
           <RemoveCircleOutlineIcon />
         </IconButton>
-        <TextField type="number" value={qty} />
+        <TextField type="number" value={quantity} />
         <IconButton>
           <AddCircleOutlineIcon />
         </IconButton>
       </Grid>
       <Grid
-        item
-        md={2}
-        xs={12}
+        size={{ md: 2, xs: 12 }}
         sx={{
           display: "flex",
           alignItems: "center",
@@ -85,8 +77,7 @@ const CartProduct = ({ product, handleRemoveFromCart }: ICartProductProps) => {
       </Grid>
       {/* Cancel */}
       <Grid
-        item
-        md={2}
+        size={{ md: 2 }}
         sx={{
           display: "flex",
           alignItems: "center",

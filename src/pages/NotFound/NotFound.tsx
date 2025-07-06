@@ -1,6 +1,5 @@
-import { Button, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import { Link } from "react-router-dom";
+import { Box, Button, Typography } from "@mui/material";
+import { Link } from "react-router";
 import notFoundImage from "../../../images/404.jpg";
 
 const NotFound = () => {

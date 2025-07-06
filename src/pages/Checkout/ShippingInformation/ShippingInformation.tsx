@@ -1,29 +1,27 @@
+import type IShippingInfo from "@/types/shippingInfo.type";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import {
   Box,
   Button,
-  Paper,
-  TextField,
-  Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  IconButton,
   Dialog,
-  DialogTitle,
-  DialogContent,
   DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
   type SelectChangeEvent,
+  TextField,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import "./ShippingInformation.css";
-import { useAppSelector } from "@/redux/hooks";
-import { selectUser } from "@/redux/features/auth/authSlice";
-import type IShippingInfo from "@/types/shippingInfo.type";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
 const ShippingInformation = ({
   shippingInformations,
   setShippingInformations,
@@ -51,7 +49,6 @@ const ShippingInformation = ({
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   isLoading: boolean;
 }) => {
-  const user = useAppSelector(selectUser);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [shippingToDelete, setShippingToDelete] = useState<string | null>(null);
 

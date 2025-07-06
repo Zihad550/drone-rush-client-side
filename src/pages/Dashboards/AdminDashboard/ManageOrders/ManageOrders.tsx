@@ -56,7 +56,7 @@ const ManageOrders = () => {
   const [isUpdated, setIsUpdated] = useState(false);
   const [error, setError] = useState("");
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
   };
 

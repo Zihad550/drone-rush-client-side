@@ -1,5 +1,5 @@
 import Footer from "@/components/Shared/Footer";
-import NavBar from "@/components/Shared/Header/NavBar";
+import NavBar from "@/components/Shared/Navbar/NavBar";
 import { Outlet } from "react-router";
 
 const MainLayout = () => {

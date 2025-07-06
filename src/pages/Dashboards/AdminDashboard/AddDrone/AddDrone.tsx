@@ -1,17 +1,17 @@
-import Spinner from '@/components/Shared/Spinner';
-import AppSelect from '@/components/ui/AppSelect';
-import { useGetBrandsQuery } from '@/redux/features/brand/brandApi';
-import { useGetCategoriesQuery } from '@/redux/features/category/categoryApi';
-import { useCreateProductMutation } from '@/redux/features/product/productApi';
-import type { TProductWriteDoc } from '@/types/product.type';
-import { Add } from '@mui/icons-material';
-import { Button, Grid, TextField, Typography } from '@mui/material';
+import Spinner from "@/components/Shared/Spinner";
+import AppSelect from "@/components/ui/AppSelect";
+import { useGetBrandsQuery } from "@/redux/features/brand/brandApi";
+import { useGetCategoriesQuery } from "@/redux/features/category/categoryApi";
+import { useCreateProductMutation } from "@/redux/features/product/productApi";
+import type { TProductWriteDoc } from "@/types/product.type";
+import { Add } from "@mui/icons-material";
+import { Button, Grid, TextField, Typography } from "@mui/material";
 import React, {
   useState,
   type ChangeEvent,
   type ChangeEventHandler,
-} from 'react';
-import { toast } from 'sonner';
+} from "react";
+import { toast } from "sonner";
 
 const AddDrone = () => {
   const { data: categoriesData, isLoading: isCategoriesLoading } =
@@ -21,19 +21,19 @@ const AddDrone = () => {
   });
   const [createProduct, { isLoading: isCreating }] = useCreateProductMutation();
   const [productInfo, setProductInfo] = useState<TProductWriteDoc>({
-    name: '',
+    name: "",
     price: 0,
-    img: '',
-    description: '',
-    brand: '',
-    category: '',
+    img: "",
+    description: "",
+    brand: "",
+    category: "",
     reviews: [],
     quantity: 0,
   });
   console.log(productInfo);
 
   const handleOnChange: ChangeEventHandler<HTMLInputElement> = (
-    e: ChangeEvent<HTMLInputElement>
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     const field: string | number = e.target.name;
     const value = e.target.value;
@@ -44,27 +44,27 @@ const AddDrone = () => {
 
   const handleBooking = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const toastId = toast.loading('Creating new product');
+    const toastId = toast.loading("Creating new product");
 
     try {
       const res = await createProduct(productInfo).unwrap();
       console.log(res);
       if (res?.success) {
-        toast.success('Product created', { id: toastId });
+        toast.success("Product created", { id: toastId });
         setProductInfo({
-          name: '',
+          name: "",
           price: 0,
-          img: '',
-          description: '',
-          brand: '',
-          category: '',
+          img: "",
+          description: "",
+          brand: "",
+          category: "",
           reviews: [],
           quantity: 0,
         });
       }
-    } catch (err) {
+    } catch (err: any) {
       if (err?.data?.message) toast.error(err.data.message, { id: toastId });
-      else toast.error('Failed to create product', { id: toastId });
+      else toast.error("Failed to create product", { id: toastId });
     }
   };
 
