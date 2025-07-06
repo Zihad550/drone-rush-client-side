@@ -1,5 +1,6 @@
 import { Grid, Typography, Button } from "@mui/material";
 import { Box, Container, useTheme } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import src from "@/assets/about-us-bg.png";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
@@ -22,7 +23,7 @@ const AboutUsBanner = () => {
           width: '200px',
           height: '200px',
           borderRadius: '50%',
-          background: `radial-gradient(circle, ${theme.palette.primary.main}22 0%, transparent 70%)`,
+          background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.13)} 0%, transparent 70%)`,
           zIndex: 0
         },
         '&::after': {
@@ -33,7 +34,7 @@ const AboutUsBanner = () => {
           width: '300px',
           height: '300px',
           borderRadius: '50%',
-          background: `radial-gradient(circle, ${theme.palette.primary.main}15 0%, transparent 60%)`,
+          background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.08)} 0%, transparent 60%)`,
           zIndex: 0
         }
       }}
@@ -50,7 +51,7 @@ const AboutUsBanner = () => {
           }}
         >
           <Grid
-              size={{xs: 12, md: 6}}
+              size={{ xs: 12, md: 6 }}
             sx={{
               textAlign: { xs: "center", md: "left" },
               pr: { md: 8 },
@@ -166,10 +167,7 @@ const AboutUsBanner = () => {
             </Button>
           </Grid>
           <Grid
-              size={{
-                xs: 12,
-                md: 6
-              }}
+              size={{ xs: 12, md: 6 }}
             sx={{
               display: "flex", 
               justifyContent: "center",

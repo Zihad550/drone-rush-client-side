@@ -26,7 +26,7 @@ const Home = () => {
       <Banner />
       <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 } }}>
         <Stack spacing={6}>
-          <Box>
+              <Box sx={{ my: 4 }}>
             <Title>{title}</Title>
             <Products products={data?.data ?? []} />
           </Box>

@@ -119,14 +119,26 @@ const Footer = () => {
     <Box
       component="footer"
       sx={{
+        position: 'relative',
         width: '100%',
-        bgcolor: 'grey.900',
+        bgcolor: 'rgba(15, 23, 42, 0.95)',
+        backdropFilter: 'blur(10px)',
         color: 'grey.100',
         pt: 6,
         pb: 0,
         mt: 8,
-        borderTop: '4px solid',
-        borderImage: 'linear-gradient(90deg, #3b82f6 0%, #06b6d4 100%) 1',
+        borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+        boxShadow: '0 -10px 40px rgba(0, 0, 0, 0.2)',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent 70%)',
+          pointerEvents: 'none'
+        }
       }}
     >
       <Container maxWidth="xl">
@@ -154,8 +166,16 @@ const Footer = () => {
                 href="#"
                 sx={{
                   color: '#3b82f6',
-                  bgcolor: 'white',
-                  '&:hover': { bgcolor: '#e0f2fe' },
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(5px)',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': { 
+                    background: 'rgba(255, 255, 255, 0.2)',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 16px rgba(59, 130, 246, 0.3)'
+                  },
                 }}
               >
                 <FacebookRoundedIcon />
@@ -165,8 +185,16 @@ const Footer = () => {
                 href="#"
                 sx={{
                   color: '#06b6d4',
-                  bgcolor: 'white',
-                  '&:hover': { bgcolor: '#e0f2fe' },
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(5px)',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': { 
+                    background: 'rgba(255, 255, 255, 0.2)',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 16px rgba(6, 182, 212, 0.3)'
+                  },
                 }}
               >
                 <TwitterIcon />
@@ -176,8 +204,16 @@ const Footer = () => {
                 href="#"
                 sx={{
                   color: '#e1306c',
-                  bgcolor: 'white',
-                  '&:hover': { bgcolor: '#fce7f3' },
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(5px)',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': { 
+                    background: 'rgba(255, 255, 255, 0.2)',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 16px rgba(225, 48, 108, 0.3)'
+                  },
                 }}
               >
                 <InstagramIcon />
@@ -187,8 +223,16 @@ const Footer = () => {
                 href="#"
                 sx={{
                   color: '#e60023',
-                  bgcolor: 'white',
-                  '&:hover': { bgcolor: '#fee2e2' },
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(5px)',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': { 
+                    background: 'rgba(255, 255, 255, 0.2)',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 16px rgba(230, 0, 35, 0.3)'
+                  },
                 }}
               >
                 <PinterestIcon />
@@ -219,39 +263,66 @@ const Footer = () => {
             <Typography variant="body2" sx={{ color: 'grey.400', mb: 1 }}>
               Subscribe to get the latest drone news and deals!
             </Typography>
-            <Stack
-              direction={{ xs: 'column', sm: 'row' }}
-              spacing={1}
-              component="form"
-              onSubmit={(e) => e.preventDefault()}
-              sx={{ width: '100%' }}
+            <Box
+              sx={{
+                p: 3,
+                borderRadius: 3,
+                background: 'rgba(255, 255, 255, 0.05)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+                mt: 2
+              }}
             >
-              <TextField
-                size="small"
-                placeholder="Your email"
-                variant="filled"
-                sx={{
-                  bgcolor: 'grey.800',
-                  borderRadius: 2,
-                  input: { color: 'grey.100' },
-                  flex: 1,
-                  width: { xs: '100%', sm: 'auto' },
-                }}
-                InputProps={{ disableUnderline: true }}
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{
-                  borderRadius: 2,
-                  fontWeight: 600,
-                  width: { xs: '100%', sm: 'auto' },
-                  mt: { xs: 1, sm: 0 },
-                }}
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                spacing={1}
+                component="form"
+                onSubmit={(e) => e.preventDefault()}
+                sx={{ width: '100%' }}
               >
-                Subscribe
-              </Button>
-            </Stack>
+                <TextField
+                  size="small"
+                  placeholder="Your email"
+                  variant="outlined"
+                  sx={{
+                    borderRadius: 2,
+                    input: { color: 'grey.100' },
+                    flex: 1,
+                    width: { xs: '100%', sm: 'auto' },
+                    '& .MuiOutlinedInput-root': {
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      backdropFilter: 'blur(5px)',
+                      borderColor: 'rgba(255, 255, 255, 0.1)',
+                      '&:hover': {
+                        borderColor: 'rgba(255, 255, 255, 0.2)'
+                      },
+                      '&.Mui-focused': {
+                        borderColor: 'primary.main'
+                      }
+                    }
+                  }}
+                />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    borderRadius: 2,
+                    fontWeight: 600,
+                    width: { xs: '100%', sm: 'auto' },
+                    mt: { xs: 1, sm: 0 },
+                    background: 'linear-gradient(90deg, #3b82f6 0%, #06b6d4 100%)',
+                    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)',
+                    '&:hover': {
+                      boxShadow: '0 6px 16px rgba(59, 130, 246, 0.6)',
+                      transform: 'translateY(-2px)'
+                    }
+                  }}
+                >
+                  Subscribe
+                </Button>
+              </Stack>
+            </Box>
           </Grid>
         </Grid>
         <Box

@@ -146,9 +146,10 @@ function NavBar() {
           color="secondary"
           elevation={0}
           sx={{
-            bgcolor: 'rgba(30, 41, 59, 0.85)',
-            backdropFilter: 'blur(8px)',
-            boxShadow: '0 4px 24px 0 rgba(30,41,59,0.10)',
+            bgcolor: 'rgba(15, 23, 42, 0.75)',
+            backdropFilter: 'blur(10px)',
+            boxShadow: '0 8px 32px 0 rgba(15, 23, 42, 0.15)',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
             top: 0,
             left: 0,
             width: '100vw',
@@ -198,13 +199,35 @@ function NavBar() {
                       display: 'block',
                       mx: 2.5,
                       px: 2.5,
+                      py: 1,
                       borderRadius: 2,
-                      transition: 'background 0.18s, color 0.18s',
-                      '&:hover, &.active': {
-                        background:
-                          'linear-gradient(90deg, #3b82f6 0%, #06b6d4 100%)',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      transition: 'all 0.3s ease',
+                      backdropFilter: 'blur(5px)',
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        borderRadius: 2,
+                        opacity: 0,
+                        transition: 'opacity 0.3s ease'
+                      },
+                      '&:hover': {
+                        boxShadow: '0 8px 25px -5px rgba(59, 130, 246, 0.4)',
+                        transform: 'translateY(-2px)',
+                        '&::before': {
+                          opacity: 1
+                        }
+                      },
+                      '&.active': {
+                        background: 'linear-gradient(90deg, #3b82f6 0%, #06b6d4 100%)',
                         color: 'white',
-                        boxShadow: 2,
+                        boxShadow: '0 8px 25px -5px rgba(59, 130, 246, 0.5)',
                       },
                     }}
                   >
@@ -234,6 +257,19 @@ function NavBar() {
                       fontWeight: '600',
                       display: 'block',
                       mx: 3,
+                      px: 3,
+                      py: 0.8,
+                      borderRadius: 2,
+                      background: 'rgba(255, 255, 255, 0.15)',
+                      backdropFilter: 'blur(10px)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        background: 'rgba(255, 255, 255, 0.25)',
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)'
+                      }
                     }}
                     component={NavLink}
                     to="/login"
@@ -256,6 +292,11 @@ function NavBar() {
               '& .MuiDrawer-paper': {
                 boxSizing: 'border-box',
                 width: drawerWidth,
+                background: 'rgba(15, 23, 42, 0.9)',
+                backdropFilter: 'blur(10px)',
+                borderRight: '1px solid rgba(255, 255, 255, 0.08)',
+                color: 'white',
+                boxShadow: '0 8px 32px 0 rgba(15, 23, 42, 0.3)'
               },
             }}
           >
