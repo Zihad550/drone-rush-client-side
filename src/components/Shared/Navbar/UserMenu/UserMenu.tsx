@@ -1,11 +1,12 @@
-import * as React from "react";
+import { USER_ROLE } from "@/constants";
+import { logout, selectUser } from "@/redux/features/auth/authSlice";
+import { useAppSelector } from "@/redux/hooks";
+import { Avatar, IconButton } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { Avatar, IconButton } from "@mui/material";
+import * as React from "react";
 import { useDispatch } from "react-redux";
-import { logout, selectUser } from "@/redux/features/auth/authSlice";
 import { NavLink } from "react-router";
-import { useAppSelector } from "@/redux/hooks";
 
 const UserMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -52,9 +53,11 @@ const UserMenu = () => {
             Dashboard
           </MenuItem>
         )}
-        <MenuItem component={NavLink} to="/user/wishlist">
-          Wishlist
-        </MenuItem>
+        {user?.role !== USER_ROLE.ADMIN && (
+          <MenuItem component={NavLink} to="/user/wishlist">
+            Wishlist
+          </MenuItem>
+        )}
         <MenuItem onClick={() => dispatch(logout())}>Logout</MenuItem>
       </Menu>
     </div>

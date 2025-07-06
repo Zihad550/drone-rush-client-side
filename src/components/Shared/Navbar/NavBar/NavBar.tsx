@@ -244,7 +244,7 @@ function NavBar() {
               <Box sx={{ display: { xs: "flex" } }}>
                 {user ? (
                   <>
-                    <CartLink />
+                    {user?.role !== USER_ROLE.ADMIN && <CartLink />}
                     <UserMenu />
                   </>
                 ) : (
