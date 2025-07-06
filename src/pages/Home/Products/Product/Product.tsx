@@ -1,6 +1,11 @@
-import { addProductToWishlist } from '@/redux/features/wishlist/wishlistSlice';
-import { useAppDispatch } from '@/redux/hooks';
+import { selectCartProducts } from '@/redux/features/cart/cartSlice';
+import {
+  addProductToWishlist,
+  selectWishlistProducts,
+} from '@/redux/features/wishlist/wishlistSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import type IProduct from '@/types/product.type';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {
@@ -22,6 +27,10 @@ const Product = ({ drone }: { drone: IProduct }) => {
   const { name, description: disc, price, img, _id } = drone;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const cartProducts = useAppSelector(selectCartProducts);
+  const wishlistProducts = useAppSelector(selectWishlistProducts);
+  const inCart = cartProducts.some((item) => item._id === _id);
+  const inWishlist = wishlistProducts.some((item) => item._id === _id);
 
   // Placeholder handlers
   const handleAddToCart = () => {
@@ -129,33 +138,47 @@ const Product = ({ drone }: { drone: IProduct }) => {
           container
         >
           <Grid direction="row" spacing={1}>
-            <Tooltip title="Add to cart">
+            <Tooltip title={inCart ? 'In cart' : 'Add to cart'}>
               <IconButton
                 size="small"
                 color="primary"
                 onClick={handleAddToCart}
                 sx={{
-                  bgcolor: 'grey.100',
-                  '&:hover': { bgcolor: 'primary.light', color: 'white' },
+                  bgcolor: inCart ? 'primary.light' : 'grey.100',
+                  color: inCart ? 'white' : 'primary.main',
                   borderRadius: 2,
                   m: 1,
+                  boxShadow: inCart ? 2 : 0,
+                  '&:hover': {
+                    bgcolor: 'primary.light',
+                    color: 'white',
+                  },
                 }}
               >
                 <ShoppingCartIcon fontSize="small" />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Add to wishlist">
+            <Tooltip title={inWishlist ? 'In wishlist' : 'Add to wishlist'}>
               <IconButton
                 size="small"
                 color="secondary"
                 onClick={handleAddToWishlist}
                 sx={{
-                  bgcolor: 'grey.100',
-                  '&:hover': { bgcolor: 'secondary.main', color: 'white' },
+                  bgcolor: inWishlist ? 'secondary.main' : 'grey.100',
+                  color: inWishlist ? 'white' : 'secondary.main',
                   borderRadius: 2,
+                  boxShadow: inWishlist ? 2 : 0,
+                  '&:hover': {
+                    bgcolor: 'secondary.main',
+                    color: 'white',
+                  },
                 }}
               >
-                <FavoriteBorderIcon fontSize="small" />
+                {inWishlist ? (
+                  <FavoriteIcon fontSize="small" />
+                ) : (
+                  <FavoriteBorderIcon fontSize="small" />
+                )}
               </IconButton>
             </Tooltip>
           </Grid>
