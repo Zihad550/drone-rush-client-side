@@ -1,3 +1,5 @@
+import { addProductToWishlist } from '@/redux/features/wishlist/wishlistSlice';
+import { useAppDispatch } from '@/redux/hooks';
 import type IProduct from '@/types/product.type';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -14,20 +16,20 @@ import {
   Typography,
 } from '@mui/material';
 import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
 
-const Product = ({
-  drone: { name, description: disc, price, img, _id },
-}: {
-  drone: IProduct;
-}) => {
+const Product = ({ drone }: { drone: IProduct }) => {
+  const { name, description: disc, price, img, _id } = drone;
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   // Placeholder handlers
   const handleAddToCart = () => {
     // Add to cart logic here
   };
   const handleAddToWishlist = () => {
-    // Add to wishlist logic here
+    dispatch(addProductToWishlist(drone));
+    toast.success('Added to wishlist!');
   };
 
   return (

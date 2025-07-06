@@ -1,3 +1,5 @@
+import { selectWishlistProducts } from '@/redux/features/wishlist/wishlistSlice';
+import { useAppSelector } from '@/redux/hooks';
 import type IProduct from '@/types/product.type';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { Box, Button, Container, IconButton, Typography } from '@mui/material';
@@ -13,7 +15,7 @@ const Wishlist = () => {
   // cart data
   // const products = useSelector((state: AppState) => state.wishlist);
   // const dispatch = useDispatch();
-  const products: IProduct[] = [];
+  const products: IProduct[] = useAppSelector(selectWishlistProducts);
 
   if (!products.length) {
     return (

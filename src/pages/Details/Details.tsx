@@ -18,8 +18,10 @@ import Spinner from '@/components/Shared/Spinner';
 import { selectUser } from '@/redux/features/auth/authSlice';
 import { addProductToCard } from '@/redux/features/cart/cartSlice';
 import { useGetProductQuery } from '@/redux/features/product/productApi';
+import { addProductToWishlist } from '@/redux/features/wishlist/wishlistSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useParams } from 'react-router';
+import { toast } from 'sonner';
 import RatingChart from './RatingChart';
 
 const calculateRatings = (ratings: number[]) => {
@@ -161,7 +163,13 @@ const Details = () => {
                 <IconButton aria-label="Share">
                   <ShareIcon />
                 </IconButton>
-                <IconButton aria-label="Add to wishlist" onClick={() => {}}>
+                <IconButton
+                  aria-label="Add to wishlist"
+                  onClick={() => {
+                    dispatch(addProductToWishlist(data.data));
+                    toast.success('Added to wishlist!');
+                  }}
+                >
                   <FavoriteBorderIcon />
                 </IconButton>
               </Box>
