@@ -1,19 +1,16 @@
-import { Button } from "@mui/material";
+import { Button } from '@mui/material';
 import {
   CardElement,
   Elements,
   useElements,
   useStripe,
-} from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import Spinner from "components/Shared/Spinner";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { AppState } from "redux/store";
+} from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import { toast } from 'sonner';
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY || "");
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY || '');
 
-const CardEl = ({ totalPrice }: { totalPrice: number }) => {
+const CardEl = () => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -24,14 +21,30 @@ const CardEl = ({ totalPrice }: { totalPrice: number }) => {
     const card = elements.getElement(CardElement);
     if (card == null) return;
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card,
-    });
-    if (error) {
-      console.log("stripe-error", error);
-    } else {
-      console.log("PaymentMethod", paymentMethod);
+    const toastId = toast.loading('Processing payment...');
+    try {
+      const { error, paymentMethod } = await stripe.createPaymentMethod({
+        type: 'card',
+        card,
+      });
+      if (error) {
+        console.log('stripe-error', error);
+        toast.error('Something went wrong', { id: toastId });
+      } else {
+        console.log('PaymentMethod', paymentMethod);
+        toast.success('Payment successful!', { id: toastId });
+      }
+    } catch (err) {
+      if (
+        err &&
+        typeof err === 'object' &&
+        'data' in err &&
+        (err as any).data?.message
+      ) {
+        toast.error((err as any).data.message, { id: toastId });
+      } else {
+        toast.error('Something went wrong', { id: toastId });
+      }
     }
   };
   return (
@@ -41,14 +54,14 @@ const CardEl = ({ totalPrice }: { totalPrice: number }) => {
         options={{
           style: {
             base: {
-              fontSize: "16px",
-              color: "#424770",
-              "::placeholder": {
-                color: "#aab7c4",
+              fontSize: '16px',
+              color: '#424770',
+              '::placeholder': {
+                color: '#aab7c4',
               },
             },
             invalid: {
-              color: "#9e2146",
+              color: '#9e2146',
             },
           },
         }}
@@ -61,13 +74,11 @@ const CardEl = ({ totalPrice }: { totalPrice: number }) => {
   );
 };
 
-const CardForm = ({ totalPrice }: { totalPrice: number }) => {
-  return totalPrice ? (
+const CardForm = () => {
+  return (
     <Elements stripe={stripePromise}>
-      <CardEl totalPrice={totalPrice} />
+      <CardEl />
     </Elements>
-  ) : (
-    <Spinner />
   );
 };
 

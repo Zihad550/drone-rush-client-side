@@ -1,22 +1,22 @@
-import Modal from "@/components/Shared/Modal";
-import Spinner from "@/components/Shared/Spinner";
+import Modal from '@/components/Shared/Modal';
+import Spinner from '@/components/Shared/Spinner';
 import {
   useDeleteProductMutation,
   useGetProductsQuery,
-} from "@/redux/features/product/productApi";
-import CancelIcon from "@mui/icons-material/Cancel";
-import CloseIcon from "@mui/icons-material/Close";
-import { Alert, Box, IconButton, Typography } from "@mui/material";
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import { useState } from "react";
-import { toast } from "sonner";
+} from '@/redux/features/product/productApi';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CloseIcon from '@mui/icons-material/Close';
+import { Alert, Box, IconButton, Typography } from '@mui/material';
+import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 const ManageDrones = () => {
   const [isDeleted, setIsDeleted] = useState(false);
@@ -35,29 +35,28 @@ const ManageDrones = () => {
   }));
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
+    '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
     },
     // hide last border
-    "&:last-child td, &:last-child th": {
+    '&:last-child td, &:last-child th': {
       border: 0,
     },
   }));
 
   // handle delete drone
   const handleDelete = async (id: string) => {
-    const confirmation = window.confirm("Are you sure?");
+    const confirmation = window.confirm('Are you sure?');
     if (!confirmation) return;
-    const toastId = toast.loading("Deleting...");
+    const toastId = toast.loading('Deleting...');
     try {
       const res = await deleteProduct(id).unwrap();
       if (res.success) {
-        toast.success("Drone deleted successfully", { id: toastId });
+        toast.success('Drone deleted successfully', { id: toastId });
       }
     } catch (err: any) {
-      if ("data" in err && err.data?.message)
-        toast.error(err.data.message, { id: toastId });
-      else toast.error("An error occurred", { id: toastId });
+      if (err?.data?.message) toast.error(err.data.message, { id: toastId });
+      else toast.error('An error occurred', { id: toastId });
     }
   };
 
@@ -76,12 +75,12 @@ const ManageDrones = () => {
       )}
       {noPermission && (
         <Box
-          sx={{ position: "fixed", top: "50%", left: "40%", width: "300px" }}
+          sx={{ position: 'fixed', top: '50%', left: '40%', width: '300px' }}
         >
           <Alert
             action={
               <IconButton onClick={() => setNoPermission(false)}>
-                <CloseIcon />{" "}
+                <CloseIcon />{' '}
               </IconButton>
             }
             severity="error"
@@ -109,15 +108,15 @@ const ManageDrones = () => {
           <TableBody>
             {data.data.map((drone) => (
               <StyledTableRow key={drone._id}>
-                <StyledTableCell sx={{ width: "100px" }} scope="row">
-                  <img src={drone.img} style={{ width: "100px" }} />
+                <StyledTableCell sx={{ width: '100px' }} scope="row">
+                  <img src={drone.img} style={{ width: '100px' }} />
                 </StyledTableCell>
                 <StyledTableCell component="th" scope="row">
                   {drone.name}
                 </StyledTableCell>
                 <StyledTableCell align="left">{drone.disc}</StyledTableCell>
                 <StyledTableCell
-                  sx={{ width: "100px" }}
+                  sx={{ width: '100px' }}
                   align="left"
                 >{`$ ${drone.price}`}</StyledTableCell>
                 <StyledTableCell align="center">

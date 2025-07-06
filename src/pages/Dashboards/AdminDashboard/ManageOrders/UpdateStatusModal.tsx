@@ -1,18 +1,17 @@
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
-import type { IOption, TOrderStatus } from "@/types";
-import AppSelect from "@/components/ui/AppSelect";
-import { Input, TextField, type SelectChangeEvent } from "@mui/material";
-import { useState, type ChangeEventHandler } from "react";
-import { useUpdateOrderStatusMutation } from "@/redux/features/order/orderApi";
-import Spinner from "@/components/Shared/Spinner";
-import { toast } from "sonner";
+import Spinner from '@/components/Shared/Spinner';
+import AppSelect from '@/components/ui/AppSelect';
+import { useUpdateOrderStatusMutation } from '@/redux/features/order/orderApi';
+import type { IOption, TOrderStatus } from '@/types';
+import { TextField, type SelectChangeEvent } from '@mui/material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useState, type ChangeEventHandler } from 'react';
+import { toast } from 'sonner';
 
 const UpdateOrderStatusModal = ({
   orderStatusOptions,
@@ -27,10 +26,10 @@ const UpdateOrderStatusModal = ({
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState<{
     status: TOrderStatus;
-    cancelReason: "";
+    cancelReason: '';
   }>({
     status: status,
-    cancelReason: "",
+    cancelReason: '',
   });
   const handleOnChange: (event: SelectChangeEvent) => void = (e) => {
     setValues({
@@ -40,7 +39,7 @@ const UpdateOrderStatusModal = ({
   };
 
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -50,18 +49,19 @@ const UpdateOrderStatusModal = ({
     setOpen(false);
   };
   const handleConfirm = async () => {
-    const toastId = toast.loading("Updating status");
+    const toastId = toast.loading('Updating status');
 
     try {
       console.log(id);
       const res = await updateStatus({ payload: values, id }).unwrap();
 
       if (res.success) {
-        toast.success("Status updated successfully", { id: toastId });
+        toast.success('Status updated successfully', { id: toastId });
         setOpen(false);
       }
     } catch (err) {
-      toast.error("Failed to update status", { id: toastId });
+      if (err?.data?.message) toast.error(err.data.message, { id: toastId });
+      else toast.error('Failed to update status', { id: toastId });
     }
   };
 
@@ -69,7 +69,7 @@ const UpdateOrderStatusModal = ({
   return (
     <>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Update status{" "}
+        Update status{' '}
       </Button>
       <Dialog
         fullScreen={fullScreen}
@@ -90,7 +90,7 @@ const UpdateOrderStatusModal = ({
             defaultValue={status}
           />
           <TextField
-            disabled={values.status !== "admin-cancelled"}
+            disabled={values.status !== 'admin-cancelled'}
             sx={{ mt: 2 }}
             required
             variant="outlined"

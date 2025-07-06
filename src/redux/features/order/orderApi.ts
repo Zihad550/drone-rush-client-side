@@ -1,22 +1,21 @@
-import { baseApi } from "@/redux/api/baseApi";
-import type { IResponseRedux, TOrderStatus } from "@/types";
-import type IOrder from "@/types/order.type";
-import type IShippingInfo from "@/types/shippingInfo.type";
+import { baseApi } from '@/redux/api/baseApi';
+import type { IResponseRedux, TOrderStatus } from '@/types';
+import type IOrder from '@/types/order.type';
 
 const orderApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getUserOrders: build.query({
       query: ({ page, status }: { status?: TOrderStatus; page?: number }) => {
         const params = new URLSearchParams();
-        if (page) params.append("page", page.toString());
-        if (status) params.append("status", status);
+        if (page) params.append('page', page.toString());
+        if (status) params.append('status', status);
         return {
-          url: "/orders/user",
-          method: "GET",
+          url: '/orders/user',
+          method: 'GET',
           params,
         };
       },
-      providesTags: ["user-orders"],
+      providesTags: ['user-orders'],
       transformResponse: (res: IResponseRedux<IOrder[]>) => ({
         data: res.data,
         meta: res.meta,
@@ -34,45 +33,44 @@ const orderApi = baseApi.injectEndpoints({
           });
         }
         return {
-          url: "/orders",
-          method: "GET",
+          url: '/orders',
+          method: 'GET',
           params,
         };
       },
-      providesTags: ["user-orders"],
+      providesTags: ['user-orders'],
     }),
     updateOrderStatus: build.mutation<
       IResponseRedux<IOrder>,
       {
-        payload: Pick<IOrder, "status" | "cancelReason">;
+        payload: Pick<IOrder, 'status' | 'cancelReason'>;
         id: string;
       }
     >({
       query: ({ payload, id }) => {
         return {
           url: `/orders/status/${id}`,
-          method: "PATCH",
+          method: 'PATCH',
           body: payload,
         };
       },
-      invalidatesTags: ["user-orders"],
+      invalidatesTags: ['user-orders'],
     }),
     createOrder: build.mutation<
       IResponseRedux<IOrder>,
       {
-        shippingInformation: Partial<IShippingInfo>;
-        paymentMethod: string;
-        products: string[];
+        shippingInformation: string;
+        products: { _id: string; quantity: number }[];
       }
     >({
       query: (orderDetails) => {
         return {
-          url: "/orders",
-          method: "POST",
+          url: '/orders',
+          method: 'POST',
           body: orderDetails,
         };
       },
-      invalidatesTags: ["user-orders"],
+      invalidatesTags: ['user-orders'],
     }),
   }),
 });

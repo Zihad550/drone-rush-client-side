@@ -1,29 +1,26 @@
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Spinner from '@/components/Shared/Spinner';
+import AppSelect from '@/components/ui/AppSelect';
+import { useGetOrdersQuery } from '@/redux/features/order/orderApi';
+import type { TOrderStatus } from '@/types';
 import {
   Alert,
   Box,
   Button,
   ButtonGroup,
-  Chip,
   Snackbar,
   Typography,
   type SelectChangeEvent,
-} from "@mui/material";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import { useState } from "react";
-import { useGetOrdersQuery } from "@/redux/features/order/orderApi";
-import Spinner from "@/components/Shared/Spinner";
-import type { TOrderStatus } from "@/types";
-import AppSelect from "@/components/ui/AppSelect";
-import UpdateOrderStatusModal from "./UpdateStatusModal";
-import type IProduct from "@/types/product.type";
+} from '@mui/material';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import { useState } from 'react';
+import UpdateOrderStatusModal from './UpdateStatusModal';
 
 interface Column {
   id: number;
@@ -33,32 +30,32 @@ interface Column {
 
 const orderStatusOptions: { value: TOrderStatus; label: string }[] = [
   {
-    value: "pending",
-    label: "Pending",
+    value: 'pending',
+    label: 'Pending',
   },
   {
-    value: "processing",
-    label: "Processing",
+    value: 'processing',
+    label: 'Processing',
   },
   {
-    value: "packaged",
-    label: "Packaged",
+    value: 'packaged',
+    label: 'Packaged',
   },
   {
-    value: "delivering",
-    label: "Delivering",
+    value: 'delivering',
+    label: 'Delivering',
   },
   {
-    value: "completed",
-    label: "Completed",
+    value: 'completed',
+    label: 'Completed',
   },
   {
-    value: "admin-cancelled",
-    label: "Admin cancelled",
+    value: 'admin-cancelled',
+    label: 'Admin cancelled',
   },
   {
-    value: "user-cancelled",
-    label: "User cancelled",
+    value: 'user-cancelled',
+    label: 'User cancelled',
   },
 ];
 
@@ -69,11 +66,11 @@ const ManageOrders = () => {
   const { data, isLoading } = useGetOrdersQuery({
     status,
     page,
-    fields: ["product", "status"],
+    fields: ['product', 'status'],
   });
 
   const [isUpdated, setIsUpdated] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -83,25 +80,12 @@ const ManageOrders = () => {
     setStatus(e.target.value as TOrderStatus);
   };
 
-  const productTableColumns: Column[] = [
-    {
-      id: 4,
-      label: "Price",
-      minWidth: 170,
-    },
-    {
-      id: 5,
-      label: "Status",
-      minWidth: 170,
-    },
-  ];
-
   const columns: readonly Column[] = [
-    { id: 1, label: "Product", minWidth: 150 },
-    { id: 2, label: "Customer", minWidth: 100 },
+    { id: 1, label: 'Product', minWidth: 150 },
+    { id: 2, label: 'Customer', minWidth: 100 },
     {
       id: 6,
-      label: "Actions",
+      label: 'Actions',
       minWidth: 170,
     },
   ];
@@ -110,8 +94,8 @@ const ManageOrders = () => {
   if (!data?.data && !status) return <p>No orders</p>;
   return (
     <>
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer sx={{ maxHeight: "80vh" }}>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <TableContainer sx={{ maxHeight: '80vh' }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -122,7 +106,7 @@ const ManageOrders = () => {
                       minWidth: column.minWidth,
                     }}
                   >
-                    {column.label === "Status" ? (
+                    {column.label === 'Status' ? (
                       <AppSelect
                         sx={{ width: 150 }}
                         options={orderStatusOptions}
@@ -142,30 +126,69 @@ const ManageOrders = () => {
               {data?.data?.map((order) => (
                 <TableRow hover role="checkbox" tabIndex={-1} key={order._id}>
                   {/* product img & name */}
-                  <TableCell sx={{ width: { md: "13%", xs: "15%" } }}>
-                    {order?.products?.map((product) => (
-                      <Box key={product._id} sx={{ display: "flex" }}>
-                        <img
-                          style={{ width: "auto", height: 50 }}
-                          src={product.img}
-                          alt={product.name}
-                        />
-                        <Typography variant="body2">{product.name}</Typography>
-                        <Typography>$ {product.price}</Typography>
-                        <Chip label={order.status} />
-                      </Box>
-                    ))}
+                  <TableCell sx={{ width: { md: '13%', xs: '15%' } }}>
+                    {Array.isArray(order.products) &&
+                      order.products.map((product, idx) =>
+                        typeof product === 'object' && product !== null ? (
+                          <Box
+                            key={product._id ?? idx}
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 1,
+                            }}
+                          >
+                            <img
+                              src={product.img ?? ''}
+                              alt=""
+                              width={32}
+                              height={32}
+                            />
+                            <Typography variant="body2">
+                              {product.name ?? ''}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              ${product.price ?? ''}
+                            </Typography>
+                          </Box>
+                        ) : (
+                          <Typography key={idx} variant="body2">
+                            {product}
+                          </Typography>
+                        )
+                      )}
                   </TableCell>
                   {/* customer details */}
                   <TableCell>
                     <Typography variant="body2">
-                      Name: {order.user.name}
+                      Name:{' '}
+                      {String(
+                        typeof order.user === 'object' &&
+                          order.user !== null &&
+                          'name' in order.user
+                          ? order.user.name
+                          : order.user
+                      )}
                     </Typography>
                     <Typography variant="body2">
-                      Email: {order.user.email}
+                      Email:{' '}
+                      {String(
+                        typeof order.user === 'object' &&
+                          order.user !== null &&
+                          'email' in order.user
+                          ? order.user.email
+                          : ''
+                      )}
                     </Typography>
                     <Typography variant="body2">
-                      Phone: {order.user.phone}
+                      Phone:{' '}
+                      {String(
+                        typeof order.user === 'object' &&
+                          order.user !== null &&
+                          'phone' in order.user
+                          ? order.user.phone
+                          : ''
+                      )}
                     </Typography>
                   </TableCell>
                   {/* order actions */}
@@ -187,9 +210,9 @@ const ManageOrders = () => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={data.meta?.total}
-          rowsPerPage={data.meta?.limit}
-          page={data.meta.page}
+          count={data?.meta?.total ?? 0}
+          rowsPerPage={data?.meta?.limit ?? 10}
+          page={data?.meta?.page ?? 0}
           onPageChange={handleChangePage}
           // onRowsPerPageChange={handleChangeRowsPerPage}
         />
@@ -203,7 +226,7 @@ const ManageOrders = () => {
         <Alert
           onClose={() => setIsUpdated(false)}
           severity="success"
-          sx={{ width: "100%" }}
+          sx={{ width: '100%' }}
         >
           Updated Successfully
         </Alert>
@@ -211,12 +234,12 @@ const ManageOrders = () => {
       <Snackbar
         open={error.length > 0}
         autoHideDuration={6000}
-        onClose={() => setError("")}
+        onClose={() => setError('')}
       >
         <Alert
-          onClose={() => setError("")}
+          onClose={() => setError('')}
           severity="error"
-          sx={{ width: "100%" }}
+          sx={{ width: '100%' }}
         >
           {error}
         </Alert>

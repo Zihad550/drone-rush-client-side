@@ -1,6 +1,6 @@
-import { baseApi } from "@/redux/api/baseApi";
-import type { IResponseRedux } from "@/types";
-import type IShippingInfo from "@/types/shippingInfo.type";
+import { baseApi } from '@/redux/api/baseApi';
+import type { IResponseRedux } from '@/types';
+import type IShippingInfo from '@/types/shippingInfo.type';
 
 const shippingInformationApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -16,12 +16,12 @@ const shippingInformationApi = baseApi.injectEndpoints({
           });
         }
         return {
-          url: "/shipping-information",
-          method: "GET",
+          url: '/shipping-information',
+          method: 'GET',
           params,
         };
       },
-      providesTags: ["shipping-informations"],
+      providesTags: ['shipping-informations'],
     }),
 
     getUserShippingInformations: build.query<
@@ -29,10 +29,20 @@ const shippingInformationApi = baseApi.injectEndpoints({
       void
     >({
       query: () => ({
-        url: "/shipping-information/user",
-        method: "GET",
+        url: '/shipping-information/user',
+        method: 'GET',
       }),
-      providesTags: ["shipping-informations"],
+      providesTags: ['shipping-informations'],
+    }),
+    getShippingInformationById: build.query<
+      IResponseRedux<IShippingInfo>,
+      string
+    >({
+      query: (id) => ({
+        url: `/shipping-information/${id}`,
+        method: 'GET',
+      }),
+      providesTags: ['shipping-informations'],
     }),
 
     createShippingInformation: build.mutation<
@@ -40,11 +50,11 @@ const shippingInformationApi = baseApi.injectEndpoints({
       Partial<IShippingInfo>
     >({
       query: (payload) => ({
-        url: "/shipping-information",
-        method: "POST",
+        url: '/shipping-information',
+        method: 'POST',
         body: payload,
       }),
-      invalidatesTags: ["shipping-informations"],
+      invalidatesTags: ['shipping-informations'],
     }),
 
     updateShippingInformation: build.mutation<
@@ -56,10 +66,10 @@ const shippingInformationApi = baseApi.injectEndpoints({
     >({
       query: ({ id, payload }) => ({
         url: `/shipping-information/${id}`,
-        method: "PATCH",
+        method: 'PATCH',
         body: payload,
       }),
-      invalidatesTags: ["shipping-informations"],
+      invalidatesTags: ['shipping-informations'],
     }),
 
     deleteShippingInformation: build.mutation<
@@ -68,9 +78,9 @@ const shippingInformationApi = baseApi.injectEndpoints({
     >({
       query: (id) => ({
         url: `/shipping-information/${id}`,
-        method: "DELETE",
+        method: 'DELETE',
       }),
-      invalidatesTags: ["shipping-informations"],
+      invalidatesTags: ['shipping-informations'],
     }),
   }),
 });
@@ -81,4 +91,5 @@ export const {
   useCreateShippingInformationMutation,
   useUpdateShippingInformationMutation,
   useDeleteShippingInformationMutation,
+  useGetShippingInformationByIdQuery,
 } = shippingInformationApi;

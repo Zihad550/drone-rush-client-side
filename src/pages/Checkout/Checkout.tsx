@@ -1,5 +1,4 @@
 import Spinner from '@/components/Shared/Spinner';
-import { selectUser } from '@/redux/features/auth/authSlice';
 import { selectCartProducts } from '@/redux/features/cart/cartSlice';
 import {
   useCreateShippingInformationMutation,
@@ -9,6 +8,7 @@ import {
 } from '@/redux/features/shipping/shippingInformationApi';
 import { useAppSelector } from '@/redux/hooks';
 import type IShippingInfo from '@/types/shippingInfo.type';
+import type { TPaymentMethod } from '@/types/shippingInfo.type';
 import {
   Box,
   Button,
@@ -21,17 +21,19 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import { NavLink } from 'react-router';
+import { toast } from 'sonner';
 import PaymentMethods from './PaymentMethods';
 import ShippingInformation from './ShippingInformation';
 
 const Checkout = () => {
-  const user = useAppSelector(selectUser);
   const products = useAppSelector(selectCartProducts);
   const [selectedShippingId, setSelectedShippingId] = useState<string | null>(
     null
   );
   const [isNewShippingInfo, setIsNewShippingInfo] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<TPaymentMethod>('COD');
   const totalPrice = products.reduce(
     (acc, cur) => (acc += cur.price * cur.quantity),
     0
@@ -58,6 +60,7 @@ const Checkout = () => {
     city: '',
     zipCode: '',
     apt: '',
+    paymentMethod: paymentMethod,
   });
 
   // Handle shipping information selection
@@ -66,7 +69,6 @@ const Checkout = () => {
       setIsNewShippingInfo(true);
       setSelectedShippingId(null);
       setShippingInformations({
-        _id: '',
         user: '',
         street: '',
         country: '',
@@ -74,6 +76,7 @@ const Checkout = () => {
         city: '',
         zipCode: '',
         apt: '',
+        paymentMethod: paymentMethod,
       });
     } else {
       const selectedInfo = userShippingData?.data?.find(
@@ -83,12 +86,7 @@ const Checkout = () => {
         setIsNewShippingInfo(false);
         setSelectedShippingId(id);
         setShippingInformations({
-          street: selectedInfo.street,
-          country: selectedInfo.country,
-          state: selectedInfo.state,
-          city: selectedInfo.city,
-          zipCode: selectedInfo.zipCode,
-          apt: selectedInfo.apt,
+          ...selectedInfo,
         });
       }
     }
@@ -96,50 +94,50 @@ const Checkout = () => {
   };
 
   // Save new shipping information
-  const handleSaveShippingInfo = async (
-    shippingData: Partial<IShippingInfo>
-  ) => {
+  const handleSaveShippingInfo = async (info: Partial<IShippingInfo>) => {
+    const toastId = toast.loading('Saving shipping information...');
     try {
-      if (isNewShippingInfo) {
-        shippingData.user = user?.id;
-        delete shippingData._id;
-        const result = await createShippingInfo(shippingData).unwrap();
-        if (result.success && result.data) {
-          setSelectedShippingId(result.data._id);
-          setIsNewShippingInfo(false);
-        }
-      } else if (selectedShippingId && isEditing) {
-        await updateShippingInfo({
-          id: selectedShippingId,
-          payload: shippingData,
-        }).unwrap();
+      if (info._id) {
+        await updateShippingInfo({ id: info._id, payload: info }).unwrap();
+      } else {
+        await createShippingInfo(info).unwrap();
       }
       setIsEditing(false);
-    } catch (error) {
-      console.error('Error saving shipping information:', error);
+      setIsNewShippingInfo(false);
+      toast.success('Shipping information saved!', { id: toastId });
+    } catch (err) {
+      if (
+        err &&
+        typeof err === 'object' &&
+        'data' in err &&
+        (err as any).data?.message
+      ) {
+        toast.error((err as any).data.message, { id: toastId });
+      } else {
+        toast.error('Something went wrong', { id: toastId });
+      }
     }
   };
 
   // Delete shipping information
   const handleDeleteShippingInfo = async (id: string) => {
+    const toastId = toast.loading('Deleting shipping information...');
     try {
       await deleteShippingInfo(id).unwrap();
-      if (id === selectedShippingId) {
-        setSelectedShippingId(null);
-        setIsNewShippingInfo(true);
-        setShippingInformations({
-          _id: '',
-          user: '',
-          street: '',
-          country: '',
-          state: '',
-          city: '',
-          zipCode: '',
-          apt: '',
-        });
+      setIsEditing(false);
+      setIsNewShippingInfo(false);
+      toast.success('Shipping information deleted!', { id: toastId });
+    } catch (err) {
+      if (
+        err &&
+        typeof err === 'object' &&
+        'data' in err &&
+        (err as any).data?.message
+      ) {
+        toast.error((err as any).data.message, { id: toastId });
+      } else {
+        toast.error('Something went wrong', { id: toastId });
       }
-    } catch (error) {
-      console.error('Error deleting shipping information:', error);
     }
   };
 
@@ -197,7 +195,10 @@ const Checkout = () => {
               <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>
                 Payment Method
               </Typography>
-              <PaymentMethods totalPrice={Number(totalPrice)} />
+              <PaymentMethods
+                totalPrice={Number(totalPrice)}
+                setPaymentMethod={setPaymentMethod}
+              />
             </Box>
             <Box flex={1}>
               <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>
@@ -226,6 +227,9 @@ const Checkout = () => {
                 size="large"
                 fullWidth
                 sx={{ borderRadius: 2, fontWeight: 700 }}
+                component={NavLink}
+                to={`/user/order-summary/${shippingInformations._id}`}
+                disabled={!shippingInformations?._id}
               >
                 Place Order
               </Button>

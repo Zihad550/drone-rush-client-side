@@ -1,19 +1,20 @@
-import { Button, ButtonGroup, TextField } from "@mui/material";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { AppState } from "redux/store";
+import { Button, ButtonGroup, TextField } from '@mui/material';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Typography';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { AppState } from 'redux/store';
+import { toast } from 'sonner';
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 };
@@ -49,22 +50,29 @@ const ReviewModal = ({
     setReviewInfo(newInfo);
   };
 
-  const handleReview: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const handleReview: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    // collect data
-    const review = {
-      ...reviewInfo,
-      productName,
-      img,
-    };
+    const toastId = toast.loading('Submitting review...');
+    try {
+      // collect data
+      const review = {
+        ...reviewInfo,
+        productName,
+        img,
+      };
 
-    // send to the server
-    /* axiosInstance.post("/reviews", { review }).then(({ data }) => {
-      if (data.insertedId) {
-        alert("Review added successfully");
-        handleCloseReview();
-      }
-    }); */
+      // send to the server
+      /* axiosInstance.post("/reviews", { review }).then(({ data }) => {
+        if (data.insertedId) {
+          alert("Review added successfully");
+          handleCloseReview();
+        }
+      }); */
+      toast.success('Review submitted!', { id: toastId });
+    } catch (err) {
+      if (err?.data?.message) toast.error(err.data.message, { id: toastId });
+      else toast.error('Something went wrong', { id: toastId });
+    }
   };
   return (
     <Modal
@@ -125,14 +133,14 @@ const ReviewModal = ({
           <ButtonGroup
             variant="contained"
             sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              width: "100%",
+              display: 'flex',
+              justifyContent: 'flex-end',
+              width: '100%',
               boxShadow: 0,
             }}
           >
             <Button
-              sx={{ backgroundColor: "error.main" }}
+              sx={{ backgroundColor: 'error.main' }}
               onClick={handleCloseReview}
             >
               Close modal

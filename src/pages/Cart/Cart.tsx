@@ -20,6 +20,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { NavLink } from 'react-router';
 
 const Cart = () => {
   const products = useAppSelector(selectCartProducts);
@@ -164,7 +165,8 @@ const Cart = () => {
               variant="contained"
               color="primary"
               size="large"
-              onClick={() => {}}
+              component={NavLink}
+              to="/user/checkout"
               sx={{ borderRadius: 2, px: 4, fontWeight: 700 }}
             >
               Proceed to Checkout

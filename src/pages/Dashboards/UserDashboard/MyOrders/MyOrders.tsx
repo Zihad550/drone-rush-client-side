@@ -1,21 +1,19 @@
-import Modal from "@/components/Shared/Modal";
-import Spinner from "@/components/Shared/Spinner";
-import { selectToken, selectUser } from "@/redux/features/auth/authSlice";
-import { useGetUserOrdersQuery } from "@/redux/features/order/orderApi";
-import { useAppSelector } from "@/redux/hooks";
-import type IOrder from "@/types/OrderType";
-import CancelIcon from "@mui/icons-material/Cancel";
-import { Box, IconButton, Typography } from "@mui/material";
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import Modal from '@/components/Shared/Modal';
+import Spinner from '@/components/Shared/Spinner';
+import { useGetUserOrdersQuery } from '@/redux/features/order/orderApi';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { Box, IconButton, Typography } from '@mui/material';
+import Chip from '@mui/material/Chip';
+import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 const MyOrders = () => {
   // !! use prover type
@@ -37,39 +35,43 @@ const MyOrders = () => {
   }));
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
+    '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
     },
-    "&:last-child td, &:last-child th": {
+    '&:last-child td, &:last-child th': {
       border: 0,
     },
   }));
 
-  const handleCancelOrder = ({
-    email,
-    productId,
-  }: {
-    email: string | null;
-    productId: string;
-  }) => {
-    if (window.confirm("Are you sure!")) {
-      /* axiosInstance
-        .delete(`/orders?email=${email}&&id=${productId}`)
-        .then(({ data }) => {
-          if (data.deletedCount > 0) {
-            window.location.reload();
-          }
-        }); */
+  const handleCancelOrder = async (orderId: string) => {
+    // orderId is used for cancelling the order: ' + orderId
+    const toastId = toast.loading('Cancelling order...');
+    const confirmation = window.confirm('Are you sure!');
+    if (!confirmation) return;
+    try {
+      // TODO: Add actual cancel logic here using orderId
+      toast.success('Order cancelled!', { id: toastId });
+    } catch (err) {
+      if (
+        err &&
+        typeof err === 'object' &&
+        'data' in err &&
+        (err as any).data?.message
+      ) {
+        toast.error((err as any).data.message, { id: toastId });
+      } else {
+        toast.error('Something went wrong', { id: toastId });
+      }
     }
   };
   if (!data?.data || data?.data.length === 0) {
     return (
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh',
         }}
       >
         <Typography variant="h3">You don't have any orders.</Typography>
@@ -95,51 +97,69 @@ const MyOrders = () => {
         <Table sx={{ minWidth: 900 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Image</StyledTableCell>
-              <StyledTableCell>Drone Name</StyledTableCell>
-              <StyledTableCell align="center">Description</StyledTableCell>
-              <StyledTableCell align="left">Price</StyledTableCell>
-              <StyledTableCell align="left">Order Status</StyledTableCell>
+              <StyledTableCell>Products</StyledTableCell>
+              <StyledTableCell align="left">Total Price</StyledTableCell>
+              <StyledTableCell align="left">Status</StyledTableCell>
               <StyledTableCell align="left">Actions</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data?.data.map((order) => (
               <StyledTableRow key={order._id}>
-                <StyledTableCell sx={{ width: "100px" }} scope="row">
-                  <img src={order.img} style={{ width: "100px" }} />
-                </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
-                  {order.productName}
-                </StyledTableCell>
-                <StyledTableCell align="left">{order.disc}</StyledTableCell>
-                <StyledTableCell
-                  sx={{ width: "100px" }}
-                  align="left"
-                >{`$ ${order.price}`}</StyledTableCell>
-                <StyledTableCell
-                  sx={{
-                    width: "100px",
-                  }}
-                  align="left"
-                >
+                <StyledTableCell>
                   <Box
-                    sx={{
-                      textAlign: "center",
-                      color: "white",
-                      py: 1,
-                      px: 1.5,
-                      borderRadius: 3,
-                      fontWeight: "bold",
-                      background:
-                        order.orderStatus === "pending" ? "red" : "green",
-                    }}
+                    sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}
                   >
-                    {order.orderStatus}
+                    {Array.isArray(order.products) &&
+                      order.products.map((product, idx) =>
+                        typeof product === 'object' && product !== null ? (
+                          <Box
+                            key={product._id ?? idx}
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 1,
+                            }}
+                          >
+                            <img
+                              src={product.img ?? ''}
+                              alt={product.name ?? ''}
+                              width={40}
+                              height={40}
+                              style={{ borderRadius: 6, objectFit: 'cover' }}
+                            />
+                            <Typography
+                              variant="body2"
+                              sx={{ fontWeight: 600 }}
+                            >
+                              {product.name ?? ''}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              Qty: {product.quantity ?? 1}
+                            </Typography>
+                          </Box>
+                        ) : (
+                          <Typography key={idx} variant="body2">
+                            {String(product)}
+                          </Typography>
+                        )
+                      )}
                   </Box>
                 </StyledTableCell>
+                <StyledTableCell align="left">
+                  {order?.totalPrice}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  <Chip
+                    label={order.status}
+                    color={order.status === 'completed' ? 'success' : 'warning'}
+                  />
+                </StyledTableCell>
                 <StyledTableCell align="center">
-                  <IconButton title="Cancel Order">
+                  <IconButton
+                    title="Cancel Order"
+                    onClick={() => handleCancelOrder(order._id)}
+                  >
                     <CancelIcon />
                   </IconButton>
                 </StyledTableCell>
