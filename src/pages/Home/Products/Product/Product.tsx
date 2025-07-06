@@ -1,4 +1,7 @@
-import { selectCartProducts } from '@/redux/features/cart/cartSlice';
+import {
+  addProductToCard,
+  selectCartProducts,
+} from '@/redux/features/cart/cartSlice';
 import {
   addProductToWishlist,
   selectWishlistProducts,
@@ -34,7 +37,10 @@ const Product = ({ drone }: { drone: IProduct }) => {
 
   // Placeholder handlers
   const handleAddToCart = () => {
-    // Add to cart logic here
+    if (!inCart) {
+      dispatch(addProductToCard(drone));
+      toast.success('Added to cart!');
+    }
   };
   const handleAddToWishlist = () => {
     dispatch(addProductToWishlist(drone));
@@ -143,6 +149,7 @@ const Product = ({ drone }: { drone: IProduct }) => {
                 size="small"
                 color="primary"
                 onClick={handleAddToCart}
+                disabled={inCart}
                 sx={{
                   bgcolor: inCart ? 'primary.light' : 'grey.100',
                   color: inCart ? 'white' : 'primary.main',
@@ -152,6 +159,13 @@ const Product = ({ drone }: { drone: IProduct }) => {
                   '&:hover': {
                     bgcolor: 'primary.light',
                     color: 'white',
+                  },
+                  '&.Mui-disabled': {
+                    bgcolor: 'primary.light',
+                    color: 'white',
+                    boxShadow: 2,
+                    opacity: 1,
+                    cursor: 'not-allowed',
                   },
                 }}
               >

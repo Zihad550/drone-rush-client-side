@@ -16,10 +16,17 @@ import {
 // import IProduct from "@/types/ProductType";
 import Spinner from '@/components/Shared/Spinner';
 import { selectUser } from '@/redux/features/auth/authSlice';
-import { addProductToCard } from '@/redux/features/cart/cartSlice';
+import {
+  addProductToCard,
+  selectCartProducts,
+} from '@/redux/features/cart/cartSlice';
 import { useGetProductQuery } from '@/redux/features/product/productApi';
-import { addProductToWishlist } from '@/redux/features/wishlist/wishlistSlice';
+import {
+  addProductToWishlist,
+  selectWishlistProducts,
+} from '@/redux/features/wishlist/wishlistSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useParams } from 'react-router';
 import { toast } from 'sonner';
 import RatingChart from './RatingChart';
@@ -63,6 +70,12 @@ const Details = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetProductQuery(id as string);
   const user = useAppSelector(selectUser);
+  const cartProducts = useAppSelector(selectCartProducts);
+  const wishlistProducts = useAppSelector(selectWishlistProducts);
+  const inCart = cartProducts.some((item) => item._id === data.data._id);
+  const inWishlist = wishlistProducts.some(
+    (item) => item._id === data.data._id
+  );
 
   if (isLoading) return <Spinner />;
 
@@ -166,11 +179,30 @@ const Details = () => {
                 <IconButton
                   aria-label="Add to wishlist"
                   onClick={() => {
-                    dispatch(addProductToWishlist(data.data));
-                    toast.success('Added to wishlist!');
+                    if (!inWishlist) {
+                      dispatch(addProductToWishlist(data.data));
+                      toast.success('Added to wishlist!');
+                    }
+                  }}
+                  disabled={inWishlist}
+                  sx={{
+                    bgcolor: inWishlist ? 'secondary.main' : 'grey.100',
+                    color: inWishlist ? 'white' : 'secondary.main',
+                    boxShadow: inWishlist ? 2 : 0,
+                    '&:hover': {
+                      bgcolor: 'secondary.main',
+                      color: 'white',
+                    },
+                    '&.Mui-disabled': {
+                      bgcolor: 'secondary.main',
+                      color: 'white',
+                      boxShadow: 2,
+                      opacity: 1,
+                      cursor: 'not-allowed',
+                    },
                   }}
                 >
-                  <FavoriteBorderIcon />
+                  {inWishlist ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                 </IconButton>
               </Box>
             </Box>
@@ -198,10 +230,19 @@ const Details = () => {
                 py: 1,
                 fontWeight: 600,
                 fontSize: { xs: 16, md: 18 },
+                bgcolor: inCart ? 'primary.light' : undefined,
+                boxShadow: inCart ? 2 : 1,
+                '&.Mui-disabled': {
+                  bgcolor: 'primary.light',
+                  color: 'white',
+                  boxShadow: 2,
+                  opacity: 1,
+                  cursor: 'not-allowed',
+                },
               }}
-              disabled={!user}
+              disabled={!user || inCart}
             >
-              Add To Cart
+              {inCart ? 'In Cart' : 'Add To Cart'}
             </Button>
           </Grid>
         </Grid>
