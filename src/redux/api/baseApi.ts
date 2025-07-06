@@ -1,9 +1,9 @@
 import {
   createApi,
   fetchBaseQuery,
-  type DefinitionType,
   type BaseQueryApi,
   type BaseQueryFn,
+  type DefinitionType,
   type FetchArgs,
 } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "../store";
@@ -25,7 +25,7 @@ const baseQueryWithToken: BaseQueryFn<
 > = async (args, api, extraOptions): Promise<any> => {
   const result = await baseQuery(args, api, extraOptions);
   if (result?.error?.status === 500) {
-    console.log("global error ->", result);
+    // console.log("global error ->", result);
     // TODO: unauthorized logout
     return;
   }

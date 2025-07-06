@@ -1,24 +1,22 @@
-import Spinner from '@/components/Shared/Spinner';
-import { useMakeAdminMutation } from '@/redux/features/user/userApi';
-import CloseIcon from '@mui/icons-material/Close';
-import { Alert, Box, Button, IconButton, TextField } from '@mui/material';
-import React, { useState } from 'react';
-import { toast } from 'sonner';
+import Spinner from "@/components/Shared/Spinner";
+import { useMakeAdminMutation } from "@/redux/features/user/userApi";
+import CloseIcon from "@mui/icons-material/Close";
+import { Alert, Box, Button, IconButton, TextField } from "@mui/material";
+import React, { useState } from "react";
+import { toast } from "sonner";
 
 const MakeAdmin = () => {
-  const [email, setEmail] = useState<string>('');
+  const [email, setEmail] = useState<string>("");
   const [success, setSuccess] = useState(false);
   const [makeAdmin, { isLoading }] = useMakeAdminMutation();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const toastId = toast.loading('Updating user role...');
+    const toastId = toast.loading("Updating user role...");
     try {
       const res = await makeAdmin({ email }).unwrap();
-      console.log(res);
 
       if (res.error) {
-        console.log('error', res.error);
         toast.error(res.error?.data?.message);
       }
       if (res.success) {
@@ -26,7 +24,7 @@ const MakeAdmin = () => {
       }
     } catch (err: any) {
       if (err?.data?.message) toast.error(err.data.message, { id: toastId });
-      else toast.error('something went wrong', { id: toastId });
+      else toast.error("something went wrong", { id: toastId });
     }
   };
 
@@ -34,11 +32,11 @@ const MakeAdmin = () => {
   return (
     <>
       {success && (
-        <Box sx={{ position: 'fixed', top: '30%', left: '20%' }}>
+        <Box sx={{ position: "fixed", top: "30%", left: "20%" }}>
           <Alert
             action={
               <IconButton onClick={() => setSuccess(false)}>
-                <CloseIcon />{' '}
+                <CloseIcon />{" "}
               </IconButton>
             }
             severity="success"
@@ -51,7 +49,7 @@ const MakeAdmin = () => {
       <h2>Request to make a new admin</h2>
       <form onSubmit={handleSubmit}>
         <TextField
-          sx={{ width: '50%' }}
+          sx={{ width: "50%" }}
           onChange={(e) => setEmail(e.target.value)}
           variant="standard"
           placeholder="email"

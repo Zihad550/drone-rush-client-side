@@ -30,7 +30,6 @@ const AddDrone = () => {
     reviews: [],
     quantity: 0,
   });
-  console.log(productInfo);
 
   const handleOnChange: ChangeEventHandler<HTMLInputElement> = (
     e: ChangeEvent<HTMLInputElement>,
@@ -48,7 +47,6 @@ const AddDrone = () => {
 
     try {
       const res = await createProduct(productInfo).unwrap();
-      console.log(res);
       if (res?.success) {
         toast.success("Product created", { id: toastId });
         setProductInfo({

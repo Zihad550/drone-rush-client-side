@@ -1,12 +1,12 @@
-import type { ReactNode } from "react";
 import {
   logout,
   selectToken,
   type IUser,
 } from "@/redux/features/auth/authSlice";
-import { Navigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { verifyToken } from "@/utils/verifyToken";
+import type { ReactNode } from "react";
+import { Navigate } from "react-router";
 
 interface IProps {
   children: ReactNode;
@@ -14,11 +14,9 @@ interface IProps {
 }
 const ProtectedRoute = ({ children, role }: IProps) => {
   const token = useAppSelector(selectToken);
-  console.log(token);
   let user;
   if (token) {
     user = verifyToken(token) as IUser;
-    console.log(user);
   }
 
   const dispatch = useAppDispatch();

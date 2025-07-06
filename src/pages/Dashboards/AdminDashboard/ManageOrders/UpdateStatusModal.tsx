@@ -52,7 +52,6 @@ const UpdateOrderStatusModal = ({
     const toastId = toast.loading("Updating status");
 
     try {
-      console.log(id);
       const res = await updateStatus({ payload: values, id }).unwrap();
 
       if (res.success) {

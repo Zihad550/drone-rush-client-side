@@ -1,6 +1,6 @@
-import Modal from '@/components/Shared/Modal';
-import Spinner from '@/components/Shared/Spinner';
-import { useGetUserOrdersQuery } from '@/redux/features/order/orderApi';
+import Modal from "@/components/Shared/Modal";
+import Spinner from "@/components/Shared/Spinner";
+import { useGetUserOrdersQuery } from "@/redux/features/order/orderApi";
 import {
   Box,
   Table,
@@ -11,15 +11,14 @@ import {
   TableRow,
   Typography,
   tableCellClasses,
-} from '@mui/material';
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
-import { useState } from 'react';
+} from "@mui/material";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
+import { useState } from "react";
 
 const Purchased = () => {
   const [isDeleted, setIsDeleted] = useState(false);
-  const { data, isLoading } = useGetUserOrdersQuery({ status: 'completed' });
-  console.log(data);
+  const { data, isLoading } = useGetUserOrdersQuery({ status: "completed" });
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -32,11 +31,11 @@ const Purchased = () => {
   }));
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
+    "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
     // hide last border
-    '&:last-child td, &:last-child th': {
+    "&:last-child td, &:last-child th": {
       border: 0,
     },
   }));
@@ -46,10 +45,10 @@ const Purchased = () => {
     return (
       <Box
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
         }}
       >
         <Typography variant="h3">
@@ -90,48 +89,48 @@ const Purchased = () => {
             {data.data.map((order) =>
               Array.isArray(order.products)
                 ? order.products.map((product, idx) =>
-                    typeof product.id === 'object' && product.id !== null ? (
+                    typeof product.id === "object" && product.id !== null ? (
                       <StyledTableRow key={product.id._id ?? idx}>
-                        <StyledTableCell sx={{ width: '100px' }} scope="row">
+                        <StyledTableCell sx={{ width: "100px" }} scope="row">
                           <img
-                            src={product.id.img ?? ''}
-                            style={{ width: '100px' }}
-                            alt={product.id.name ?? ''}
+                            src={product.id.img ?? ""}
+                            style={{ width: "100px" }}
+                            alt={product.id.name ?? ""}
                           />
                         </StyledTableCell>
                         <StyledTableCell component="th" scope="row">
-                          {product.id.name ?? ''}
+                          {product.id.name ?? ""}
                         </StyledTableCell>
                         <StyledTableCell align="left">
-                          {product.id.description ?? ''}
+                          {product.id.description ?? ""}
                         </StyledTableCell>
                         <StyledTableCell
-                          sx={{ width: '100px' }}
+                          sx={{ width: "100px" }}
                           align="left"
                         >{`$ ${product.id.price ?? 0}`}</StyledTableCell>
-                        <StyledTableCell sx={{ width: '100px' }} align="left">
+                        <StyledTableCell sx={{ width: "100px" }} align="left">
                           {product.quantity ?? 1}
                         </StyledTableCell>
-                        <StyledTableCell sx={{ width: '100px' }} align="left">
+                        <StyledTableCell sx={{ width: "100px" }} align="left">
                           <Box
                             sx={{
-                              textAlign: 'center',
-                              color: 'white',
+                              textAlign: "center",
+                              color: "white",
                               py: 1,
                               px: 1.5,
                               borderRadius: 3,
-                              fontWeight: 'bold',
+                              fontWeight: "bold",
                               background:
-                                order.status === 'pending' ? 'red' : 'green',
+                                order.status === "pending" ? "red" : "green",
                             }}
                           >
                             {order.status}
                           </Box>
                         </StyledTableCell>
                       </StyledTableRow>
-                    ) : null
+                    ) : null,
                   )
-                : null
+                : null,
             )}
           </TableBody>
         </Table>
