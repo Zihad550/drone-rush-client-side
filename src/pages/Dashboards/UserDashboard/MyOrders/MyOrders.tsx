@@ -1,22 +1,22 @@
-import Modal from '@/components/Shared/Modal';
-import Spinner from '@/components/Shared/Spinner';
+import Modal from "@/components/Shared/Modal";
+import Spinner from "@/components/Shared/Spinner";
 import {
   useGetUserOrdersQuery,
   useUpdateOrderStatusMutation,
-} from '@/redux/features/order/orderApi';
-import CancelIcon from '@mui/icons-material/Cancel';
-import { Box, IconButton, Typography } from '@mui/material';
-import Chip from '@mui/material/Chip';
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { useState } from 'react';
-import { toast } from 'sonner';
+} from "@/redux/features/order/orderApi";
+import CancelIcon from "@mui/icons-material/Cancel";
+import { Box, IconButton, Typography } from "@mui/material";
+import Chip from "@mui/material/Chip";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const MyOrders = () => {
   const { data, isLoading } = useGetUserOrdersQuery({});
@@ -38,35 +38,35 @@ const MyOrders = () => {
   }));
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
+    "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
-    '&:last-child td, &:last-child th': {
+    "&:last-child td, &:last-child th": {
       border: 0,
     },
   }));
 
   const handleCancelOrder = async (orderId: string) => {
-    const toastId = toast.loading('Cancelling order...');
-    const confirmation = window.confirm('Are you sure!');
+    const toastId = toast.loading("Cancelling order...");
+    const confirmation = window.confirm("Are you sure!");
     if (!confirmation) return;
     try {
       updateOrderStatus({
-        payload: { status: 'user-cancelled', cancelReason: '' },
+        payload: { status: "user-cancelled", cancelReason: "" },
         id: orderId,
       }).unwrap();
 
-      toast.success('Order cancelled!', { id: toastId });
+      toast.success("Order cancelled!", { id: toastId });
     } catch (err) {
       if (
         err &&
-        typeof err === 'object' &&
-        'data' in err &&
+        typeof err === "object" &&
+        "data" in err &&
         (err as any).data?.message
       ) {
         toast.error((err as any).data.message, { id: toastId });
       } else {
-        toast.error('Something went wrong', { id: toastId });
+        toast.error("Something went wrong", { id: toastId });
       }
     }
   };
@@ -74,10 +74,10 @@ const MyOrders = () => {
     return (
       <Box
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
         }}
       >
         <Typography variant="h3">You don't have any orders.</Typography>
@@ -114,32 +114,32 @@ const MyOrders = () => {
               <StyledTableRow key={order._id}>
                 <StyledTableCell>
                   <Box
-                    sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}
+                    sx={{ display: "flex", flexDirection: "column", gap: 1 }}
                   >
                     {Array.isArray(order.products) &&
                       order.products.map((product, idx) =>
-                        typeof product.id === 'object' &&
+                        typeof product.id === "object" &&
                         product.id !== null ? (
                           <Box
                             key={product.id._id ?? idx}
                             sx={{
-                              display: 'flex',
-                              alignItems: 'center',
+                              display: "flex",
+                              alignItems: "center",
                               gap: 1,
                             }}
                           >
                             <img
-                              src={product.id.img ?? ''}
-                              alt={product.id.name ?? ''}
+                              src={product.id.img ?? ""}
+                              alt={product.id.name ?? ""}
                               width={40}
                               height={40}
-                              style={{ borderRadius: 6, objectFit: 'cover' }}
+                              style={{ borderRadius: 6, objectFit: "cover" }}
                             />
                             <Typography
                               variant="body2"
                               sx={{ fontWeight: 600 }}
                             >
-                              {product.id.name ?? ''}
+                              {product.id.name ?? ""}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
                               Qty: {product.id.quantity ?? 1}
@@ -149,7 +149,7 @@ const MyOrders = () => {
                           <Typography key={idx} variant="body2">
                             {String(product.id)}
                           </Typography>
-                        )
+                        ),
                       )}
                   </Box>
                 </StyledTableCell>
@@ -159,7 +159,7 @@ const MyOrders = () => {
                 <StyledTableCell align="left">
                   <Chip
                     label={order.status}
-                    color={order.status === 'completed' ? 'success' : 'warning'}
+                    color={order.status === "completed" ? "success" : "warning"}
                   />
                 </StyledTableCell>
                 <StyledTableCell align="center">
