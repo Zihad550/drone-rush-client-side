@@ -1,38 +1,37 @@
-import { logout, selectToken } from "@/redux/features/auth/authSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { publicPaths } from "@/routes/public.routes";
-import type { INavItem } from "@/types";
-import { navItemGenerator } from "@/utils/navItemGenerator";
-import { verifyToken } from "@/utils/verifyToken";
-import FacebookRoundedIcon from "@mui/icons-material/FacebookRounded";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import MenuIcon from "@mui/icons-material/Menu";
-import PinterestIcon from "@mui/icons-material/Pinterest";
-import ScaleOutlinedIcon from "@mui/icons-material/ScaleOutlined";
-import SearchIcon from "@mui/icons-material/Search";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import TwitterIcon from "@mui/icons-material/Twitter";
+import { USER_ROLE } from '@/constants';
+import {
+  logout,
+  selectToken,
+  type IUser,
+} from '@/redux/features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { publicPaths } from '@/routes/public.routes';
+import { userPaths } from '@/routes/user.routes';
+import type { INavItem } from '@/types';
+import { navItemGenerator } from '@/utils/navItemGenerator';
+import { verifyToken } from '@/utils/verifyToken';
+import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import MenuIcon from '@mui/icons-material/Menu';
+import PinterestIcon from '@mui/icons-material/Pinterest';
+import TwitterIcon from '@mui/icons-material/Twitter';
 import {
   Button,
   Container,
   Divider,
   ListItemButton,
-  TextField,
   Typography,
-} from "@mui/material";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import Toolbar from "@mui/material/Toolbar";
-import { useState } from "react";
-import { NavLink, useNavigate } from "react-router";
-import UserMenu from "../UserMenu/UserMenu";
-import { userPaths } from "@/routes/user.routes";
-import { USER_ROLE } from "@/constants";
-import CartLink from "../CartLink/CartLink";
+} from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import Toolbar from '@mui/material/Toolbar';
+import { useState } from 'react';
+import { NavLink } from 'react-router';
+import CartLink from '../CartLink/CartLink';
+import UserMenu from '../UserMenu/UserMenu';
 
 const drawerWidth = 200;
 
@@ -45,13 +44,11 @@ function NavBar() {
     setMobileOpen(!mobileOpen);
   };
 
-  const navigate = useNavigate();
-
   let user;
   if (token) {
     try {
-      user = verifyToken(token);
-    } catch (err) {
+      user = verifyToken(token) as IUser;
+    } catch {
       dispatch(logout());
     }
   }
@@ -61,57 +58,119 @@ function NavBar() {
     pages.push(...navItemGenerator({ paths: userPaths, role: user.role }));
   }
 
-  const drawer = (
-    <div>
-      <Box sx={{ p: 1, display: "flex" }}>
-        <TextField size="small" placeholder="Search products" />
-        <Button variant="contained" endIcon={<SearchIcon />} />
-      </Box>
+  const socialItems = (
+    <Box
+      sx={{
+        display: { xs: 'flex', sm: 'none' },
+        gap: 1,
+        justifyContent: 'center',
+      }}
+    >
+      <IconButton
+        sx={{
+          color: '#3b82f6',
+          bgcolor: 'white',
+          mx: 0.5,
+          '&:hover': { bgcolor: '#e0f2fe' },
+        }}
+      >
+        <FacebookRoundedIcon />
+      </IconButton>
+      <IconButton
+        sx={{
+          color: '#06b6d4',
+          bgcolor: 'white',
+          mx: 0.5,
+          '&:hover': { bgcolor: '#e0f2fe' },
+        }}
+      >
+        <TwitterIcon />
+      </IconButton>
+      <IconButton
+        sx={{
+          color: '#e1306c',
+          bgcolor: 'white',
+          mx: 0.5,
+          '&:hover': { bgcolor: '#fce7f3' },
+        }}
+      >
+        <InstagramIcon />
+      </IconButton>
+      <IconButton
+        sx={{
+          color: '#e60023',
+          bgcolor: 'white',
+          mx: 0.5,
+          '&:hover': { bgcolor: '#fee2e2' },
+        }}
+      >
+        <PinterestIcon />
+      </IconButton>
+    </Box>
+  );
 
-      <Divider />
+  const drawer = (
+    <Box sx={{ p: 2 }}>
       <List>
         {pages.map((page) => (
-          <ListItemButton component={NavLink} key={page.key} to={page.path}>
+          <ListItemButton
+            component={NavLink}
+            key={page.key}
+            to={page.path}
+            sx={{
+              borderRadius: 2,
+              fontWeight: 600,
+              fontSize: 16,
+              mb: 0.5,
+              '&.active, &:hover': {
+                background: 'linear-gradient(90deg, #3b82f6 0%, #06b6d4 100%)',
+                color: 'white',
+              },
+            }}
+          >
             {page.key}
           </ListItemButton>
         ))}
       </List>
-
-      <Divider />
+      <Divider sx={{ my: 2 }} />
       {/* social  */}
-      <Box
-        sx={{
-          display: { xs: "block", sm: "none" },
-        }}
-      >
-        <IconButton>
-          <FacebookRoundedIcon />
-        </IconButton>
-        <IconButton>
-          <TwitterIcon />
-        </IconButton>
-        <IconButton>
-          <InstagramIcon />
-        </IconButton>
-        <IconButton>
-          <PinterestIcon />
-        </IconButton>
-      </Box>
-    </div>
+      {socialItems}
+    </Box>
   );
 
   return (
     <>
-      <Box sx={{ display: "flex" }}>
-        <AppBar position="relative" color="secondary">
+      <Box sx={{ display: 'flex' }}>
+        <AppBar
+          position="sticky"
+          color="secondary"
+          elevation={0}
+          sx={{
+            bgcolor: 'rgba(30, 41, 59, 0.85)',
+            backdropFilter: 'blur(8px)',
+            boxShadow: '0 4px 24px 0 rgba(30,41,59,0.10)',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            borderRadius: 0,
+            m: 0,
+            p: 0,
+          }}
+        >
           <Container maxWidth="xl">
-            <Toolbar sx={{ padding: "0 !important" }}>
+            <Toolbar
+              sx={{
+                padding: '0 !important',
+                minHeight: 64,
+                justifyContent: 'space-between',
+              }}
+            >
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
                 edge="start"
                 onClick={handleMobileMenuToggle}
-                sx={{ display: { sm: "none" } }}
+                sx={{ display: { sm: 'none' } }}
               >
                 <MenuIcon />
               </IconButton>
@@ -121,10 +180,10 @@ function NavBar() {
               =================== */}
               <Box
                 sx={{
-                  display: { sm: "flex", xs: "none" },
-                  width: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  display: { sm: 'flex', xs: 'none' },
+                  width: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
                 {pages.map((page) => (
@@ -133,11 +192,20 @@ function NavBar() {
                     to={page.path}
                     key={page.key}
                     sx={{
-                      color: "white",
+                      color: 'white',
                       fontSize: 17,
-                      fontWeight: "600",
-                      display: "block",
-                      mx: 3,
+                      fontWeight: '600',
+                      display: 'block',
+                      mx: 2.5,
+                      px: 2.5,
+                      borderRadius: 2,
+                      transition: 'background 0.18s, color 0.18s',
+                      '&:hover, &.active': {
+                        background:
+                          'linear-gradient(90deg, #3b82f6 0%, #06b6d4 100%)',
+                        color: 'white',
+                        boxShadow: 2,
+                      },
                     }}
                   >
                     {page.key}
@@ -147,54 +215,33 @@ function NavBar() {
               {/*====================
                features
                ================== */}
-              <Box sx={{ display: { xs: "flex", sm: "none" }, ml: "auto" }}>
-                <Typography variant="h5" sx={{ mr: 3 }}>
+              <Box sx={{ display: { xs: 'flex', sm: 'none' } }}>
+                <Typography variant="h5" sx={{ mr: 3 }} align="center">
                   Drone Rush
                 </Typography>
-                <Box className="primary-hover-effect">
-                  <IconButton className="primary-hover-effect">
-                    <ScaleOutlinedIcon sx={{ color: "white" }} />
-                  </IconButton>
-                </Box>
-                <Box sx={{ mx: 3 }} className="primary-hover-effect">
-                  <IconButton className="primary-hover-effect">
-                    <FavoriteBorderIcon sx={{ color: "white" }} />
-                  </IconButton>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                  className="primary-hover-effect"
-                  onClick={() => navigate("/cart")}
-                >
-                  <IconButton className="primary-hover-effect">
-                    <ShoppingCartOutlinedIcon sx={{ color: "white" }} />
-                  </IconButton>
-                </Box>
               </Box>
-              {user ? (
-                <>
-                  <CartLink />
-                  <UserMenu />
-                </>
-              ) : (
-                <Button
-                  sx={{
-                    color: "white",
-                    fontSize: 17,
-                    fontWeight: "600",
-                    display: "block",
-                    mx: 3,
-                  }}
-                  component={NavLink}
-                  to="/login"
-                >
-                  Login
-                </Button>
-              )}
+              <Box sx={{ display: { xs: 'flex' } }}>
+                {user ? (
+                  <>
+                    <CartLink />
+                    <UserMenu />
+                  </>
+                ) : (
+                  <Button
+                    sx={{
+                      color: 'white',
+                      fontSize: 17,
+                      fontWeight: '600',
+                      display: 'block',
+                      mx: 3,
+                    }}
+                    component={NavLink}
+                    to="/login"
+                  >
+                    Login
+                  </Button>
+                )}
+              </Box>
             </Toolbar>
           </Container>
         </AppBar>
@@ -206,8 +253,8 @@ function NavBar() {
               keepMounted: true,
             }}
             sx={{
-              "& .MuiDrawer-paper": {
-                boxSizing: "border-box",
+              '& .MuiDrawer-paper': {
+                boxSizing: 'border-box',
                 width: drawerWidth,
               },
             }}
