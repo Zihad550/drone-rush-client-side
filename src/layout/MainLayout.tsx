@@ -6,7 +6,9 @@ const MainLayout = () => {
   return (
     <div>
       <NavBar />
-      <Outlet />
+      <div style={{ minHeight: "80vh" }}>
+        <Outlet />
+      </div>
       <Footer />
     </div>
   );
