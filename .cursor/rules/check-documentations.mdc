@@ -1,0 +1,5 @@
+---
+description: when using a package always get the latest documentations on how to use it
+globs:
+alwaysApply: true
+---
